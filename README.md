@@ -14,9 +14,9 @@
 
 ## What this is
 
-Claude Code is configurable in more places than most people use. Output styles change how it writes. Skills package a repeatable job. Rules carry project conventions. `CLAUDE.md` holds the standing instructions behind all of it.
+Claude Code is configurable in more places than most people use: output styles for tone, skills for repeatable jobs, rules for project conventions, and `CLAUDE.md` for standing instructions.
 
-This repo is where my working set lives — so it survives a machine rebuild, and so anyone else can take the parts they want.
+This repo holds my working set, so it survives a machine rebuild and anyone else can take the parts they want.
 
 | Part | Folder | Status |
 |---|---|---|
@@ -29,16 +29,16 @@ Everything below covers the two parts that have shipped.
 
 ## Output styles
 
-Claude Code's default voice is dense prose: long paragraphs, formal vocabulary, the important sentence buried three lines down. Fine for reading at leisure, bad for triaging a failed test at 5pm.
+Claude Code's default voice is dense prose: long paragraphs, formal vocabulary, the important sentence buried three lines down.
 
-An **output style** replaces that default response guidance with your own. It is a single markdown file. Drop it in `~/.claude/output-styles/`, select it, and every answer follows your rules instead. Two are here.
+An **output style** replaces that default response guidance with your own — a single markdown file. Drop it in `~/.claude/output-styles/`, select it, and every answer follows your rules instead. Two are here.
 
 > [!TIP]
 > The [project page](https://mithunwijayasiri.github.io/dotclaude/) answers one question in both styles and in Claude Code's default voice, side by side. It is the fastest way to see the difference.
 
 ### ASD-STE100
 
-Named after the real aerospace writing standard — [ASD-STE100 Simplified Technical English](https://www.asd-ste100.org/), the controlled English used in aircraft maintenance manuals. It exists so that a technician whose first language isn't English can read a repair procedure without ambiguity. The same constraints work well for engineering answers.
+Named after the real aerospace writing standard — [ASD-STE100 Simplified Technical English](https://www.asd-ste100.org/), the controlled English used in aircraft maintenance manuals so a non-native reader can follow a repair procedure without ambiguity. The same constraints work well for engineering answers.
 
 The style enforces:
 
@@ -53,7 +53,7 @@ Technical names, file paths, code, commands, and quoted log output are exempt an
 
 ### Simple English
 
-The lighter option. Short sentences and everyday words, but no label protocol and no grammar limits — it reads as ordinary prose. Use it when you're explaining something to a person rather than filing a result: a handover note, a summary for someone who wasn't in the debugging session.
+The lighter option. Short sentences and everyday words, no label protocol, no grammar limits — it reads as ordinary prose. Use it for a handover note or a summary for someone who wasn't in the debugging session.
 
 > [!NOTE]
 > Simple English uses *simpler* words but usually *more* of them. It trades scannability for readability. Pick ASD-STE100 if you want to skim, Simple English if you want to read.
@@ -102,15 +102,15 @@ The value is the `name:` field from the file's frontmatter, not the filename. A 
 
 ## Make it yours
 
-Both style files are short and plain — open one and edit it. Two things worth knowing first:
+Both style files are short and plain — open one and edit it.
 
-**Keep the vocabulary table.** It looks redundant beside the rule *one term per meaning*, but the abstract rule on its own does not hold. An explicit row does. Add one whenever a word annoys you.
+**Keep the vocabulary table.** The abstract rule *one term per meaning* doesn't hold on its own; an explicit row does. Add one whenever a word annoys you.
 
-**Keep at least one worked example in the style file.** Rules describe the shape; an example shows it. The nested-bullet formatting held up far more reliably with a concrete example present than with prose alone.
+**Keep at least one worked example.** Rules describe the shape; an example shows it. Formatting held up far more reliably with a concrete example present.
 
 ## CLAUDE.md
 
-`CLAUDE.md` holds the instructions that apply everywhere, so it stays short — 35 lines. Engineering defaults, comment style, how to treat pasted review findings, and when to look a library up instead of answering from memory. Claude Code loads it at the start of every session, in every project.
+`CLAUDE.md` holds the instructions that apply everywhere, so it stays short. Engineering defaults, comment style, and when to look a library up instead of answering from memory. Claude Code loads it at the start of every session, in every project.
 
 Copy it to `~/.claude/CLAUDE.md` for global scope, or to a repo root to scope it to one project:
 
@@ -119,7 +119,7 @@ cp dotclaude/CLAUDE.md ~/.claude/CLAUDE.md
 ```
 
 > [!NOTE]
-> Its `## Response Style` section repeats the ASD-STE100 rules on purpose. It is the fallback for sessions where a different output style is selected, or none at all.
+> Its `## Response Style` section is a lightweight fallback — lead with the result, skip filler — for sessions where a different output style is selected, or none at all.
 
 ## Roadmap
 
