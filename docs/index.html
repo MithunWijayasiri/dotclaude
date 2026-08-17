@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dotclaude by Mithun ~/.claude</title>
+<meta name="description" content="Documentation for dotclaude: the output styles, skills, rules, and CLAUDE.md that Claude Code reads from ~/.claude. Output styles and CLAUDE.md are published; skills and rules follow.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="dotclaude — what lives in ~/.claude">
+<meta property="og:description" content="Output styles, skills, rules, and CLAUDE.md for Claude Code, documented in one place.">
+<meta property="og:url" content="https://mithunwijayasiri.github.io/dotclaude/">
+<link rel="canonical" href="https://mithunwijayasiri.github.io/dotclaude/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='6'%20fill='%23FAFAF9'/%3E%3Cpath%20d='M8%2010h17M8%2016h12M8%2022h15'%20stroke='%2318181C'%20stroke-width='2.4'%20stroke-linecap='round'/%3E%3Cpath%20d='M5%2016h16'%20stroke='%23A82838'%20stroke-width='2.4'%20stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400&amp;family=Schibsted+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+/* ── tokens ─────────────────────────────────────────────────────────── */
+:root{
+  --bg:#FAFAF9;
+  --surface:#F1F1EE;
+  --line:#E3E3DE;
+  --line-2:#C7C7C0;
+  --ink:#18181C;
+  --muted:#6C6B72;
+  --faint:#9B9AA1;
+  --proof:#A82838;        /* proofreader's red — the one accent */
+  --proof-wash:rgba(168,40,56,.07);
+  --term:#1A1B1F;
+  --term-2:#232529;
+  --term-line:#31333A;
+  --term-ink:#DEDCD7;
+  --term-dim:#83828B;
+  --term-blue:#9DC1E4;
+
+  --display:'Schibsted Grotesk',system-ui,sans-serif;
+  --serif:'Newsreader',Georgia,serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+
+  --measure:68ch;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:76px}
+body{
+  background:var(--bg);color:var(--ink);
+  font:400 18.5px/1.72 var(--serif);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+a{color:var(--proof);text-decoration:none;border-bottom:1px solid var(--proof-wash)}
+a:hover{border-bottom-color:var(--proof)}
+:focus-visible{outline:2px solid var(--proof);outline-offset:3px;border-radius:2px}
+
+code{font:400 .84em/1.5 var(--mono);background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:.1em .34em}
+a code{color:inherit}
+
+/* ── masthead ───────────────────────────────────────────────────────── */
+.masthead{
+  position:sticky;top:0;z-index:20;
+  background:rgba(250,250,249,.92);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.masthead-in{
+  max-width:1180px;margin:0 auto;padding:14px 32px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+}
+.brand{font:700 16px/1 var(--mono);letter-spacing:-.03em}
+.brand span{color:var(--proof)}
+.masthead nav{display:flex;gap:22px;font:500 12px/1 var(--mono);letter-spacing:.02em}
+.masthead nav a{color:var(--muted);border:0}
+.masthead nav a:hover{color:var(--ink)}
+
+/* ── shell ──────────────────────────────────────────────────────────── */
+.shell{
+  max-width:1180px;margin:0 auto;padding:0 32px 40px;
+  display:grid;grid-template-columns:250px minmax(0,1fr);gap:0 64px;
+  align-items:start;
+}
+
+/* ── rail ───────────────────────────────────────────────────────────── */
+.rail{position:sticky;top:76px;padding:52px 0 40px}
+.rail-label{
+  font:500 10.5px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;
+  color:var(--faint);margin-bottom:14px;
+}
+.tree{font:400 12.6px/1.95 var(--mono);color:var(--muted);white-space:pre}
+.tree b{color:var(--ink);font-weight:500}
+.tree i{font-style:normal;color:var(--proof)}
+.tree u{text-decoration:none;color:var(--faint)}
+
+.toc{margin-top:38px;border-top:1px solid var(--line);padding-top:20px;list-style:none}
+.toc li{margin-bottom:2px}
+.toc a{
+  display:block;padding:5px 0 5px 13px;border:0;border-left:2px solid var(--line);
+  font:500 12.5px/1.45 var(--mono);color:var(--muted);
+  transition:color .16s,border-color .16s;
+}
+.toc a:hover{color:var(--ink)}
+.toc a[aria-current="true"]{color:var(--proof);border-left-color:var(--proof)}
+
+/* ── main column ────────────────────────────────────────────────────── */
+main{padding-bottom:24px;min-width:0}
+section{padding:52px 0;border-top:1px solid var(--line)}
+section:first-child{border-top:0;padding-top:52px}
+
+.eyebrow{
+  font:500 11px/1 var(--mono);letter-spacing:.15em;text-transform:uppercase;
+  color:var(--proof);margin-bottom:20px;
+}
+.kicker{
+  font:500 11px/1 var(--mono);letter-spacing:.15em;text-transform:uppercase;
+  color:var(--faint);margin-bottom:16px;
+}
+h1{
+  font:700 clamp(33px,5.4vw,52px)/1.06 var(--display);letter-spacing:-.035em;
+  max-width:22ch;margin-bottom:22px;
+}
+h2{font:600 clamp(24px,3.4vw,31px)/1.15 var(--display);letter-spacing:-.028em;margin-bottom:14px}
+h3{font:600 17px/1.3 var(--display);letter-spacing:-.015em;margin-bottom:6px}
+p{max-width:var(--measure);margin-bottom:18px}
+p:last-child{margin-bottom:0}
+.lede{font-size:21px;line-height:1.62;color:#33333A}
+.lede em{font-style:italic;color:var(--ink)}
+
+/* ── definition rows: the four parts ────────────────────────────────── */
+.parts{list-style:none;margin-top:32px;border-top:1px solid var(--line)}
+.parts li{
+  display:grid;grid-template-columns:190px minmax(0,1fr);gap:8px 28px;
+  padding:20px 0;border-bottom:1px solid var(--line);
+}
+.parts .n{font:500 13.5px/1.5 var(--mono);letter-spacing:-.01em}
+.parts .n small{display:block;margin-top:7px;font:500 10px/1 var(--mono);letter-spacing:.13em;text-transform:uppercase}
+.parts .live small{color:var(--proof)}
+.parts .soon small{color:var(--faint)}
+.parts p{font-size:17px;line-height:1.65;color:var(--muted);max-width:58ch}
+.parts p strong{color:var(--ink);font-weight:500}
+
+/* ── switcher ───────────────────────────────────────────────────────── */
+.switch{display:flex;flex-wrap:wrap;gap:7px;margin:30px 0 16px}
+.switch button{
+  font:500 12.5px/1 var(--mono);letter-spacing:.01em;
+  padding:10px 15px;border:1px solid var(--line-2);border-radius:100px;
+  background:transparent;color:var(--muted);cursor:pointer;
+  transition:color .16s,border-color .16s,background .16s;
+}
+.switch button:hover{color:var(--ink);border-color:var(--ink)}
+.switch button[aria-pressed="true"]{background:var(--proof);border-color:var(--proof);color:#fff}
+
+/* ── the one dark object ────────────────────────────────────────────── */
+.term{background:var(--term);border-radius:8px;overflow:hidden}
+.term-bar{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:11px 18px;background:var(--term-2);border-bottom:1px solid var(--term-line);
+  font:400 11.5px/1 var(--mono);color:var(--term-dim);
+}
+.term-bar b{color:var(--term-ink);font-weight:500}
+.term-body{padding:22px 18px 8px;overflow-x:auto}
+.term-body pre,.ask{font:400 13.3px/1.78 var(--mono);white-space:pre-wrap;word-break:break-word}
+.ask{color:var(--term-dim);margin-bottom:16px}
+.ask i{font-style:normal;color:var(--proof)}
+.term-body pre{color:var(--term-ink)}
+.answer[hidden]{display:none}
+.lbl{color:#E1808C}
+.tok{color:var(--term-blue)}
+.count{font:400 12px/1.5 var(--mono);color:var(--faint);margin-top:12px}
+
+/* ── comparison of the two styles ───────────────────────────────────── */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;margin-top:44px}
+.compare > div{border-top:2px solid var(--ink);padding-top:18px}
+.compare > div:last-child{border-top-color:var(--line-2)}
+.compare h3{font-family:var(--mono);font-size:15px;font-weight:700;letter-spacing:-.01em}
+.compare .role{font:500 10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
+.compare p{font-size:17px;line-height:1.62;max-width:none;color:var(--muted)}
+.compare ul{list-style:none;margin:16px 0 0}
+.compare li{
+  position:relative;padding-left:17px;margin-bottom:9px;
+  font-size:16.5px;line-height:1.55;
+}
+.compare li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:1.5px;background:var(--line-2)}
+.compare .stat{
+  margin-top:18px;padding-top:14px;border-top:1px solid var(--line);
+  font:500 11px/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--faint);
+}
+
+/* ── notes ──────────────────────────────────────────────────────────── */
+.note{
+  border-left:2px solid var(--proof);padding:3px 0 3px 18px;margin:26px 0 0;
+  font-size:17.5px;line-height:1.6;color:var(--muted);max-width:var(--measure);
+}
+.note strong{color:var(--ink);font-weight:500}
+
+/* ── code blocks (light — the page is paper) ─────────────────────────── */
+figure.code{margin:16px 0 0;background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+figure.code figcaption{
+  padding:8px 14px;border-bottom:1px solid var(--line);
+  font:500 10.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);
+}
+figure.code pre{padding:14px;overflow-x:auto;font:400 13px/1.7 var(--mono);color:#2B2B31}
+figure.code .c{color:var(--faint)}
+figure.code .k{color:var(--proof)}
+
+/* ── install ────────────────────────────────────────────────────────── */
+h3.sub{
+  margin:42px 0 8px;padding-top:22px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:15px;font-weight:700;letter-spacing:-.01em;
+}
+
+/* ── roadmap ────────────────────────────────────────────────────────── */
+table{width:100%;border-collapse:collapse;margin-top:26px;font-size:17px}
+th,td{text-align:left;padding:14px 14px 14px 0;border-bottom:1px solid var(--line);vertical-align:baseline}
+th{font:500 10.5px/1 var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--faint)}
+td:last-child,th:last-child{width:1%;white-space:nowrap;padding-right:0}
+.st{font:500 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:100px;border:1px solid var(--line-2);color:var(--muted)}
+.st.on{background:var(--proof);border-color:var(--proof);color:#fff}
+
+/* ── footer ─────────────────────────────────────────────────────────── */
+footer{border-top:1px solid var(--line);margin-top:12px}
+.footer-in{
+  max-width:1180px;margin:0 auto;padding:26px 32px 56px;
+  display:flex;flex-wrap:wrap;gap:14px 28px;justify-content:space-between;
+  font:400 12.5px/1.6 var(--mono);color:var(--muted);
+}
+.footer-in a{color:var(--muted);border-bottom-color:var(--line-2)}
+.footer-in a:hover{color:var(--proof);border-bottom-color:var(--proof)}
+
+/* ── responsive ─────────────────────────────────────────────────────── */
+@media (max-width:940px){
+  .shell{grid-template-columns:minmax(0,1fr);gap:0}
+  .rail{position:static;padding:36px 0 0;border-bottom:1px solid var(--line);padding-bottom:30px}
+  .tree{overflow-x:auto}
+  .toc{display:none}
+  .compare{grid-template-columns:1fr;gap:32px}
+  .compare > div:last-child{border-top-color:var(--ink)}
+}
+@media (max-width:640px){
+  body{font-size:17.5px}
+  .masthead-in,.footer-in{padding-left:20px;padding-right:20px}
+  .shell{padding-left:20px;padding-right:20px}
+  .masthead nav{display:none}
+  .parts li{grid-template-columns:minmax(0,1fr)}
+  .parts .n small{display:inline;margin-left:10px}
+  section{padding:40px 0}
+  .lede{font-size:19px}
+  .term-body pre,.ask{font-size:12.4px}
+}
+
+@media (prefers-reduced-motion:no-preference){
+  .masthead-in,.rail,main > section:first-child{animation:rise .6s ease both}
+  .rail{animation-delay:.08s}
+  .answer{animation:rise .28s ease both}
+  @keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-in">
+    <div class="brand">dot<span>claude</span></div>
+    <nav aria-label="Sections">
+      <a href="#parts">parts</a>
+      <a href="#install">install</a>
+      <a href="#roadmap">roadmap</a>
+      <a href="https://github.com/MithunWijayasiri/dotclaude">github</a>
+    </nav>
+  </div>
+</header>
+
+<div class="shell">
+
+  <aside class="rail">
+    <p class="rail-label">Repository</p>
+<div class="tree" aria-label="Folder layout of the repository"><b>~/.claude/</b>
+├─ <b>output-styles/</b>  <i>here</i>
+│  ├─ asd-ste100.md
+│  └─ simple-english.md
+├─ <b>CLAUDE.md</b>       <i>here</i>
+├─ <b>skills/</b>         <u>soon</u>
+└─ <b>rules/</b>          <u>soon</u></div>
+
+    <ul class="toc" id="toc">
+      <li><a href="#about">What this is</a></li>
+      <li><a href="#parts">The four parts</a></li>
+      <li><a href="#styles">Output styles</a></li>
+      <li><a href="#install">Install</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+    </ul>
+  </aside>
+
+  <main>
+
+    <section id="about">
+      <p class="eyebrow">Documentation</p>
+      <h1>Claude Code reads four kinds of file. This repo holds mine.</h1>
+      <p class="lede">Claude Code loads its instructions from plain markdown in your home folder: <em>output styles</em>, <em>skills</em>, <em>rules</em>, and a global <code>CLAUDE.md</code>. Nothing here is a plugin or a program. Every file is text you can read in a minute and edit with any editor.</p>
+      <p>I keep the folder in git so it survives a machine rebuild, and so anyone can lift a single file out of it. Output styles and <code>CLAUDE.md</code> are published. Skills and rules land here as each one is generalised — a file that only makes sense inside one codebase is worth nobody else's time.</p>
+      <p class="note"><strong>Read this page like a manual, not a pitch.</strong> Each section says what a file type does, where it goes, and what changes once Claude Code picks it up.</p>
+    </section>
+
+    <section id="parts">
+      <p class="kicker">Reference</p>
+      <h2>The four parts</h2>
+      <p>They differ in scope and in when Claude Code loads them. That is the whole distinction — pick by the question “when should this apply?”</p>
+
+      <ul class="parts">
+        <li class="live">
+          <div class="n">output-styles/<small>Published</small></div>
+          <div>
+            <p>One file replaces Claude Code's built-in guidance on <strong>how to answer</strong>. It loads into the system prompt when a session starts, so it shapes every reply until you switch. Two are here.</p>
+          </div>
+        </li>
+        <li class="live">
+          <div class="n">CLAUDE.md<small>Published</small></div>
+          <div>
+            <p>The standing instruction file. It loads in <strong>every session, in every project</strong>, so it stays short: engineering defaults, comment style, and which commands need approval first. This one is 35 lines.</p>
+          </div>
+        </li>
+        <li class="soon">
+          <div class="n">skills/<small>Planned</small></div>
+          <div>
+            <p>A repeatable job packaged as <code>~/.claude/skills/&lt;name&gt;/SKILL.md</code> — a review checklist, a debugging procedure, a release sequence. Claude Code loads a skill <strong>on demand</strong>, when the task matches its description or you call it by name.</p>
+          </div>
+        </li>
+        <li class="soon">
+          <div class="n">rules/<small>Planned</small></div>
+          <div>
+            <p>Project conventions in <code>.claude/rules/</code>. A rule can load always or lazily, and can be scoped to a glob so it applies <strong>only to matching files</strong>. Use one for a convention too long for <code>CLAUDE.md</code> and too narrow for a skill.</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section id="styles">
+      <p class="kicker">Published</p>
+      <h2>Output styles</h2>
+      <p>An output style is a markdown file with two frontmatter fields — <code>name</code> and <code>description</code> — and a body of writing rules. The body replaces Claude Code's default response guidance wholesale, so a style can change sentence length, banned words, and the shape of a result report.</p>
+      <p>The clearest way to see it: ask one question three times. The facts below are identical in all three answers. Only the shape moves.</p>
+
+      <div class="switch" role="group" aria-label="Choose an output style">
+        <button type="button" data-t="a" aria-pressed="true">ASD-STE100</button>
+        <button type="button" data-t="b" aria-pressed="false">Simple English</button>
+        <button type="button" data-t="c" aria-pressed="false">No style</button>
+      </div>
+
+      <div class="term" aria-label="Terminal showing the same answer in three output styles">
+        <div class="term-bar">
+          <span>claude</span>
+          <span>style: <b id="active">ASD-STE100</b></span>
+        </div>
+        <div class="term-body">
+          <p class="ask"><i>&gt;</i> why does GET /api/users return 404?</p>
+
+          <div class="answer" id="a">
+<pre>The router sits on a different path. One file needs a change.
+
+<span class="lbl">- Verified:</span> <span class="tok">server.js</span> mounts the router at <span class="tok">/api/user</span>. The
+  request asked for <span class="tok">/api/users</span>. The plural broke the match.
+<span class="lbl">- Updated:</span> None yet.
+<span class="lbl">- Next:</span> Confirm which spelling you want, then I will change
+  the mount in <span class="tok">server.js</span>.</pre>
+          </div>
+
+          <div class="answer" id="b" hidden>
+<pre>The request fails because the server registers a different path.
+
+In <span class="tok">server.js</span> the router is mounted at <span class="tok">/api/user</span>, with no s at
+the end. The request asks for <span class="tok">/api/users</span>. Express compares the
+two, finds no match, and answers with 404.
+
+Tell me which spelling you want to keep. Then I will change either
+the mount or the request, so both sides use one path.</pre>
+          </div>
+
+          <div class="answer" id="c" hidden>
+<pre>Thanks for flagging this &mdash; I've taken a look and I believe I've
+identified the underlying cause of what you're seeing here. It appears
+that the Express router responsible for user resources is currently
+being mounted at <span class="tok">/api/user</span> inside <span class="tok">server.js</span>; however, the
+request being issued is targeting <span class="tok">/api/users</span>, with a trailing
+plural on the resource segment.
+
+Because Express performs exact prefix matching on a mounted router,
+the incoming request never reaches the handler you would expect, and
+the default 404 handler ends up responding instead. This is a fairly
+common class of issue in projects where route paths are not
+centralised, since the mount path and the calling path are declared
+in two entirely separate places.
+
+There are a few different approaches we could potentially take here.
+We could simply update the mount path to the plural form, though that
+would leave the same duplication in place. Alternatively, we could
+introduce a shared route constant that both sides import, which would
+be considerably more robust going forward. Let me know which
+direction you'd prefer and I'd be happy to help you implement it!</pre>
+          </div>
+        </div>
+      </div>
+      <p class="count" id="count">46 words · one result line, three labels</p>
+
+      <div class="compare">
+        <div>
+          <p class="role">Primary</p>
+          <h3>ASD-STE100</h3>
+          <p>Named after the controlled English standard written for aircraft maintenance manuals, where a technician must not be able to read a procedure two ways. The same constraints suit an engineering answer.</p>
+          <ul>
+            <li>One term per meaning, held for the whole answer</li>
+            <li>Max 20 words per sentence, simple tenses, no <code>-ing</code> forms</li>
+            <li>Active voice, imperative instructions</li>
+            <li>Six preferred words: <code>utilize</code> → <code>use</code>, <code>initiate</code> → <code>start</code></li>
+            <li>Result first, then <code>Verified:</code> <code>Updated:</code> <code>Skipped:</code> <code>Remaining:</code> <code>Next:</code></li>
+            <li>Each label once; two or more items nest under it</li>
+          </ul>
+          <p class="stat">66 lines · 417 words</p>
+        </div>
+        <div>
+          <p class="role">Lighter</p>
+          <h3>Simple English</h3>
+          <p>Short sentences and everyday words, with no label protocol and no grammar limits. It reads as ordinary prose. Reach for it when you explain the work to a person instead of filing a result — a handover note, or a summary for someone who missed the session.</p>
+          <ul>
+            <li>Answer first, detail after</li>
+            <li>Every fact, name, number, and path kept</li>
+            <li>One idea per sentence, everyday words</li>
+            <li>Code, commands, and log output left untouched</li>
+            <li>No labels, no preamble, no sign-off</li>
+          </ul>
+          <p class="stat">15 lines · 121 words</p>
+        </div>
+      </div>
+
+      <p class="note">Simple English uses plainer words but usually more of them. It trades scanning for reading. Pick <strong>ASD-STE100</strong> to skim a result, <strong>Simple English</strong> to understand one.</p>
+    </section>
+
+    <section id="install">
+      <p class="kicker">Procedure</p>
+      <h2>Install</h2>
+      <p>Get the files, then copy the parts you want into <code>~/.claude/</code>. There is nothing to build. Create a folder if it is not there yet.</p>
+
+      <p>No git? <a href="https://github.com/MithunWijayasiri/dotclaude/archive/refs/heads/main.zip">Download the ZIP</a> and unzip it. It unpacks to <code>dotclaude-main/</code> rather than <code>dotclaude/</code>, so adjust the paths below by that one word.</p>
+
+      <figure class="code">
+        <figcaption>shell</figcaption>
+<pre>git clone https://github.com/MithunWijayasiri/dotclaude.git
+
+<span class="c"># output styles</span>
+<span class="k">cp</span> dotclaude/output-styles/*.md ~/.claude/output-styles/
+
+<span class="c"># standing instructions</span>
+<span class="k">cp</span> dotclaude/CLAUDE.md ~/.claude/CLAUDE.md
+
+<span class="c"># skills — one folder per skill (when published)</span>
+<span class="k">cp</span> -r dotclaude/skills/* ~/.claude/skills/
+
+<span class="c"># rules — these belong to a project, not your home folder (when published)</span>
+<span class="k">cp</span> dotclaude/rules/*.md your-project/.claude/rules/</pre>
+      </figure>
+
+      <p class="note">Use a <code>.claude/</code> folder inside a repo instead of <code>~/.claude/</code> to scope any of this to that one project. Copying <code>CLAUDE.md</code> replaces whatever sits at the target, so read your own first.</p>
+
+      <h3 class="sub">Turn on an output style</h3>
+      <p>Copying the file does not select it. Type <code>/config</code> in a session and pick one under <strong>Output style</strong>. Claude Code saves that choice per project, in <code>.claude/settings.local.json</code>.</p>
+      <p>To make a style your default everywhere, set the field yourself:</p>
+      <figure class="code">
+        <figcaption>~/.claude/settings.json</figcaption>
+<pre>{
+  <span class="k">"outputStyle"</span>: <span class="k">"ASD-STE100"</span>
+}</pre>
+      </figure>
+      <p class="note">The value is the <code>name:</code> field from the file's frontmatter, not the filename. A style is part of the system prompt, so it takes effect after <code>/clear</code> or in your next session.</p>
+    </section>
+
+    <section id="roadmap">
+      <p class="kicker">Status</p>
+      <h2>Roadmap</h2>
+      <table>
+        <thead><tr><th scope="col">Part</th><th scope="col">Status</th></tr></thead>
+        <tbody>
+          <tr><td><code>output-styles/</code> — two response styles</td><td><span class="st on">Published</span></td></tr>
+          <tr><td><code>CLAUDE.md</code> — the standing instruction file</td><td><span class="st on">Published</span></td></tr>
+          <tr><td><code>skills/</code> — on-demand task workflows</td><td><span class="st">Planned</span></td></tr>
+          <tr><td><code>rules/</code> — glob-scoped project conventions</td><td><span class="st">Planned</span></td></tr>
+          <tr><td>Hooks and <code>settings.json</code> reference</td><td><span class="st">Considering</span></td></tr>
+        </tbody>
+      </table>
+      <p class="note">The <code>skills/</code> and <code>rules/</code> folders in the repo hold placeholder notes for now.</p>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <div class="footer-in">
+    <span>MIT — take whatever is useful.</span>
+    <span>Made with ❤️ <a href="https://mithun.vercel.app">Mithun Wijayasiri</a></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ── style switcher ─────────────────────────────────────────────── */
+  var meta={
+    a:{name:'ASD-STE100',count:'46 words · one result line, three labels'},
+    b:{name:'Simple English',count:'64 words · three paragraphs, no labels'},
+    c:{name:'none — Claude Code default',count:'183 words · three paragraphs, four times the length'}
+  };
+  var ids=['a','b','c'];
+  var btns=document.querySelectorAll('.switch button');
+  var active=document.getElementById('active');
+  var count=document.getElementById('count');
+
+  btns.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var t=btn.dataset.t;
+      btns.forEach(function(o){o.setAttribute('aria-pressed',String(o===btn));});
+      ids.forEach(function(id){
+        var el=document.getElementById(id);
+        if(id!==t){el.hidden=true;return;}
+        el.hidden=false;
+        el.style.animation='none';void el.offsetWidth;el.style.animation='';
+      });
+      active.textContent=meta[t].name;
+      count.textContent=meta[t].count;
+    });
+  });
+
+  /* ── mark the section you are reading in the rail ───────────────── */
+  if(!('IntersectionObserver' in window))return;
+  var links=[].slice.call(document.querySelectorAll('#toc a'));
+  var byId={};
+  links.forEach(function(a){byId[a.hash.slice(1)]=a;});
+
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting)return;
+      links.forEach(function(a){a.removeAttribute('aria-current');});
+      var a=byId[e.target.id];
+      if(a)a.setAttribute('aria-current','true');
+    });
+  },{rootMargin:'-80px 0px -65% 0px'});
+
+  Object.keys(byId).forEach(function(id){
+    var s=document.getElementById(id);
+    if(s)io.observe(s);
+  });
+})();
+</script>
+</body>
+</html>
