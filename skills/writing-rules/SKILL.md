@@ -53,7 +53,8 @@ A fact stated in two places drifts: one copy gets updated, the other lies. Befor
 - **Don't overlap scopes silently.** Two rules whose `paths:` match the same files both load together. That's fine only if they cover *different* topics. Same topic across two files → merge into one.
 - **Don't contradict.** A new rule must not assert the opposite of an existing rule or CLAUDE.md. If reality changed, update the existing statement in place — don't add a competing one.
 - When a fact spans areas, put it in the single most-specific home and cross-link with a pointer, not a copy.
-- Editing a rule → grep the other rules + every loaded `CLAUDE.md` (`./CLAUDE.md`, `.claude/CLAUDE.md`, ancestors, `~/.claude/CLAUDE.md`) for the same term first; fix every stale copy in the same edit, or collapse them to one.
+- Editing a rule → grep the other rules + every loaded `CLAUDE.md` (`./CLAUDE.md`, `.claude/CLAUDE.md`, ancestors, `~/.claude/CLAUDE.md`) for the same term first.
+- Edit only the requested rule and files this project owns. A stale or conflicting copy in an ancestor or in `~/.claude/` → report it and ask before you touch it.
 
 ## Content style
 

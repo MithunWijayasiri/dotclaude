@@ -81,7 +81,7 @@ Giving inanimate things human verbs. Complaints don't "become" fixes. Bets don't
 | "the data tells us" | Data sits there. Someone reads it and draws a conclusion. |
 | "the market rewards" | Markets don't reward. Buyers pay for things. |
 
-**Instead:** Name the human. "The team fixed it that week" beats "the complaint becomes a fix." If no specific person fits, use "you" to put the reader in the seat.
+**Instead:** Name the actor. "The team fixed it that week" beats "the complaint becomes a fix." Use "you" only when the reader is the actor and the register allows it. When the actor is a system, keep the system as the subject; when the actor is unknown, keep the passive.
 
 ## Narrator-from-a-Distance
 
@@ -94,7 +94,7 @@ Floating above the scene instead of putting the reader in it.
 | "This is why..." | Same |
 | "People tend to..." | Armchair sociologist |
 
-**Instead:** Put the reader in the room. "You don't sit down one day and decide to..." beats "Nobody designed this."
+**Instead:** Put the reader in the room when the reader is the actor. "You don't sit down one day and decide to..." beats "Nobody designed this." Do not force "you" into a policy, an API doc, or agent instructions.
 
 ## Passive Voice
 

@@ -96,7 +96,7 @@ Also cut these filler phrases:
 
 ## Meta-Commentary
 
-Remove self-referential asides. The essay should move, not announce its own structure.
+Remove self-referential asides that carry no information. The essay should move, not announce its own structure. Keep a factual correction, a classification the reader needs ("the retry is a feature, not a bug"), and navigation a long document depends on.
 
 - "Hint:"
 - "Plot twist:" / "Spoiler:"
