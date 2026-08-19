@@ -207,14 +207,6 @@ h3.sub{
   font-family:var(--mono);font-size:15px;font-weight:700;letter-spacing:-.01em;
 }
 
-/* ── roadmap ────────────────────────────────────────────────────────── */
-table{width:100%;border-collapse:collapse;margin-top:26px;font-size:17px}
-th,td{text-align:left;padding:14px 14px 14px 0;border-bottom:1px solid var(--line);vertical-align:baseline}
-th{font:500 10.5px/1 var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--faint)}
-td:last-child,th:last-child{width:1%;white-space:nowrap;padding-right:0}
-.st{font:500 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:100px;border:1px solid var(--line-2);color:var(--muted)}
-.st.on{background:var(--proof);border-color:var(--proof);color:#fff}
-
 /* ── footer ─────────────────────────────────────────────────────────── */
 footer{border-top:1px solid var(--line);margin-top:12px}
 .footer-in{
@@ -262,7 +254,6 @@ footer{border-top:1px solid var(--line);margin-top:12px}
     <nav aria-label="Sections">
       <a href="#parts">parts</a>
       <a href="#install">install</a>
-      <a href="#roadmap">roadmap</a>
       <a href="https://github.com/MithunWijayasiri/dotclaude">github</a>
     </nav>
   </div>
@@ -275,7 +266,7 @@ footer{border-top:1px solid var(--line);margin-top:12px}
 <div class="tree" aria-label="Folder layout of the repository"><b>~/.claude/</b>
 ├─ <b>output-styles/</b>  <i>here</i>
 │  ├─ asd-ste100.md
-│  └─ simple-english.md
+│  └─ always-friday.md
 ├─ <b>CLAUDE.md</b>       <i>here</i>
 ├─ <b>skills/</b>         <u>soon</u>
 └─ <b>rules/</b>          <u>soon</u></div>
@@ -285,7 +276,6 @@ footer{border-top:1px solid var(--line);margin-top:12px}
       <li><a href="#parts">The four parts</a></li>
       <li><a href="#styles">Output styles</a></li>
       <li><a href="#install">Install</a></li>
-      <li><a href="#roadmap">Roadmap</a></li>
     </ul>
   </aside>
 
@@ -330,6 +320,7 @@ footer{border-top:1px solid var(--line);margin-top:12px}
           </div>
         </li>
       </ul>
+      <p class="note">The <code>skills/</code> and <code>rules/</code> folders hold placeholder notes for now. A hooks and <code>settings.json</code> reference is under consideration.</p>
     </section>
 
     <section id="styles">
@@ -340,7 +331,7 @@ footer{border-top:1px solid var(--line);margin-top:12px}
 
       <div class="switch" role="group" aria-label="Choose an output style">
         <button type="button" data-t="a" aria-pressed="true">ASD-STE100</button>
-        <button type="button" data-t="b" aria-pressed="false">Simple English</button>
+        <button type="button" data-t="b" aria-pressed="false">Always Friday</button>
         <button type="button" data-t="c" aria-pressed="false">No style</button>
       </div>
 
@@ -403,7 +394,7 @@ direction you'd prefer and I'd be happy to help you implement it!</pre>
         <div>
           <p class="role">Primary</p>
           <h3>ASD-STE100</h3>
-          <p>Named after the controlled English standard written for aircraft maintenance manuals, where a technician must not be able to read a procedure two ways. The same constraints suit an engineering answer.</p>
+          <p>Structured output following ASD-STE100 English standards that any reader can understand. Named after the controlled English for aircraft maintenance manuals — where a technician must not read a procedure two ways.</p>
           <ul>
             <li>One term per meaning, held for the whole answer</li>
             <li>Max 20 words per sentence, simple tenses, no <code>-ing</code> forms</li>
@@ -416,8 +407,8 @@ direction you'd prefer and I'd be happy to help you implement it!</pre>
         </div>
         <div>
           <p class="role">Lighter</p>
-          <h3>Simple English</h3>
-          <p>Short sentences and everyday words, with no label protocol and no grammar limits. It reads as ordinary prose. Reach for it when you explain the work to a person instead of filing a result — a handover note, or a summary for someone who missed the session.</p>
+          <h3>Always Friday</h3>
+          <p>Simple, clear output that's easy to read — like Friday afternoon. Short sentences and everyday words, with no label protocol and no grammar limits. It reads as ordinary prose. Reach for it when you explain the work to a person instead of filing a result — a handover note, or a summary for someone who missed the session.</p>
           <ul>
             <li>Answer first, detail after</li>
             <li>Every fact, name, number, and path kept</li>
@@ -429,7 +420,7 @@ direction you'd prefer and I'd be happy to help you implement it!</pre>
         </div>
       </div>
 
-      <p class="note">Simple English uses plainer words but usually more of them. It trades scanning for reading. Pick <strong>ASD-STE100</strong> to skim a result, <strong>Simple English</strong> to understand one.</p>
+      <p class="note">Pick <strong>ASD-STE100</strong> to get the job done with minimal words and structured output. Use <strong>Always Friday</strong> when you collaborate with AI on tasks beyond coding.</p>
     </section>
 
     <section id="install">
@@ -470,22 +461,6 @@ direction you'd prefer and I'd be happy to help you implement it!</pre>
       <p class="note">The value is the <code>name:</code> field from the file's frontmatter, not the filename. A style is part of the system prompt, so it takes effect after <code>/clear</code> or in your next session.</p>
     </section>
 
-    <section id="roadmap">
-      <p class="kicker">Status</p>
-      <h2>Roadmap</h2>
-      <table>
-        <thead><tr><th scope="col">Part</th><th scope="col">Status</th></tr></thead>
-        <tbody>
-          <tr><td><code>output-styles/</code> — two response styles</td><td><span class="st on">Published</span></td></tr>
-          <tr><td><code>CLAUDE.md</code> — the standing instruction file</td><td><span class="st on">Published</span></td></tr>
-          <tr><td><code>skills/</code> — on-demand task workflows</td><td><span class="st">Planned</span></td></tr>
-          <tr><td><code>rules/</code> — glob-scoped project conventions</td><td><span class="st">Planned</span></td></tr>
-          <tr><td>Hooks and <code>settings.json</code> reference</td><td><span class="st">Considering</span></td></tr>
-        </tbody>
-      </table>
-      <p class="note">The <code>skills/</code> and <code>rules/</code> folders in the repo hold placeholder notes for now.</p>
-    </section>
-
   </main>
 </div>
 
@@ -501,7 +476,7 @@ direction you'd prefer and I'd be happy to help you implement it!</pre>
   /* ── style switcher ─────────────────────────────────────────────── */
   var meta={
     a:{name:'ASD-STE100',count:'46 words · one result line, three labels'},
-    b:{name:'Simple English',count:'64 words · three paragraphs, no labels'},
+    b:{name:'Always Friday',count:'64 words · three paragraphs, no labels'},
     c:{name:'none — Claude Code default',count:'183 words · three paragraphs, four times the length'}
   };
   var ids=['a','b','c'];

@@ -12,53 +12,42 @@
 
 ---
 
-## What this is
+Claude Code is configurable in more places than most people use: output styles for tone, `CLAUDE.md` for standing instructions, skills for repeatable jobs, and rules for project conventions. This repo holds my working set, so it survives a machine rebuild and anyone else can take the parts they want.
 
-Claude Code is configurable in more places than most people use: output styles for tone, skills for repeatable jobs, rules for project conventions, and `CLAUDE.md` for standing instructions.
+## Table of contents
 
-This repo holds my working set, so it survives a machine rebuild and anyone else can take the parts they want.
-
-| Part | Folder | Status |
-|---|---|---|
-| Output styles | `output-styles/` | **Available** |
-| Global instructions | `CLAUDE.md` | **Available** |
-| Skills | `skills/` | Planned |
-| Rules | `rules/` | Planned |
-
-Everything below covers the two parts that have shipped.
+- [Output styles](#output-styles) — Available
+- [CLAUDE.md](#claudemd) — Available
+- [Skills](#skills) — Planned
+- [Rules](#rules) — Planned
 
 ## Output styles
 
-Claude Code's default voice is dense prose: long paragraphs, formal vocabulary, the important sentence buried three lines down.
-
-An **output style** replaces that default response guidance with your own — a single markdown file. Drop it in `~/.claude/output-styles/`, select it, and every answer follows your rules instead. Two are here.
+An **output style** is a single markdown file that replaces Claude Code's default response voice with your own. Drop it in `~/.claude/output-styles/`, select it, and every answer follows your rules instead. Two are here.
 
 > [!TIP]
 > The [project page](https://mithunwijayasiri.github.io/dotclaude/) answers one question in both styles and in Claude Code's default voice, side by side. It is the fastest way to see the difference.
 
 ### ASD-STE100
 
-Named after the real aerospace writing standard — [ASD-STE100 Simplified Technical English](https://www.asd-ste100.org/), the controlled English used in aircraft maintenance manuals so a non-native reader can follow a repair procedure without ambiguity. The same constraints work well for engineering answers.
+Structured output following [ASD-STE100](https://www.asd-ste100.org/) English standards that any reader can understand.
 
-The style enforces:
+Short sentences, one word per meaning, active voice. Every answer opens with the result, then labelled bullets (`Verified:`, `Updated:`, `Skipped:`, `Remaining:`, `Next:`). Code, paths, and commands are never reworded.
 
-- One term per meaning, kept consistent across the whole answer
-- Maximum 20 words per sentence, simple tenses, no `-ing` forms
-- Active voice and imperative instructions
-- A six-row vocabulary table (`utilize` → `use`, `initiate` → `start`)
-- Result first, then labelled bullets: `Verified:` `Updated:` `Skipped:` `Remaining:` `Next:`
-- Each label appears once; two or more items go in a nested list
+Pick this style when you want to scan an answer fast.
 
-Technical names, file paths, code, commands, and quoted log output are exempt and never reworded.
+### Always Friday
 
-### Simple English
+Simple, clear output that's easy to read — like Friday afternoon.
 
-The lighter option. Short sentences and everyday words, no label protocol, no grammar limits — it reads as ordinary prose. Use it for a handover note or a summary for someone who wasn't in the debugging session.
+Plain, everyday words in ordinary sentences. No labels, no grammar rules — it reads like a normal explanation.
+
+Pick this style for a handover note or a summary for someone who wasn't in the debugging session.
 
 > [!NOTE]
-> Simple English uses *simpler* words but usually *more* of them. It trades scannability for readability. Pick ASD-STE100 if you want to skim, Simple English if you want to read.
+> Pick **ASD-STE100** to get the job done with minimal words and structured output. Use **Always Friday** when you collaborate with AI on tasks beyond coding.
 
-## Install the output styles
+### Install
 
 ```bash
 git clone https://github.com/MithunWijayasiri/dotclaude.git
@@ -100,7 +89,7 @@ The value is the `name:` field from the file's frontmatter, not the filename. A 
 > [!TIP]
 > Output styles are project-scoped too. A `.claude/output-styles/` folder inside a repo only applies while you're working in that repo, which is useful if one project wants terse reports and another wants prose.
 
-## Make it yours
+### Make it yours
 
 Both style files are short and plain — open one and edit it.
 
@@ -121,6 +110,18 @@ cp dotclaude/CLAUDE.md ~/.claude/CLAUDE.md
 > [!NOTE]
 > Its `## Response Style` section is a lightweight fallback — lead with the result, skip filler — for sessions where a different output style is selected, or none at all.
 
+## Skills
+
+Reusable task workflows — repeatable jobs Claude Code runs the same way every time, such as reviewing a PR or drafting a ticket.
+
+Planned. See [`skills/README.md`](skills/README.md) for progress.
+
+## Rules
+
+Scoped conventions that load only for the files or folders they apply to, instead of the whole project.
+
+Planned. See [`rules/README.md`](rules/README.md) for progress.
+
 ## Roadmap
 
 | Item | Status |
@@ -138,7 +139,7 @@ The `skills/` and `rules/` folders are placeholders for now.
 Thank you to both of these projects.
 
 - **[mattpocock/skills](https://github.com/mattpocock/skills)** — Matt Pocock's skills, and the knowledge he shared along with them.
-- **[gvzdv/claudish-to-english](https://github.com/gvzdv/claudish-to-english)** — where the Simple English style came from.
+- **[gvzdv/claudish-to-english](https://github.com/gvzdv/claudish-to-english)** — where the Always Friday style came from.
 
 ## License
 
