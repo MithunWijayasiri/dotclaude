@@ -28,8 +28,7 @@ Judgment overrides compression. **Never compress if it loses important info.** W
 
 ## Strip
 
-- Emojis — all of them.
-- Badges — shields.io pills, image status badges (`![build](...)`).
+- Emojis, Badges.
 - Filler headers — empty `## Overview` / `## Introduction` whose body just restates the title. Collapse into actual content or open straight with facts.
 - Congratulatory / motivational lines — "Great!", "Congrats!", "That's it!", "Happy coding!", "Now you're ready to...".
 - Hedging and throat-clearing — "It's worth noting that", "Basically", "Simply", "Of course", "As you can see".

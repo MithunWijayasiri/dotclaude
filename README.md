@@ -16,9 +16,9 @@ Plain markdown in `~/.claude` — *output styles* shape how Claude answers, *ski
 
 ## Table of contents
 
-- [Output styles](#output-styles) — Available
-- [CLAUDE.md](#claudemd) — Available
-- [Skills](#skills) — Available
+- [Output styles](#output-styles)
+- [CLAUDE.md](#claudemd)
+- [Skills](#skills)
 
 ## Output styles
 
@@ -117,17 +117,6 @@ A skill is a task procedure Claude Code loads on demand — repeatable, one way 
 - **humanize** — remove AI writing patterns from prose. Use for human-facing writing where voice matters.
 - **handoff** — compact the current conversation into a handoff doc for the next session.
 - **writing-rules** — author `.claude/rules/*.md` with correct `paths:` scoping and lazy-load.
-
-## Roadmap
-
-| Item | Status |
-|---|---|
-| Output styles | Available |
-| `CLAUDE.md` — my global instruction file | Available |
-| Skills — reusable task workflows in `skills/` | Available |
-| Hooks and settings reference | Considering |
-
-Skills are published; more land here as each one is generalised.
 
 ## Credits
 
