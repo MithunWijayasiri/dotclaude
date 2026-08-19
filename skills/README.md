@@ -1,5 +1,8 @@
 # Skills
 
-Placeholder. Reusable task workflows are planned for this folder — see the roadmap in the [root README](../README.md).
+Reusable task workflows. A skill loads on demand when the task matches its description — see the roadmap in the [root README](../README.md).
 
-A skill packages a repeatable job (a review checklist, a debugging procedure, a deploy sequence) as a `SKILL.md` file that Claude Code loads on demand. Skills live in `~/.claude/skills/<name>/SKILL.md` for global use, or `.claude/skills/` inside a repo.
+- **compact-markdown** — telegraphic markdown for AI-facing docs. Strips filler, keeps code, examples, and concrete detail. Compact and still human-readable.
+- **humanize** — remove AI writing patterns from prose. Use for human-facing writing where readability and voice matter.
+- **handoff** — compact the current conversation into a handoff doc for the next session.
+- **writing-rules** — author `.claude/rules/*.md` with correct `paths:` scoping and lazy-load.

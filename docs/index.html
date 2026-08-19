@@ -252,7 +252,6 @@ footer{border-top:1px solid var(--line);margin-top:12px}
   <div class="masthead-in">
     <div class="brand">dot<span>claude</span></div>
     <nav aria-label="Sections">
-      <a href="#parts">parts</a>
       <a href="#install">install</a>
       <a href="https://github.com/MithunWijayasiri/dotclaude">github</a>
     </nav>
@@ -264,56 +263,50 @@ footer{border-top:1px solid var(--line);margin-top:12px}
   <aside class="rail">
     <p class="rail-label">Repository</p>
 <div class="tree" aria-label="Folder layout of the repository"><b>~/.claude/</b>
-├─ <b>output-styles/</b>  <i>here</i>
+├─ <b>output-styles/</b>
 │  ├─ asd-ste100.md
 │  └─ always-friday.md
-├─ <b>CLAUDE.md</b>       <i>here</i>
-└─ <b>skills/</b>         <u>soon</u></div>
+├─ <b>CLAUDE.md</b>
+└─ <b>skills/</b>
+   ├─ compact-markdown/ ─┐
+   ├─ humanize/       ─┘ paired
+   ├─ handoff/
+   └─ writing-rules/</div>
 
     <ul class="toc" id="toc">
-      <li><a href="#about">What this is</a></li>
-      <li><a href="#parts">The three parts</a></li>
+      <li><a href="#overview">Overview</a></li>
       <li><a href="#styles">Output styles</a></li>
-      <li><a href="#install">Install</a></li>
+      <li><a href="#skills">Skills</a></li>
     </ul>
   </aside>
 
   <main>
 
-    <section id="about">
-      <p class="eyebrow">Documentation</p>
-      <h1>Claude Code reads four kinds of file. This repo holds mine.</h1>
-      <p class="lede">Claude Code loads its instructions from plain markdown in your home folder: <em>output styles</em>, <em>skills</em>, and a global <code>CLAUDE.md</code>. Nothing here is a plugin or a program. Every file is text you can read in a minute and edit with any editor.</p>
-      <p>I keep the folder in git so it survives a machine rebuild, and so anyone can lift a single file out of it. Output styles and <code>CLAUDE.md</code> are published. Skills land here as each one is generalised — a file that only makes sense inside one codebase is worth nobody else's time.</p>
-      <p class="note"><strong>Read this page like a manual, not a pitch.</strong> Each section says what a file type does, where it goes, and what changes once Claude Code picks it up.</p>
-    </section>
-
-    <section id="parts">
-      <p class="kicker">Reference</p>
-      <h2>The three parts</h2>
-      <p>They differ in scope and in when Claude Code loads them. That is the whole distinction — pick by the question "when should this apply?"</p>
-
+    <section id="overview">
+      <p class="eyebrow">Overview</p>
+      <h1>Claude Code reads three kinds of file. This repo holds mine.</h1>
+      <p class="lede">Plain markdown in <code>~/.claude</code> — <em>output styles</em> shape how Claude answers, <em>skills</em> add repeatable jobs, and <code>CLAUDE.md</code> sets the defaults. Nothing is a plugin; every file is text you can read and edit.</p>
+      <p>Kept in git so it survives a rebuild and anyone can lift one file. Output styles, <code>CLAUDE.md</code>, and skills are published; more arrive as they are generalised.</p>
       <ul class="parts">
         <li class="live">
           <div class="n">output-styles/<small>Published</small></div>
           <div>
-            <p>One file replaces Claude Code's built-in guidance on <strong>how to answer</strong>. It loads into the system prompt when a session starts, so it shapes every reply until you switch. Two are here.</p>
+            <p>Replaces how Claude answers. Loads into the system prompt at session start and shapes every reply until you switch. Two are here.</p>
           </div>
         </li>
         <li class="live">
           <div class="n">CLAUDE.md<small>Published</small></div>
           <div>
-            <p>The standing instruction file. It loads in <strong>every session, in every project</strong>, so it stays short: engineering defaults, comment style, and which commands need approval first.</p>
+            <p>Standing instructions. Loads in every session, in every project — engineering defaults, comment style, and what needs approval.</p>
           </div>
         </li>
-        <li class="soon">
-          <div class="n">skills/<small>Planned</small></div>
+        <li class="live">
+          <div class="n">skills/<small>Available</small></div>
           <div>
-            <p>A repeatable job packaged as <code>~/.claude/skills/&lt;name&gt;/SKILL.md</code> — a review checklist, a debugging procedure, a release sequence. Claude Code loads a skill <strong>on demand</strong>, when the task matches its description or you call it by name.</p>
+            <p>A repeatable job in <code>~/.claude/skills/&lt;name&gt;/SKILL.md</code>. Loads <strong>on demand</strong> when the task matches its description.</p>
           </div>
         </li>
       </ul>
-      <p class="note">The <code>skills/</code> folder holds a placeholder note for now. A hooks and <code>settings.json</code> reference is under consideration.</p>
     </section>
 
     <section id="styles">
@@ -416,6 +409,31 @@ direction you'd prefer and I'd be happy to help you implement it!</pre>
       <p class="note">Pick <strong>ASD-STE100</strong> to get the job done with minimal words and structured output. Use <strong>Always Friday</strong> when you collaborate with AI on tasks beyond coding.</p>
     </section>
 
+    <section id="skills">
+      <p class="kicker">Available</p>
+      <h2>Skills</h2>
+      <p>A skill is a task procedure Claude Code loads on demand — repeatable, one way to do one job.</p>
+      <ul class="parts">
+        <li class="live">
+          <div class="n">compact-markdown</div>
+          <div><p>Telegraphic markdown for AI-facing docs. Strips filler, keeps code, examples, and concrete detail — compact and still human-readable.</p></div>
+        </li>
+        <li class="live">
+          <div class="n">humanize</div>
+          <div><p>Remove AI writing patterns from prose. Use for human-facing writing where voice matters.</p></div>
+        </li>
+        <li class="live">
+          <div class="n">handoff</div>
+          <div><p>Compact the current conversation into a handoff doc for the next session.</p></div>
+        </li>
+        <li class="live">
+          <div class="n">writing-rules</div>
+          <div><p>Author <code>.claude/rules/*.md</code> with correct <code>paths:</code> scoping and lazy-load.</p></div>
+        </li>
+      </ul>
+      <p class="note"><code>compact-markdown</code> also ships <code>references/skill-authoring.md</code> — good practices distilled from Claude Code, Codex, and mattpocock/skills for writing effective skills.</p>
+    </section>
+
     <section id="install">
       <p class="kicker">Procedure</p>
       <h2>Install</h2>
@@ -433,7 +451,7 @@ direction you'd prefer and I'd be happy to help you implement it!</pre>
 <span class="c"># standing instructions</span>
 <span class="k">cp</span> dotclaude/CLAUDE.md ~/.claude/CLAUDE.md
 
-<span class="c"># skills — one folder per skill (when published)</span>
+<span class="c"># skills — one folder per skill</span>
 <span class="k">cp</span> -r dotclaude/skills/* ~/.claude/skills/</pre>
       </figure>
 

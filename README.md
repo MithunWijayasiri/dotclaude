@@ -12,13 +12,13 @@
 
 ---
 
-Claude Code is configurable in more places than most people use: output styles for tone, `CLAUDE.md` for standing instructions, and skills for repeatable jobs. This repo holds my working set, so it survives a machine rebuild and anyone else can take the parts they want.
+Plain markdown in `~/.claude` — *output styles* shape how Claude answers, *skills* add repeatable jobs, and `CLAUDE.md` sets the defaults. This repo holds my working set, so it survives a rebuild and anyone can lift a single file.
 
 ## Table of contents
 
 - [Output styles](#output-styles) — Available
 - [CLAUDE.md](#claudemd) — Available
-- [Skills](#skills) — Planned
+- [Skills](#skills) — Available
 
 ## Output styles
 
@@ -111,9 +111,12 @@ cp dotclaude/CLAUDE.md ~/.claude/CLAUDE.md
 
 ## Skills
 
-Reusable task workflows — repeatable jobs Claude Code runs the same way every time, such as write compact markdowns, handoff notes, write claude rules, or design a landing page. Skills are stored in `skills/` and can be shared with others.
+A skill is a task procedure Claude Code loads on demand — repeatable, one way to do one job. See [`skills/README.md`](skills/README.md) for usage.
 
-Planned. See [`skills/README.md`](skills/README.md) for progress.
+- **compact-markdown** — telegraphic markdown for AI-facing docs. Strips filler, keeps code and examples. Compact and still human-readable.
+- **humanize** — remove AI writing patterns from prose. Use for human-facing writing where voice matters.
+- **handoff** — compact the current conversation into a handoff doc for the next session.
+- **writing-rules** — author `.claude/rules/*.md` with correct `paths:` scoping and lazy-load.
 
 ## Roadmap
 
@@ -121,10 +124,10 @@ Planned. See [`skills/README.md`](skills/README.md) for progress.
 |---|---|
 | Output styles | Available |
 | `CLAUDE.md` — my global instruction file | Available |
-| Skills — reusable task workflows in `skills/` | Planned |
+| Skills — reusable task workflows in `skills/` | Available |
 | Hooks and settings reference | Considering |
 
-The `skills/` folder is a placeholder for now.
+Skills are published; more land here as each one is generalised.
 
 ## Credits
 
