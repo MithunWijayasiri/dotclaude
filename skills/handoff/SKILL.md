@@ -4,7 +4,7 @@ description: Compact the current conversation into a handoff document for anothe
 argument-hint: "What will the next session be used for?"
 ---
 
-Write a handoff document summarising the current conversation so a fresh agent can continue the work. Save to ~/Downloads/ — use a descriptive filename like handoff-TICKETID.md or handoff-topic.md.
+Write a handoff document summarising the current conversation so a fresh agent can continue the work. Save to ~/Downloads/ — use a descriptive filename like handoff-TICKETID.md or handoff-topic.md. If ~/Downloads/ does not exist or is not writable, ask for a destination instead of picking one. Report the saved path.
 
 Link to existing artifacts (PRDs, plans, ADRs, issues, commits, diffs) instead of copying their content.
 

@@ -28,13 +28,21 @@ These add no meaning. Delete them.
 
 - "Full stop." / "Period."
 - "Let that sink in."
-- "This matters because"
 - "Make no mistake"
+
+Empty only when nothing follows them. Cut the phrase, keep the cause.
+
+- "This matters because"
 - "Here's why that matters"
+
+"This matters because the token expires in 60s" states a real cause. Keep the
+cause, drop the wind-up: "The token expires in 60s."
 
 ## Business Jargon
 
-Replace with plain language.
+Replace with plain language when the word is filler. Keep a literal use, a
+proper name, or a term of art (`deep dive` as a session name, `navigate` a
+menu, `landscape` in a photo tool).
 
 | Avoid | Use instead |
 |-------|-------------|

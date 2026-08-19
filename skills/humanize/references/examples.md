@@ -18,9 +18,9 @@
 > "It turns out that most teams struggle with alignment. The uncomfortable truth is that nobody wants to admit they're confused. And that's okay."
 
 **After:**
-> "Teams struggle with alignment. Nobody admits confusion."
+> "Most teams struggle with alignment. Nobody admits confusion."
 
-**Changes:** Cut hedging ("most"), removed throat-clearing phrases, deleted permission-granting ending.
+**Changes:** Removed throat-clearing phrases, deleted permission-granting ending. Kept "most" because it scopes the claim.
 
 ---
 
@@ -42,7 +42,7 @@
 > "Speed. Quality. Cost. You can only pick two. That's it. That's the tradeoff."
 
 **After:**
-> "Speed, quality, cost—pick two."
+> "Pick two of speed, quality, and cost."
 
 **Changes:** Single sentence. No performative emphasis.
 

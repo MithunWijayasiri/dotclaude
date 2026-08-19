@@ -1,5 +1,9 @@
 # Structures to Avoid
 
+Each pattern below is a default, not an absolute. Keep any construction that
+carries a fact, a real contrast, a required register, or a qualifier the claim
+depends on. See SKILL.md Scope.
+
 ## Binary Contrasts
 
 These create false drama. State the point directly.
@@ -98,6 +102,9 @@ Every sentence needs a subject doing something. Passive voice hides the actor an
 
 The actor is a human or a system, whichever the sentence is actually about. In technical writing the system is often the right subject: "the extension saves an entry" is active and correct, with no human in the sentence. Don't invent a human to satisfy the rule.
 
+Keep the passive when the actor is unknown, irrelevant, omitted on purpose, or
+fixed by the document's register.
+
 | Pattern | Fix |
 |---------|-----|
 | "X was created" | Name who created it |
@@ -111,17 +118,17 @@ The actor is a human or a system, whichever the sentence is actually about. In t
 
 | Pattern | Fix |
 |---------|-----|
-| Sentences starting with What, When, Where, Which, Who, Why, How | Restructure. Lead with the subject or the verb. |
+| Wh- openers that only set up a point ("What makes this hard is...", "What if I told you...") | Restructure. Lead with the subject or the verb. |
 | Paragraphs starting with "So" | Start with content |
 | Sentences starting with "Look," | Remove |
 
-Wh- openers become a crutch. "What makes this hard is..." becomes "The constraint is..." or better, name the specific constraint.
+The target is empty setup, not the word. "What makes this hard is..." becomes "The constraint is..." or better, name the specific constraint. A genuine question, a conditional ("When the build fails, check the log"), and a heading all keep their opener.
 
 ## Rhythm Patterns
 
 | Pattern | Fix |
 |---------|-----|
-| Three-item lists | Use two items or one |
+| Three items chosen for cadence, not content | Cut to the items that carry a fact. Keep all three when all three are true. |
 | Questions answered immediately | Let questions breathe or cut them |
 | Every paragraph ends punchily | Vary endings |
 | Em-dashes in prose | Remove. Use commas or periods. |
@@ -134,5 +141,5 @@ The em-dash ban covers prose only. A `**Label** — description` separator in a 
 
 | Pattern | Problem |
 |---------|---------|
-| Lazy extremes (every, always, never, everyone, everybody, nobody) | False authority. Use specifics instead of sweeping claims. |
-| All adverbs (-ly words, "really," "just," "literally," "genuinely," "honestly," "simply," "actually") | Empty emphasis. See phrases.md for full list. |
+| Unsupported extremes (every, always, never, everyone, everybody, nobody) | False authority. Use specifics. Keep the word when the claim is literally true. |
+| Empty adverbs ("really," "just," "literally," "genuinely," "honestly," "simply," "actually") | Empty emphasis. Keep adverbs that carry a fact, such as `locally` or `asynchronously`. See phrases.md. |

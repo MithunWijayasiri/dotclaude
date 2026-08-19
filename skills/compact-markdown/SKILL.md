@@ -1,6 +1,6 @@
 ---
 name: compact-markdown
-description: Writing style for markdown files. Strips filler, writes telegraphic and content-only — docs are for AI agents, not prose. Trigger whenever creating or editing ANY .md file (skills, rules, CLAUDE.md, feature specs, design notes, guides, etc.), for the new/edited content you produce. Do NOT trigger for README.md, and do NOT trigger for non-markdown files. For human-facing prose (where the goal is sounding human, not machine-terse), use humanize instead.
+description: Writing style for markdown files. Strips filler, writes telegraphic and content-only — docs are for AI agents, not prose. Trigger whenever creating or editing ANY .md file (skills, rules, CLAUDE.md, feature specs, design notes, guides, etc.), for the new/edited content you produce. Do NOT trigger for README.md, and do NOT trigger for non-markdown files.
 ---
 
 # Compact Markdown
@@ -11,6 +11,7 @@ Markdown docs here exist for AI agents, not human reading pleasure. Write conten
 
 - Apply to any `.md` being created or edited — **except `README.md`** (skip this skill entirely for README.md).
 - Apply only to **content you write or edit**. Do not rewrite existing surrounding prose you weren't asked to touch.
+- Human-facing prose in `.md` (a doc written for people, not agents) → use `humanize` instead.
 - Compress wording; keep markdown valid and navigable.
 - Authoring a `SKILL.md`? Read `references/skill-authoring.md` for skill-specific rules (frontmatter, triggering, what not to compact).
 

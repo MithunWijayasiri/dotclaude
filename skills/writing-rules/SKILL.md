@@ -39,7 +39,7 @@ Forces it always-on, defeating lazy-load. Reference it in prose if needed (`deta
 
 ## Rule vs CLAUDE.md vs skill
 
-- **CLAUDE.md** — always-relevant core: commands, architecture map, project-wide conventions. Always loaded.
+- **CLAUDE.md** — always-relevant core: commands, architecture map, project-wide conventions. Always loaded. Project copy lives at `./CLAUDE.md` or `.claude/CLAUDE.md`; ancestor directories load too.
 - **Rule** — instructions that only matter when touching a file area. Lazy-load via `paths:`.
 - **Skill** — a task-specific procedure invoked on demand (only its description sits in context). Reach for a skill when it's a *how-to-do-X* workflow, not a *constraint-on-area-Y*.
 
@@ -53,7 +53,7 @@ A fact stated in two places drifts: one copy gets updated, the other lies. Befor
 - **Don't overlap scopes silently.** Two rules whose `paths:` match the same files both load together. That's fine only if they cover *different* topics. Same topic across two files → merge into one.
 - **Don't contradict.** A new rule must not assert the opposite of an existing rule or CLAUDE.md. If reality changed, update the existing statement in place — don't add a competing one.
 - When a fact spans areas, put it in the single most-specific home and cross-link with a pointer, not a copy.
-- Editing a rule → grep the other rules + CLAUDE.md for the same term first; fix every stale copy in the same edit, or collapse them to one.
+- Editing a rule → grep the other rules + every loaded `CLAUDE.md` (`./CLAUDE.md`, `.claude/CLAUDE.md`, ancestors, `~/.claude/CLAUDE.md`) for the same term first; fix every stale copy in the same edit, or collapse them to one.
 
 ## Content style
 

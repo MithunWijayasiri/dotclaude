@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>dotclaude by Mithun ~/.claude</title>
-<meta name="description" content="Documentation for dotclaude: the output styles, skills, and CLAUDE.md that Claude Code reads from ~/.claude. Output styles and CLAUDE.md are published; skills follow.">
+<meta name="description" content="Documentation for dotclaude: the output styles, skills, and CLAUDE.md that Claude Code reads from ~/.claude.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="dotclaude — what lives in ~/.claude">
 <meta property="og:description" content="Output styles, skills, and CLAUDE.md for Claude Code, documented in one place.">
@@ -394,7 +394,7 @@ direction you'd prefer and I'd be happy to help you implement it!</pre>
         <div>
           <p class="role">Lighter</p>
           <h3>Always Friday</h3>
-          <p>Simple, clear output that's easy to read — like Friday afternoon. Short sentences and everyday words, with no label protocol and no grammar limits. It reads as ordinary prose. Reach for it when you explain the work to a person instead of filing a result — a handover note, or a summary for someone who missed the session.</p>
+          <p>Simple, clear output that's easy to read — like Friday afternoon. Short sentences and everyday words, with no label protocol. It reads as ordinary prose. Reach for it when you explain the work to a person instead of filing a result — a handover note, or a summary for someone who missed the session.</p>
           <ul>
             <li>Answer first, detail after</li>
             <li>Every fact, name, number, and path kept</li>
@@ -446,12 +446,14 @@ direction you'd prefer and I'd be happy to help you implement it!</pre>
 <pre>git clone https://github.com/MithunWijayasiri/dotclaude.git
 
 <span class="c"># output styles</span>
+<span class="k">mkdir</span> -p ~/.claude/output-styles
 <span class="k">cp</span> dotclaude/output-styles/*.md ~/.claude/output-styles/
 
 <span class="c"># standing instructions</span>
 <span class="k">cp</span> dotclaude/CLAUDE.md ~/.claude/CLAUDE.md
 
 <span class="c"># skills — one folder per skill</span>
+<span class="k">mkdir</span> -p ~/.claude/skills
 <span class="k">cp</span> -r dotclaude/skills/* ~/.claude/skills/</pre>
       </figure>
 

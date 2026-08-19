@@ -1,6 +1,6 @@
 ---
 name: humanize
-description: Remove AI writing patterns from prose. Use when drafting, editing, or reviewing text to eliminate predictable AI tells. For .md docs read by AI agents (skills, rules, specs — where machine-terse is the goal), use compact-markdown instead.
+description: Remove AI writing patterns from prose. Use when drafting, editing, or reviewing text to eliminate predictable AI tells.
 ---
 
 # Humanize

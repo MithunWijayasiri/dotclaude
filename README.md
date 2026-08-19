@@ -39,7 +39,7 @@ Pick this style when you want to scan an answer fast.
 
 Simple, clear output that's easy to read — like Friday afternoon.
 
-Plain, everyday words in ordinary sentences. No labels, no grammar rules — it reads like a normal explanation.
+Plain, everyday words in ordinary sentences. No label protocol — it reads like a normal explanation.
 
 Pick this style for a handover note or a summary for someone who wasn't in the debugging session.
 
