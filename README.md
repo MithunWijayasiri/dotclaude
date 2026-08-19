@@ -1,7 +1,7 @@
 <h1 align="center">dotclaude</h1>
 
 <p align="center">
-  My Claude Code setup, shared — output styles, CLAUDE.md, skills, and rules.
+  My Claude Code setup, shared — output styles, CLAUDE.md, and skills.
 </p>
 
 <p align="center">
@@ -12,14 +12,13 @@
 
 ---
 
-Claude Code is configurable in more places than most people use: output styles for tone, `CLAUDE.md` for standing instructions, skills for repeatable jobs, and rules for project conventions. This repo holds my working set, so it survives a machine rebuild and anyone else can take the parts they want.
+Claude Code is configurable in more places than most people use: output styles for tone, `CLAUDE.md` for standing instructions, and skills for repeatable jobs. This repo holds my working set, so it survives a machine rebuild and anyone else can take the parts they want.
 
 ## Table of contents
 
 - [Output styles](#output-styles) — Available
 - [CLAUDE.md](#claudemd) — Available
 - [Skills](#skills) — Planned
-- [Rules](#rules) — Planned
 
 ## Output styles
 
@@ -99,7 +98,7 @@ Both style files are short and plain — open one and edit it.
 
 ## CLAUDE.md
 
-`CLAUDE.md` holds the instructions that apply everywhere, so it stays short. Engineering defaults, comment style, and when to look a library up instead of answering from memory. Claude Code loads it at the start of every session, in every project.
+`CLAUDE.md` holds the instructions that apply everywhere, so it stays short. Engineering defaults, comment style, and when to look a library up instead of answering from memory.
 
 Copy it to `~/.claude/CLAUDE.md` for global scope, or to a repo root to scope it to one project:
 
@@ -112,15 +111,9 @@ cp dotclaude/CLAUDE.md ~/.claude/CLAUDE.md
 
 ## Skills
 
-Reusable task workflows — repeatable jobs Claude Code runs the same way every time, such as reviewing a PR or drafting a ticket.
+Reusable task workflows — repeatable jobs Claude Code runs the same way every time, such as write compact markdowns, handoff notes, write claude rules, or design a landing page. Skills are stored in `skills/` and can be shared with others.
 
 Planned. See [`skills/README.md`](skills/README.md) for progress.
-
-## Rules
-
-Scoped conventions that load only for the files or folders they apply to, instead of the whole project.
-
-Planned. See [`rules/README.md`](rules/README.md) for progress.
 
 ## Roadmap
 
@@ -129,10 +122,9 @@ Planned. See [`rules/README.md`](rules/README.md) for progress.
 | Output styles | Available |
 | `CLAUDE.md` — my global instruction file | Available |
 | Skills — reusable task workflows in `skills/` | Planned |
-| Rules — scoped `.claude/rules/` files for project conventions | Planned |
 | Hooks and settings reference | Considering |
 
-The `skills/` and `rules/` folders are placeholders for now.
+The `skills/` folder is a placeholder for now.
 
 ## Credits
 

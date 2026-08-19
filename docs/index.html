@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>dotclaude by Mithun ~/.claude</title>
-<meta name="description" content="Documentation for dotclaude: the output styles, skills, rules, and CLAUDE.md that Claude Code reads from ~/.claude. Output styles and CLAUDE.md are published; skills and rules follow.">
+<meta name="description" content="Documentation for dotclaude: the output styles, skills, and CLAUDE.md that Claude Code reads from ~/.claude. Output styles and CLAUDE.md are published; skills follow.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="dotclaude — what lives in ~/.claude">
-<meta property="og:description" content="Output styles, skills, rules, and CLAUDE.md for Claude Code, documented in one place.">
+<meta property="og:description" content="Output styles, skills, and CLAUDE.md for Claude Code, documented in one place.">
 <meta property="og:url" content="https://mithunwijayasiri.github.io/dotclaude/">
 <link rel="canonical" href="https://mithunwijayasiri.github.io/dotclaude/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='6'%20fill='%23FAFAF9'/%3E%3Cpath%20d='M8%2010h17M8%2016h12M8%2022h15'%20stroke='%2318181C'%20stroke-width='2.4'%20stroke-linecap='round'/%3E%3Cpath%20d='M5%2016h16'%20stroke='%23A82838'%20stroke-width='2.4'%20stroke-linecap='round'/%3E%3C/svg%3E">
@@ -124,7 +124,7 @@ p:last-child{margin-bottom:0}
 .lede{font-size:21px;line-height:1.62;color:#33333A}
 .lede em{font-style:italic;color:var(--ink)}
 
-/* ── definition rows: the four parts ────────────────────────────────── */
+/* ── definition rows: the three parts ───────────────────────────────── */
 .parts{list-style:none;margin-top:32px;border-top:1px solid var(--line)}
 .parts li{
   display:grid;grid-template-columns:190px minmax(0,1fr);gap:8px 28px;
@@ -268,12 +268,11 @@ footer{border-top:1px solid var(--line);margin-top:12px}
 │  ├─ asd-ste100.md
 │  └─ always-friday.md
 ├─ <b>CLAUDE.md</b>       <i>here</i>
-├─ <b>skills/</b>         <u>soon</u>
-└─ <b>rules/</b>          <u>soon</u></div>
+└─ <b>skills/</b>         <u>soon</u></div>
 
     <ul class="toc" id="toc">
       <li><a href="#about">What this is</a></li>
-      <li><a href="#parts">The four parts</a></li>
+      <li><a href="#parts">The three parts</a></li>
       <li><a href="#styles">Output styles</a></li>
       <li><a href="#install">Install</a></li>
     </ul>
@@ -284,15 +283,15 @@ footer{border-top:1px solid var(--line);margin-top:12px}
     <section id="about">
       <p class="eyebrow">Documentation</p>
       <h1>Claude Code reads four kinds of file. This repo holds mine.</h1>
-      <p class="lede">Claude Code loads its instructions from plain markdown in your home folder: <em>output styles</em>, <em>skills</em>, <em>rules</em>, and a global <code>CLAUDE.md</code>. Nothing here is a plugin or a program. Every file is text you can read in a minute and edit with any editor.</p>
-      <p>I keep the folder in git so it survives a machine rebuild, and so anyone can lift a single file out of it. Output styles and <code>CLAUDE.md</code> are published. Skills and rules land here as each one is generalised — a file that only makes sense inside one codebase is worth nobody else's time.</p>
+      <p class="lede">Claude Code loads its instructions from plain markdown in your home folder: <em>output styles</em>, <em>skills</em>, and a global <code>CLAUDE.md</code>. Nothing here is a plugin or a program. Every file is text you can read in a minute and edit with any editor.</p>
+      <p>I keep the folder in git so it survives a machine rebuild, and so anyone can lift a single file out of it. Output styles and <code>CLAUDE.md</code> are published. Skills land here as each one is generalised — a file that only makes sense inside one codebase is worth nobody else's time.</p>
       <p class="note"><strong>Read this page like a manual, not a pitch.</strong> Each section says what a file type does, where it goes, and what changes once Claude Code picks it up.</p>
     </section>
 
     <section id="parts">
       <p class="kicker">Reference</p>
-      <h2>The four parts</h2>
-      <p>They differ in scope and in when Claude Code loads them. That is the whole distinction — pick by the question “when should this apply?”</p>
+      <h2>The three parts</h2>
+      <p>They differ in scope and in when Claude Code loads them. That is the whole distinction — pick by the question "when should this apply?"</p>
 
       <ul class="parts">
         <li class="live">
@@ -313,14 +312,8 @@ footer{border-top:1px solid var(--line);margin-top:12px}
             <p>A repeatable job packaged as <code>~/.claude/skills/&lt;name&gt;/SKILL.md</code> — a review checklist, a debugging procedure, a release sequence. Claude Code loads a skill <strong>on demand</strong>, when the task matches its description or you call it by name.</p>
           </div>
         </li>
-        <li class="soon">
-          <div class="n">rules/<small>Planned</small></div>
-          <div>
-            <p>Project conventions in <code>.claude/rules/</code>. A rule can load always or lazily, and can be scoped to a glob so it applies <strong>only to matching files</strong>. Use one for a convention too long for <code>CLAUDE.md</code> and too narrow for a skill.</p>
-          </div>
-        </li>
       </ul>
-      <p class="note">The <code>skills/</code> and <code>rules/</code> folders hold placeholder notes for now. A hooks and <code>settings.json</code> reference is under consideration.</p>
+      <p class="note">The <code>skills/</code> folder holds a placeholder note for now. A hooks and <code>settings.json</code> reference is under consideration.</p>
     </section>
 
     <section id="styles">
@@ -441,10 +434,7 @@ direction you'd prefer and I'd be happy to help you implement it!</pre>
 <span class="k">cp</span> dotclaude/CLAUDE.md ~/.claude/CLAUDE.md
 
 <span class="c"># skills — one folder per skill (when published)</span>
-<span class="k">cp</span> -r dotclaude/skills/* ~/.claude/skills/
-
-<span class="c"># rules — these belong to a project, not your home folder (when published)</span>
-<span class="k">cp</span> dotclaude/rules/*.md your-project/.claude/rules/</pre>
+<span class="k">cp</span> -r dotclaude/skills/* ~/.claude/skills/</pre>
       </figure>
 
       <p class="note">Use a <code>.claude/</code> folder inside a repo instead of <code>~/.claude/</code> to scope any of this to that one project. Copying <code>CLAUDE.md</code> replaces whatever sits at the target, so read your own first.</p>
