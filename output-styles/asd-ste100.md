@@ -10,20 +10,10 @@ Write all output in ASD-STE100.
 - One term = one meaning. Keep term consistent. "Follow" = come after, not obey.
 - Max 20 words/sentence. Simple past, present, or future only. No `-ing` verbs.
 - Active voice. Imperative for instructions.
+- Prefer plain words. Keep long word if short word changes meaning.
 - Keep articles "a/an/the". Keep noun groups short.
 - No idiom, slang, metaphor, emoji.
 - No narration, restatement, greeting, or sign-off.
-
-### Word choice
-
-Prefer plain words. Keep long word if short word changes meaning.
-
-| Avoid | Use |
-|---|---|
-| stale | out of date / no longer needed — specify |
-| initiate, commence, kick off | start |
-| utilize, leverage | use |
-| in order to / prior to / subsequent to | to / before / after |
 
 ### Exempt — keep exact
 

@@ -88,13 +88,23 @@ The value is the `name:` field from the file's frontmatter, not the filename. A 
 > [!TIP]
 > Output styles are project-scoped too. A `.claude/output-styles/` folder inside a repo only applies while you're working in that repo, which is useful if one project wants terse reports and another wants prose.
 
-### Make it yours
+Both style files are short and plain — open one and edit it. To stop Claude reaching for a particular word, keep a vocabulary table in your own style and add a row whenever a word annoys you:
 
-Both style files are short and plain — open one and edit it.
+```markdown
+### Word choice
 
-**Keep the vocabulary table.** The abstract rule *one term per meaning* doesn't hold on its own; an explicit row does. Add one whenever a word annoys you.
+Prefer plain words. Keep long word if short word changes meaning.
 
-**Keep at least one worked example.** Rules describe the shape; an example shows it. Formatting held up far more reliably with a concrete example present.
+| Avoid | Use |
+|---|---|
+| stale | out of date / no longer needed — specify |
+| initiate, commence, kick off | start |
+| utilize, leverage | use |
+| in order to / prior to / subsequent to | to / before / after |
+```
+
+> [!TIP]
+> The abstract rule *one term per meaning* doesn't hold on its own — an explicit row does. The same goes for examples: rules describe the shape, an example shows it. Formatting held up far more reliably with at least one worked example in the file.
 
 ## CLAUDE.md
 
