@@ -1,27 +1,32 @@
 ---
 name: git-merge
-description: Merge one branch (usually master) into the current branch while preserving local unstaged changes, resolving conflicts by understanding both sides, and catching silent semantic conflicts via typecheck. Trigger on explicit `/git-merge`, or when the user asks to merge a branch/master into their current branch — especially when they want to keep local-only unstaged changes.
+description: Merge one branch (usually master) into the current branch while preserving local unstaged changes, resolving conflicts by understanding both sides, and catching silent semantic conflicts with the repo's own checks. Trigger on explicit `/git-merge`, or when the user asks to merge a branch/master into their current branch — especially when they want to keep local-only unstaged changes.
 ---
 
 # Git Merge — Safe Branch Integration
 
-Procedural workflow the main agent runs. Investigate before mutating; preserve the user's local-only unstaged changes; resolve conflicts by diagnosis not guessing; verify the merge compiles before declaring done.
+Procedural workflow the main agent runs. Investigate before mutating; preserve the user's local-only unstaged changes; resolve conflicts by diagnosis not guessing; verify the merge passes the repo's existing checks before declaring done.
 
 ## Hard rules
 
-- Read-only investigation first. No `fetch` → no `stash`/`merge` until state is mapped.
+- Read-only investigation first. `fetch`, then map state, before any `stash`/`merge`.
 - Never auto-commit beyond the one merge the user authorized. `git commit`/`--amend` need explicit user approval — ask (amend / separate fixup / leave it).
 - `git add`/`stash`/`merge` are mutating — explain, then run (user already asked to merge = authorization for the merge itself).
 - Keep the user's local-only unstaged files OUT of any commit. Stage only merge-resolution files.
 - Never push unless asked.
-- Delegate read-only recon (steps 1–2) to a Haiku subagent; run conflict-reading, resolution, and every mutating step (`merge`/`add`/`commit`/`stash`) on the main model only.
+- Delegate read-only recon (steps 1–2) to a Haiku subagent; run `fetch`, conflict-reading, resolution, and every mutating step (`merge`/`add`/`commit`/`stash`) on the main model only.
 
-## 1. Map state (read-only)
+## 1. Map state
 
-**Delegate the noise.** Steps 1–2 are high-noise, low-judgment. Spawn a Haiku subagent (the `git-digest` agent, or `general-purpose` pinned to Haiku) to run the `fetch`/`status`/`log`/`diff --name-only` recon and return ONLY the structured facts: commits + files the target brings, overlap with unstaged/untracked, and ahead/behind own remote. The main model then reads only the conflict hunks (step 5). Never let the subagent run a mutating command.
+**Fetch on the main model.** `git fetch` writes remote-tracking refs → mutating, so it never goes to the subagent. Fetch all of `origin`, not one branch: `git fetch origin <target>` refreshes `origin/<target>` only, leaving `origin/<current-branch>` stale — and step 1 compares against both.
 
 ```bash
-git fetch origin <target>          # e.g. master
+git fetch origin          # both origin/<target> and origin/<current-branch>
+```
+
+**Then delegate the noise.** The rest of steps 1–2 is high-noise, low-judgment. Spawn a Haiku subagent (the `git-digest` agent, or `general-purpose` pinned to Haiku) to run the `status`/`log`/`diff --name-only` reads and return ONLY the structured facts: commits + files the target brings, overlap with unstaged/untracked, and ahead/behind own remote. The main model then reads only the conflict hunks (step 5). Never let the subagent run a mutating command.
+
+```bash
 git status                          # branch, unstaged, untracked, ahead/behind OWN remote
 git log --oneline HEAD..origin/<target>      # commits target brings
 git merge-base HEAD origin/<target>
@@ -51,18 +56,23 @@ Hard-to-reverse + user's call. Ask: sync-then-merge (recommended, fully up to da
 ## 4. Preserve local unstaged changes
 
 ```bash
-git merge --ff-only origin/<current-branch>   # sync step, if branch was behind
-git stash push -m "local unstaged (merge)"    # tracked modified files only; untracked stay
+git rev-parse -q --verify refs/stash           # record: pre-existing stash, or empty
+git stash push -m "local unstaged (merge)"     # tracked modified files only; untracked stay
+git rev-parse -q --verify refs/stash           # changed → this workflow made a stash
+git merge --ff-only origin/<current-branch>    # sync step, if branch was behind
 git merge origin/<target> --no-edit
 # ... resolve conflicts (step 5) ...
 git commit -m "Merge remote-tracking branch 'origin/<target>' into <current-branch>" > commit.log 2>&1  # hook output to file; then check exit code + grep -iE 'error|fail' commit.log
-git stash pop                                  # restore local edits on top
+git stash pop <recorded-stash-sha>             # ONLY if the push above created one
 ```
 
+- **Stash first, then sync.** `merge --ff-only` also refuses to run when local edits overlap files the remote changed. Stash before either merge, not between them.
+- **`git stash push` exits 0 even with nothing to stash** — it just prints `No local changes to save`. So a bare `git stash pop` later pops whatever is on top, which may be a stash the user made days ago. Record `refs/stash` before and after the push; pop by that SHA, and only when the push actually created it.
 - **Short commit message — one line only.** `git commit --no-edit` after a conflicted merge auto-appends a `Conflicts:` file list → bloated message. Always commit with explicit `-m "Merge remote-tracking branch 'origin/<target>' into <current-branch>"`. Same applies to `--amend` (step 7): `git commit --amend -m "<same one-liner>"`, never `--amend --no-edit` (it keeps the bloated message).
 - **Redirect the commit's pre-commit hook output.** A lint/typecheck pre-commit hook can dump tens of KB into context on `git commit`. Send it to a file (`> commit.log 2>&1`) — never `--no-verify`, the hook must still run — then surface only the exit code + `grep -iE 'error|fail' commit.log`. Apply the same redirect to `git stash pop` when hooks are heavy.
 - Stash pop usually auto-merges shared files cleanly (3-way: stash base / merged file / local edits). If it re-conflicts, combine merged-target version + local tweaks.
-- Untracked files (`.npmrc`, `CLAUDE.md`, `docs/`, the Windows `nul` artifact) don't block merge — leave them.
+- Untracked files (a local config, a scratch dir, the Windows `nul` artifact) don't block merge — leave them. `git stash push` leaves them in place too.
+- **Exception: untracked path collision.** If `origin/<target>` adds a tracked file at a path where an untracked file already sits, `merge` aborts (`untracked working tree files would be overwritten`). Check the step-2 file list against `git status --short` untracked entries; move the colliding ones aside (or `git stash push -u -- <path>`) before merging, restore after. Leave every non-colliding untracked file alone.
 
 ## 5. Resolve conflicts — diagnose, don't guess
 
@@ -91,21 +101,30 @@ git diff --name-only --diff-filter=U          # unmerged still in index
 ```
 Then `git add` resolved files to mark resolved.
 
-## 6. Catch SILENT semantic conflicts — typecheck
+## 6. Catch SILENT semantic conflicts — validate
 
-Git merges files independently. A signature change in file A + a call in file B do NOT textually conflict but will NOT compile. **Always typecheck after resolving.**
+Git merges files independently. A signature change in file A + a call in file B do NOT textually conflict but will NOT compile. **Always run the repo's OWN checks after resolving — and only those.** A merge must not introduce a toolchain the branch didn't have.
+
+Find what already exists before running anything:
 
 ```bash
-npx tsc --noEmit -p tsconfig.json --ignoreDeprecations 5.0
+git show HEAD:package.json     # declared scripts: typecheck / lint / build / test
+git ls-files | grep -iE 'tsconfig|eslint|biome|go\.mod|Cargo\.toml|pyproject'
 ```
 
-- `--ignoreDeprecations 5.0` overrides an invalid `"ignoreDeprecations": "6.0"` in tsconfig (TS 5.8 rejects it → TS5103). CLI flag wins over tsconfig.
-- No ESLint/Biome in the project → tsc is the only static check.
+- Declared script → run it (`npm run typecheck`, `npm run lint`). Repo's choice wins.
+- No script but a tracked `tsconfig.json` → `npx --no-install tsc --noEmit -p tsconfig.json`. `--no-install` keeps it on the repo's own TypeScript; if that errors, TS isn't a dependency here → don't install one, skip.
+- Not a TS repo → same rule with its own tooling (`go build ./...`, `cargo check`, `mypy`). Configured-only.
+- Nothing configured → no static check available. Say that plainly and rely on step 5's marker/locator greps. Don't add tooling mid-merge.
+
+Gotchas:
+
+- An invalid `"ignoreDeprecations": "6.0"` in tsconfig makes TS 5.8 fail with TS5103. CLI `--ignoreDeprecations 5.0` overrides it — the flag wins over tsconfig.
 - When a param was removed/renamed across the merge (`{ legacyFlag }` → `{ channel, addAddress }`): grep all CALLERS. If no caller exercised the old param's truthy path, the old default == new default → call with no arg. Don't invent a mapping.
 
 ## 7. Commit discipline
 
-- The authorized merge commit must compile. If typecheck reveals a fix only AFTER committing, ask the user: amend merge commit / separate fixup commit / leave unstaged for them.
+- The authorized merge commit must pass whatever step 6 found. If a check reveals a fix only AFTER committing, ask the user: amend merge commit / separate fixup commit / leave unstaged for them.
 - Amend = stage ONLY the fix file (local-only unstaged files stay out); use the explicit one-line `-m` from step 4, never `--amend --no-edit`.
 
 ## 8. Pre-push verification
@@ -116,7 +135,7 @@ git log --oneline origin/<current-branch>..HEAD                                #
 git diff --cached --name-only                                                  # should be empty
 ```
 
-Confirm: fast-forward push, no conflict markers, nothing wrongly staged, tsc clean. Local-only unstaged changes are not committed → won't push. Don't run `git push` — tell the user the command.
+Confirm: fast-forward push, no conflict markers, nothing wrongly staged, step-6 checks clean. Local-only unstaged changes are not committed → won't push. Don't run `git push` — tell the user the command.
 
 ## 9. Cleanup
 
