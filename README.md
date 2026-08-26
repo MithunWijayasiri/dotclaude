@@ -1,7 +1,7 @@
 <h1 align="center">dotclaude</h1>
 
 <p align="center">
-  My Claude Code setup, shared — output styles, CLAUDE.md, and skills.
+  My Claude Code setup — output styles, CLAUDE.md, and skills.
 </p>
 
 <p align="center">
@@ -12,7 +12,7 @@
 
 ---
 
-Plain markdown in `~/.claude` — *output styles* shape how Claude answers, *skills* add repeatable jobs, and `CLAUDE.md` sets the defaults. This repo holds my working set, so it survives a rebuild and anyone can lift a single file.
+Plain markdown in `~/.claude` — *output styles* shape how Claude answers, *skills* add repeatable jobs, and `CLAUDE.md` sets the defaults. 
 
 ## Table of contents
 
