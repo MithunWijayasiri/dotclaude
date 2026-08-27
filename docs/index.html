@@ -271,7 +271,9 @@ footer{border-top:1px solid var(--line);margin-top:12px}
    ├─ compact-markdown/ ─┐
    ├─ humanize/       ─┘ paired
    ├─ handoff/
-   └─ writing-rules/</div>
+   ├─ writing-rules/
+   ├─ html-landing-page/
+   └─ git-merge/</div>
 
     <ul class="toc" id="toc">
       <li><a href="#overview">Overview</a></li>
@@ -313,15 +315,16 @@ footer{border-top:1px solid var(--line);margin-top:12px}
       <p class="kicker">Published</p>
       <h2>Output styles</h2>
       <p>An output style is a markdown file with two frontmatter fields — <code>name</code> and <code>description</code> — and a body of writing rules. The body replaces Claude Code's default response guidance wholesale, so a style can change sentence length, banned words, and the shape of a result report.</p>
-      <p>The clearest way to see it: ask one question three times. The facts below are identical in all three answers. Only the shape moves.</p>
+      <p>The clearest way to see it: ask one question four times. The first two styles are in this repo. The last two are Claude Code's own built-ins — <code>Concise</code>, which leads with the result and skips preamble and narration (added in v2.1.237), and <code>Default</code>, the style selected until you change it. The diagnosis is the same in all four. What moves is the length, the wording, and how much unasked-for material rides along with the answer.</p>
 
       <div class="switch" role="group" aria-label="Choose an output style">
         <button type="button" data-t="a" aria-pressed="true">ASD-STE100</button>
         <button type="button" data-t="b" aria-pressed="false">Always Friday</button>
-        <button type="button" data-t="c" aria-pressed="false">No style</button>
+        <button type="button" data-t="c" aria-pressed="false">Concise</button>
+        <button type="button" data-t="d" aria-pressed="false">Default</button>
       </div>
 
-      <div class="term" aria-label="Terminal showing the same answer in three output styles">
+      <div class="term" aria-label="Terminal showing the same answer in four output styles">
         <div class="term-bar">
           <span>claude</span>
           <span>style: <b id="active">ASD-STE100</b></span>
@@ -351,26 +354,39 @@ the mount or the request, so both sides use one path.</pre>
           </div>
 
           <div class="answer" id="c" hidden>
-<pre>Thanks for flagging this &mdash; I've taken a look and I believe I've
-identified the underlying cause of what you're seeing here. It appears
-that the Express router responsible for user resources is currently
-being mounted at <span class="tok">/api/user</span> inside <span class="tok">server.js</span>; however, the
-request being issued is targeting <span class="tok">/api/users</span>, with a trailing
-plural on the resource segment.
+<pre>Mount path mismatch in <span class="tok">server.js</span>: the users router is mounted at
+<span class="tok">/api/user</span>, the request hits <span class="tok">/api/users</span>. Express prefix-matches the
+mount exactly, so no handler is reached and the default 404 answers.
 
-Because Express performs exact prefix matching on a mounted router,
-the incoming request never reaches the handler you would expect, and
-the default 404 handler ends up responding instead. This is a fairly
-common class of issue in projects where route paths are not
-centralised, since the mount path and the calling path are declared
-in two entirely separate places.
+Fix either side &mdash; rename the mount to plural, or point the caller at
+the singular. Which spelling is canonical?</pre>
+          </div>
 
-There are a few different approaches we could potentially take here.
-We could simply update the mount path to the plural form, though that
-would leave the same duplication in place. Alternatively, we could
-introduce a shared route constant that both sides import, which would
-be considerably more robust going forward. Let me know which
-direction you'd prefer and I'd be happy to help you implement it!</pre>
+          <div class="answer" id="d" hidden>
+<pre>The 404 originates from a discrepancy between the path at which the
+router is registered and the path the client is requesting.
+
+Within <span class="tok">server.js</span>, the Express application instantiates a router
+dedicated to user resources and subsequently registers it against the
+mount point <span class="tok">/api/user</span>. The incoming request, by contrast, targets
+<span class="tok">/api/users</span>, which incorporates a pluralised resource segment.
+Express performs exact prefix matching when resolving a mounted
+router, so the supplementary character causes resolution to fail, and
+the request falls through to the framework's terminal 404 handler
+rather than arriving at the intended route handler.
+
+This category of defect is comparatively prevalent in codebases where
+route paths are not centralised, given that the mount path and the
+calling path are declared in two separate locations and can therefore
+diverge without any compile-time or lint-time signal.
+
+Regarding remediation, there are essentially two avenues available.
+The mount path could be amended to the plural form, which resolves
+the immediate symptom whilst preserving the underlying duplication.
+Alternatively, a shared route constant could be introduced and
+imported by both sides, which would be materially more resilient over
+the longer term. Let me know which direction you would prefer to
+pursue.</pre>
           </div>
         </div>
       </div>
@@ -385,11 +401,11 @@ direction you'd prefer and I'd be happy to help you implement it!</pre>
             <li>One term per meaning, held for the whole answer</li>
             <li>Max 20 words per sentence, simple tenses, no <code>-ing</code> forms</li>
             <li>Active voice, imperative instructions</li>
-            <li>Six preferred words: <code>utilize</code> → <code>use</code>, <code>initiate</code> → <code>start</code></li>
+            <li>Plain words preferred, unless the short word changes the meaning</li>
             <li>Result first, then <code>Verified:</code> <code>Updated:</code> <code>Skipped:</code> <code>Remaining:</code> <code>Next:</code></li>
             <li>Each label once; two or more items nest under it</li>
           </ul>
-          <p class="stat">66 lines · 417 words</p>
+          <p class="stat">33 lines · 211 words</p>
         </div>
         <div>
           <p class="role">Lighter</p>
@@ -402,11 +418,12 @@ direction you'd prefer and I'd be happy to help you implement it!</pre>
             <li>Code, commands, and log output left untouched</li>
             <li>No labels, no preamble, no sign-off</li>
           </ul>
-          <p class="stat">15 lines · 121 words</p>
+          <p class="stat">40 lines · 221 words</p>
         </div>
       </div>
 
       <p class="note">Pick <strong>ASD-STE100</strong> to get the job done with minimal words and structured output. Use <strong>Always Friday</strong> when you collaborate with AI on tasks beyond coding.</p>
+      <p class="note">Want a word you hate banned by name? Keep a <strong>vocabulary table</strong> in your own style — the abstract rule does not hold on its own, an explicit row does. Copy the example from the <a href="https://github.com/MithunWijayasiri/dotclaude#output-styles">README</a>.</p>
     </section>
 
     <section id="skills">
@@ -427,8 +444,16 @@ direction you'd prefer and I'd be happy to help you implement it!</pre>
           <div><p>Compact the current conversation into a handoff doc for the next session.</p></div>
         </li>
         <li class="live">
-          <div class="n">writing-rules</div>
+          <div class="n">writing-rules<small>Claude only</small></div>
           <div><p>Author <code>.claude/rules/*.md</code> with correct <code>paths:</code> scoping and lazy-load.</p></div>
+        </li>
+        <li class="live">
+          <div class="n">html-landing-page</div>
+          <div><p>Design a distinctive static landing page. Plan palette, type, and one signature element before any HTML — and never ship the AI-default look.</p></div>
+        </li>
+        <li class="live">
+          <div class="n">git-merge</div>
+          <div><p>Merge a branch into yours without losing local unstaged work. Diagnose each conflict, then run the repo's own checks to catch the ones git merged cleanly but wrongly.</p></div>
         </li>
       </ul>
       <p class="note"><code>compact-markdown</code> also ships <code>references/skill-authoring.md</code> — good practices distilled from Claude Code, Codex, and mattpocock/skills for writing effective skills.</p>
@@ -487,9 +512,10 @@ direction you'd prefer and I'd be happy to help you implement it!</pre>
   var meta={
     a:{name:'ASD-STE100',count:'46 words · one result line, three labels'},
     b:{name:'Always Friday',count:'64 words · three paragraphs, no labels'},
-    c:{name:'none — Claude Code default',count:'183 words · three paragraphs, four times the length'}
+    c:{name:'Concise',count:'50 words · terse and dense, no preamble or narration'},
+    d:{name:'Default',count:'194 words · four paragraphs, elevated wording, four times the length'}
   };
-  var ids=['a','b','c'];
+  var ids=['a','b','c','d'];
   var btns=document.querySelectorAll('.switch button');
   var active=document.getElementById('active');
   var count=document.getElementById('count');

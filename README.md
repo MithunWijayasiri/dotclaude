@@ -1,7 +1,7 @@
 <h1 align="center">dotclaude</h1>
 
 <p align="center">
-  My Claude Code setup, shared — output styles, CLAUDE.md, and skills.
+  My Claude Code setup — output styles, CLAUDE.md, and skills.
 </p>
 
 <p align="center">
@@ -12,7 +12,7 @@
 
 ---
 
-Plain markdown in `~/.claude` — *output styles* shape how Claude answers, *skills* add repeatable jobs, and `CLAUDE.md` sets the defaults. This repo holds my working set, so it survives a rebuild and anyone can lift a single file.
+Plain markdown in `~/.claude` — *output styles* shape how Claude answers, *skills* add repeatable jobs, and `CLAUDE.md` sets the defaults. 
 
 ## Table of contents
 
@@ -88,13 +88,23 @@ The value is the `name:` field from the file's frontmatter, not the filename. A 
 > [!TIP]
 > Output styles are project-scoped too. A `.claude/output-styles/` folder inside a repo only applies while you're working in that repo, which is useful if one project wants terse reports and another wants prose.
 
-### Make it yours
+Both style files are short and plain — open one and edit it. To stop Claude reaching for a particular word, keep a vocabulary table in your own style and add a row whenever a word annoys you:
 
-Both style files are short and plain — open one and edit it.
+```markdown
+### Word choice
 
-**Keep the vocabulary table.** The abstract rule *one term per meaning* doesn't hold on its own; an explicit row does. Add one whenever a word annoys you.
+Prefer plain words. Keep a long word if a short word changes the meaning.
 
-**Keep at least one worked example.** Rules describe the shape; an example shows it. Formatting held up far more reliably with a concrete example present.
+| Avoid | Use |
+|---|---|
+| stale | out of date / no longer needed — specify |
+| initiate, commence, kick off | start |
+| utilize, leverage | use |
+| in order to / prior to / subsequent to | to / before / after |
+```
+
+> [!TIP]
+> The abstract rule *one term per meaning* doesn't hold on its own — an explicit row does. The same goes for examples: rules describe the shape, an example shows it. Formatting held up far more reliably with at least one worked example in the file.
 
 ## CLAUDE.md
 
@@ -117,6 +127,8 @@ A skill is a task procedure Claude Code loads on demand — repeatable, one way 
 - **humanize** — remove AI writing patterns from prose. Use for human-facing writing where voice matters.
 - **handoff** — compact the current conversation into a handoff doc for the next session.
 - **writing-rules** — author `.claude/rules/*.md` with correct `paths:` scoping and lazy-load.
+- **html-landing-page** — design a distinctive static landing page. Plan palette, type, and one signature element before any HTML; bans the AI-default look.
+- **git-merge** — merge a branch into yours without losing local unstaged work. Diagnose each conflict, then run the repo's own checks to catch the ones git merged cleanly but wrongly.
 
 ## Credits
 
