@@ -93,7 +93,7 @@ Both style files are short and plain — open one and edit it. To stop Claude re
 ```markdown
 ### Word choice
 
-Prefer plain words. Keep long word if short word changes meaning.
+Prefer plain words. Keep a long word if a short word changes the meaning.
 
 | Avoid | Use |
 |---|---|

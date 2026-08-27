@@ -39,9 +39,12 @@ Key discovery: **local branch may be behind its own remote**, and the remote may
 
 User wants local unstaged changes kept → find whether the merge touches them.
 
+Check **both** merges, not just the target one — when the branch is behind its own remote, step 4's `--ff-only` sync also rewrites the tree and can hit the same collisions.
+
 ```bash
-git diff --name-only <merge-base> origin/<target>   # files merge brings
-git status --short                                   # unstaged + untracked
+git diff --name-only <merge-base> origin/<target>          # files the target merge brings
+git diff --name-only HEAD origin/<current-branch>          # files the sync merge brings, if behind
+git status --short                                          # unstaged + untracked
 ```
 
 - Overlap → those files block the merge / will conflict. Plan a stash.
@@ -69,10 +72,10 @@ git stash pop <recorded-stash-sha>             # ONLY if the push above created 
 - **Stash first, then sync.** `merge --ff-only` also refuses to run when local edits overlap files the remote changed. Stash before either merge, not between them.
 - **`git stash push` exits 0 even with nothing to stash** — it just prints `No local changes to save`. So a bare `git stash pop` later pops whatever is on top, which may be a stash the user made days ago. Record `refs/stash` before and after the push; pop by that SHA, and only when the push actually created it.
 - **Short commit message — one line only.** `git commit --no-edit` after a conflicted merge auto-appends a `Conflicts:` file list → bloated message. Always commit with explicit `-m "Merge remote-tracking branch 'origin/<target>' into <current-branch>"`. Same applies to `--amend` (step 7): `git commit --amend -m "<same one-liner>"`, never `--amend --no-edit` (it keeps the bloated message).
-- **Redirect the commit's pre-commit hook output.** A lint/typecheck pre-commit hook can dump tens of KB into context on `git commit`. Send it to a file (`> commit.log 2>&1`) — never `--no-verify`, the hook must still run — then surface only the exit code + `grep -iE 'error|fail' commit.log`. Apply the same redirect to `git stash pop` when hooks are heavy.
-- Stash pop usually auto-merges shared files cleanly (3-way: stash base / merged file / local edits). If it re-conflicts, combine merged-target version + local tweaks.
+- **Redirect the commit's pre-commit hook output.** A lint/typecheck pre-commit hook can dump tens of KB into context on `git commit`. Send it to a file (`> commit.log 2>&1`) — never `--no-verify`, the hook must still run — then surface only the exit code + `grep -iE 'error|fail' commit.log`. `git commit` only — `git stash pop` runs no hooks.
+- Stash pop usually auto-merges shared files cleanly (3-way: stash base / merged file / local edits). If it re-conflicts, combine merged-target version + local tweaks. Its output is a restore/conflict listing — redirect it only if that listing is long.
 - Untracked files (a local config, a scratch dir, the Windows `nul` artifact) don't block merge — leave them. `git stash push` leaves them in place too.
-- **Exception: untracked path collision.** If `origin/<target>` adds a tracked file at a path where an untracked file already sits, `merge` aborts (`untracked working tree files would be overwritten`). Check the step-2 file list against `git status --short` untracked entries; move the colliding ones aside (or `git stash push -u -- <path>`) before merging, restore after. Leave every non-colliding untracked file alone.
+- **Exception: untracked path collision.** If either merge adds a tracked file at a path where an untracked file already sits, it aborts (`untracked working tree files would be overwritten`) — the `--ff-only` sync included. Check both step-2 file lists against `git status --short` untracked entries; move the colliding ones aside (or `git stash push -u -- <path>`) before merging, restore after. Leave every non-colliding untracked file alone.
 
 ## 5. Resolve conflicts — diagnose, don't guess
 
