@@ -102,8 +102,10 @@ cp -r dotclaude/skills/* ~/.claude/skills/
 
 ```powershell
 git clone https://github.com/MithunWijayasiri/dotclaude.git
-New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\output-styles"
-Copy-Item dotclaude\output-styles\*.md "$env:USERPROFILE\.claude\output-styles\"
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\output-styles", "$env:USERPROFILE\.claude\skills"
+Copy-Item dotclaude\output-styles\*.md "$env:USERPROFILE\.claude\output-styles\" -Force
+Copy-Item dotclaude\CLAUDE.md "$env:USERPROFILE\.claude\CLAUDE.md" -Force
+Copy-Item dotclaude\skills\* "$env:USERPROFILE\.claude\skills\" -Recurse -Force
 ```
 
 </details>
