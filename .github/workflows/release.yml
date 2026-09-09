@@ -37,5 +37,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.tag.outputs.name }}
-          TARGET: ${{ github.ref_name }}
+          TARGET: ${{ github.sha }}
         run: gh release create "$TAG" "dotclaude-$TAG.zip" --target "$TARGET" --generate-notes
