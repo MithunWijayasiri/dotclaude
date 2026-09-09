@@ -49,6 +49,8 @@ Pick this style for a handover note or a summary for someone who wasn't in the d
 
 ### Install
 
+Clone the repo, or grab the [latest release](https://github.com/MithunWijayasiri/dotclaude/releases/latest) — the ZIP bundles the output styles, skills, `CLAUDE.md`, README, and the license, unpacked straight into a folder.
+
 ```bash
 git clone https://github.com/MithunWijayasiri/dotclaude.git
 cp dotclaude/output-styles/*.md ~/.claude/output-styles/
