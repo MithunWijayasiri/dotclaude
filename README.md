@@ -87,10 +87,11 @@ A skill is a task procedure Claude Code loads on demand — one way to do one jo
 
 ## Install
 
-Clone the repo, or grab the [latest release](https://github.com/MithunWijayasiri/dotclaude/releases/latest) — the ZIP bundles the output styles, skills, `CLAUDE.md`, README, and license, unpacked into a folder.
+Clone the repo, or grab the [latest release](https://github.com/MithunWijayasiri/dotclaude/releases/latest) — the ZIP bundles the output styles, skills, `CLAUDE.md`, README, and license at the top level, so its contents unpack straight into `~/.claude/`.
 
 ```bash
 git clone https://github.com/MithunWijayasiri/dotclaude.git
+mkdir -p ~/.claude/output-styles ~/.claude/skills
 cp dotclaude/output-styles/*.md ~/.claude/output-styles/
 cp dotclaude/CLAUDE.md ~/.claude/CLAUDE.md
 cp -r dotclaude/skills/* ~/.claude/skills/
