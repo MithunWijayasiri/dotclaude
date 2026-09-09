@@ -20,40 +20,80 @@ Plain markdown in `~/.claude` — *output styles* shape how Claude answers, *ski
 - [Output styles](#output-styles)
 - [CLAUDE.md](#claudemd)
 - [Skills](#skills)
+- [Install](#install)
 
 ## Output styles
 
-An **output style** is a single markdown file that replaces Claude Code's default response voice with your own. Drop it in `~/.claude/output-styles/`, select it, and every answer follows your rules instead. Two are here.
+An **output style** is a markdown file that replaces Claude Code's default response voice with your own. Drop it in `~/.claude/output-styles/`, select it, and every answer follows your rules.
 
 > [!TIP]
-> The [project page](https://mithunwijayasiri.github.io/dotclaude/) answers one question in both styles and in Claude Code's default voice, side by side. It is the fastest way to see the difference.
+> The [project page](https://mithunwijayasiri.github.io/dotclaude/) answers one question in both styles and in Claude Code's default voice, side by side — the fastest way to see the difference.
 
 ### ASD-STE100
 
-Structured output following [ASD-STE100](https://www.asd-ste100.org/) English standards that any reader can understand.
+Structured output following [ASD-STE100](https://www.asd-ste100.org/) English standards. Short sentences, one word per meaning, active voice. Every answer opens with the result, then labelled bullets (`Verified:`, `Updated:`, `Skipped:`, `Remaining:`, `Next:`). Code, paths, and commands are never reworded.
 
-Short sentences, one word per meaning, active voice. Every answer opens with the result, then labelled bullets (`Verified:`, `Updated:`, `Skipped:`, `Remaining:`, `Next:`). Code, paths, and commands are never reworded.
-
-Pick this style when you want to scan an answer fast.
+Pick this when you want to scan an answer fast.
 
 ### Always Friday
 
-Simple, clear output that's easy to read — like Friday afternoon.
-
-Plain, everyday words in ordinary sentences. No label protocol — it reads like a normal explanation.
-
-Pick this style for a handover note or a summary for someone who wasn't in the debugging session.
+Plain-English prose, no label protocol — short, simple, and easier to read. Everyday words, one idea per sentence; every fact and path kept. No rigid structure or sign-off — you understand the answer right away.
 
 > [!NOTE]
 > Pick **ASD-STE100** to get the job done with minimal words and structured output. Use **Always Friday** when you collaborate with AI on tasks beyond coding.
 
-### Install
+Both style files are short and plain — open one and edit it. To stop Claude reaching for a word you dislike, keep a vocabulary table in your own style and add a row whenever a word annoys you:
 
-Clone the repo, or grab the [latest release](https://github.com/MithunWijayasiri/dotclaude/releases/latest) — the ZIP bundles the output styles, skills, `CLAUDE.md`, README, and the license, unpacked straight into a folder.
+```markdown
+### Word choice
+
+Prefer plain words. Keep a long word if a short word changes the meaning.
+
+| Avoid | Use |
+|---|---|
+| stale | out of date / no longer needed — specify |
+| initiate, commence, kick off | start |
+| utilize, leverage | use |
+| in order to / prior to / subsequent to | to / before / after |
+```
+
+> [!TIP]
+> The abstract rule *one term per meaning* doesn't hold on its own — an explicit row does. The same goes for examples: rules describe the shape, an example shows it.
+
+## CLAUDE.md
+
+`CLAUDE.md` holds the instructions that apply everywhere, so it stays short: engineering defaults, comment style, and when to look a library up instead of answering from memory.
+
+Copy it to `~/.claude/CLAUDE.md` for global scope, or to a repo root to scope it to one project:
+
+```bash
+cp dotclaude/CLAUDE.md ~/.claude/CLAUDE.md
+```
+
+> [!NOTE]
+> Its `## Response Style` section is a lightweight fallback — lead with the result, skip filler — for sessions where a different output style is selected, or none at all.
+
+## Skills
+
+A skill is a task procedure Claude Code loads on demand — one way to do one job. See [`skills/README.md`](skills/README.md) for usage.
+
+- **compact-markdown** — telegraphic markdown for AI-facing docs. Strips filler, keeps code and examples.
+- **humanize** — remove AI writing patterns from prose. Use for human-facing writing where voice matters.
+- **handoff** — compact the current conversation into a handoff doc for the next session.
+- **writing-rules** — author `.claude/rules/*.md` with correct `paths:` scoping and lazy-load.
+- **html-landing-page** — design a distinctive static landing page. Plan palette, type, and one signature element before any HTML.
+- **git-merge** — merge a branch into yours without losing local unstaged work. Diagnose each conflict, then run the repo's own checks to catch the ones git merged cleanly but wrongly.
+- **zoom-out** — map an unfamiliar code area before touching it. Nothing is edited and no mutating command runs until the map is done. Manual: `/zoom-out`.
+
+## Install
+
+Clone the repo, or grab the [latest release](https://github.com/MithunWijayasiri/dotclaude/releases/latest) — the ZIP bundles the output styles, skills, `CLAUDE.md`, README, and license, unpacked into a folder.
 
 ```bash
 git clone https://github.com/MithunWijayasiri/dotclaude.git
 cp dotclaude/output-styles/*.md ~/.claude/output-styles/
+cp dotclaude/CLAUDE.md ~/.claude/CLAUDE.md
+cp -r dotclaude/skills/* ~/.claude/skills/
 ```
 
 <details>
@@ -89,50 +129,7 @@ Then pick one. Type `/config` in a session and choose under **Output style** —
 The value is the `name:` field from the file's frontmatter, not the filename. A style is part of the system prompt, so it takes effect after `/clear` or in your next session.
 
 > [!TIP]
-> Output styles are project-scoped too. A `.claude/output-styles/` folder inside a repo only applies while you're working in that repo, which is useful if one project wants terse reports and another wants prose.
-
-Both style files are short and plain — open one and edit it. To stop Claude reaching for a particular word, keep a vocabulary table in your own style and add a row whenever a word annoys you:
-
-```markdown
-### Word choice
-
-Prefer plain words. Keep a long word if a short word changes the meaning.
-
-| Avoid | Use |
-|---|---|
-| stale | out of date / no longer needed — specify |
-| initiate, commence, kick off | start |
-| utilize, leverage | use |
-| in order to / prior to / subsequent to | to / before / after |
-```
-
-> [!TIP]
-> The abstract rule *one term per meaning* doesn't hold on its own — an explicit row does. The same goes for examples: rules describe the shape, an example shows it. Formatting held up far more reliably with at least one worked example in the file.
-
-## CLAUDE.md
-
-`CLAUDE.md` holds the instructions that apply everywhere, so it stays short. Engineering defaults, comment style, and when to look a library up instead of answering from memory.
-
-Copy it to `~/.claude/CLAUDE.md` for global scope, or to a repo root to scope it to one project:
-
-```bash
-cp dotclaude/CLAUDE.md ~/.claude/CLAUDE.md
-```
-
-> [!NOTE]
-> Its `## Response Style` section is a lightweight fallback — lead with the result, skip filler — for sessions where a different output style is selected, or none at all.
-
-## Skills
-
-A skill is a task procedure Claude Code loads on demand — repeatable, one way to do one job. See [`skills/README.md`](skills/README.md) for usage.
-
-- **compact-markdown** — telegraphic markdown for AI-facing docs. Strips filler, keeps code and examples. Compact and still human-readable.
-- **humanize** — remove AI writing patterns from prose. Use for human-facing writing where voice matters.
-- **handoff** — compact the current conversation into a handoff doc for the next session.
-- **writing-rules** — author `.claude/rules/*.md` with correct `paths:` scoping and lazy-load.
-- **html-landing-page** — design a distinctive static landing page. Plan palette, type, and one signature element before any HTML; bans the AI-default look.
-- **git-merge** — merge a branch into yours without losing local unstaged work. Diagnose each conflict, then run the repo's own checks to catch the ones git merged cleanly but wrongly.
-- **zoom-out** — map an unfamiliar code area before touching it. Purpose, flow, callers, boundaries, risks, and the questions the codebase does not answer. Nothing is edited and no mutating command runs until the map is done. Manual: invoke it with `/zoom-out`.
+> Output styles are project-scoped too. A `.claude/output-styles/` folder inside a repo only applies while you're working in that repo — useful if one project wants terse reports and another wants prose.
 
 ## Credits
 
