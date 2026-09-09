@@ -294,12 +294,12 @@ footer{border-top:1px solid var(--line);margin-top:12px}
       <p class="eyebrow">Overview</p>
       <h1>Claude Code reads three kinds of file. This repo holds mine.</h1>
       <p class="lede">Plain markdown in <code>~/.claude</code> — <em>output styles</em> shape how Claude answers, <em>skills</em> add repeatable jobs, and <code>CLAUDE.md</code> sets the defaults. Nothing is a plugin; every file is text you can read and edit.</p>
-      <p>Kept in git so it survives a rebuild and anyone can lift one file. Output styles, <code>CLAUDE.md</code>, and skills are published; more arrive as they are generalised.</p>
+      <p>Kept in git, so it survives a rebuild and anyone can lift one file. Output styles, <code>CLAUDE.md</code>, and skills are published; more arrive as they are generalised.</p>
       <ul class="parts">
         <li class="live">
           <div class="n">output-styles/<small>Published</small></div>
           <div>
-            <p>Replaces how Claude answers. Loads into the system prompt at session start and shapes every reply until you switch. Two are here.</p>
+            <p>Replaces how Claude answers. Loads at session start; shapes every reply until you switch. Two are here.</p>
           </div>
         </li>
         <li class="live">
@@ -311,7 +311,7 @@ footer{border-top:1px solid var(--line);margin-top:12px}
         <li class="live">
           <div class="n">skills/<small>Available</small></div>
           <div>
-            <p>A repeatable job in <code>~/.claude/skills/&lt;name&gt;/SKILL.md</code>. Loads <strong>on demand</strong> when the task matches its description.</p>
+            <p>A repeatable job in <code>~/.claude/skills/&lt;name&gt;/SKILL.md</code>, loaded <strong>on demand</strong> when the task matches its description.</p>
           </div>
         </li>
       </ul>
@@ -320,8 +320,8 @@ footer{border-top:1px solid var(--line);margin-top:12px}
     <section id="styles">
       <p class="kicker">Published</p>
       <h2>Output styles</h2>
-      <p>An output style is a markdown file with two frontmatter fields — <code>name</code> and <code>description</code> — and a body of writing rules. The body replaces Claude Code's default response guidance wholesale, so a style can change sentence length, banned words, and the shape of a result report.</p>
-      <p>The clearest way to see it: ask one question four times. The first two styles are in this repo. The last two are Claude Code's own built-ins — <code>Concise</code>, which leads with the result and skips preamble and narration (added in v2.1.237), and <code>Default</code>, the style selected until you change it. The diagnosis is the same in all four. What moves is the length, the wording, and how much unasked-for material rides along with the answer.</p>
+      <p>An output style is a markdown file — two frontmatter fields, <code>name</code> and <code>description</code>, plus a body of writing rules that replaces Claude Code's default response guidance. It can change sentence length, banned words, and the shape of a result report.</p>
+      <p>Ask one question four times. The first two styles are here. The last two are Claude Code's own built-ins: <code>Concise</code>, which leads with the result and skips preamble (added in v2.1.237), and <code>Default</code>. The diagnosis is the same in all four — what moves is the length, the wording, and how much unasked-for material rides along.</p>
 
       <div class="switch" role="group" aria-label="Choose an output style">
         <button type="button" data-t="a" aria-pressed="true">ASD-STE100</button>
@@ -402,7 +402,7 @@ pursue.</pre>
         <div>
           <p class="role">Primary</p>
           <h3>ASD-STE100</h3>
-          <p>Structured output following ASD-STE100 English standards that any reader can understand. Named after the controlled English for aircraft maintenance manuals — where a technician must not read a procedure two ways.</p>
+          <p>Structured output following ASD-STE100 English standards. Named for the controlled English of aircraft maintenance manuals — where a technician must not read a procedure two ways.</p>
           <ul>
             <li>One term per meaning, held for the whole answer</li>
             <li>Max 20 words per sentence, simple tenses, no <code>-ing</code> forms</li>
@@ -416,7 +416,7 @@ pursue.</pre>
         <div>
           <p class="role">Lighter</p>
           <h3>Always Friday</h3>
-          <p>Simple, clear output that's easy to read — like Friday afternoon. Short sentences and everyday words, with no label protocol. It reads as ordinary prose. Reach for it when you explain the work to a person instead of filing a result — a handover note, or a summary for someone who missed the session.</p>
+          <p>Plain-English prose, no label protocol — short, simple, and easier to read. It reads naturally, with no rigid structure or sign-off, so you understand the answer right away.</p>
           <ul>
             <li>Answer first, detail after</li>
             <li>Every fact, name, number, and path kept</li>
@@ -435,7 +435,7 @@ pursue.</pre>
     <section id="skills">
       <p class="kicker">Available</p>
       <h2>Skills</h2>
-      <p>A skill is a task procedure Claude Code loads on demand — repeatable, one way to do one job.</p>
+      <p>A skill is a task procedure Claude Code loads on demand — one way to do one job.</p>
       <ul class="parts">
         <li class="live">
           <div class="n">compact-markdown</div>
@@ -463,18 +463,18 @@ pursue.</pre>
         </li>
         <li class="live">
           <div class="n">zoom-out<small>Manual only</small></div>
-          <div><p>Map an unfamiliar code area before touching it. Purpose, flow, callers, boundaries, risks, and the questions the codebase does not answer. Nothing is edited and no mutating command runs until the map is done. Invoked by hand with <code>/zoom-out</code>.</p></div>
+          <div><p>Map an unfamiliar code area before touching it — purpose, flow, callers, boundaries, risks. Nothing is edited and no mutating command runs until the map is done. Invoked by hand with <code>/zoom-out</code>.</p></div>
         </li>
       </ul>
-      <p class="note"><code>compact-markdown</code> also ships <code>references/skill-authoring.md</code> — good practices distilled from Claude Code, Codex, and mattpocock/skills for writing effective skills.</p>
+      <p class="note"><code>compact-markdown</code> also ships <code>references/skill-authoring.md</code> — good practices for writing effective skills, distilled from Claude Code, Codex, and mattpocock/skills.</p>
     </section>
 
     <section id="install">
       <p class="kicker">Procedure</p>
       <h2>Install</h2>
-      <p>Get the files, then copy the parts you want into <code>~/.claude/</code>. There is nothing to build. Create a folder if it is not there yet.</p>
+      <p>Get the files, then copy the parts you want into <code>~/.claude/</code>. Nothing to build.</p>
 
-      <p>No git? <a href="https://github.com/MithunWijayasiri/dotclaude/archive/refs/heads/main.zip">Download the ZIP</a> and unzip it. It unpacks to <code>dotclaude-main/</code> rather than <code>dotclaude/</code>, so adjust the paths below by that one word.</p>
+      <p>No git? <a href="https://github.com/MithunWijayasiri/dotclaude/releases/latest">Download the latest release</a> — the ZIP bundles the output styles, skills, <code>CLAUDE.md</code>, README, and license.</p>
 
       <figure class="code">
         <figcaption>shell</figcaption>

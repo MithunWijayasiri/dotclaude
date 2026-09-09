@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version — 1.2.0 or v1.2.0"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Resolve tag
+        id: tag
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          if [[ ! "$INPUT_VERSION" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Version must be MAJOR.MINOR.PATCH, got '$INPUT_VERSION'"
+            exit 1
+          fi
+          echo "name=v${INPUT_VERSION#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Package installable files
+        env:
+          TAG: ${{ steps.tag.outputs.name }}
+        run: zip -r "dotclaude-$TAG.zip" output-styles skills CLAUDE.md README.md LICENSE
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.tag.outputs.name }}
+          TARGET: ${{ github.sha }}
+        run: gh release create "$TAG" "dotclaude-$TAG.zip" --target "$TARGET" --generate-notes
