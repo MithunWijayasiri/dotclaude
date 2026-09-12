@@ -27,3 +27,4 @@
 # External Docs
 - Library/framework/SDK/CLI questions — API signatures, options, config schema, deprecations, version-specific behaviour — look up via context7 first. Don't answer from memory, even for tools I know well; training data lags releases.
 - Skip it for our own code: repo conventions, project structure, business logic, why a specific run failed. Those come from the codebase and live output, not docs.
+- context7 is an MCP server — <https://context7.com/>. Without it connected, these lookups fall back to web search.

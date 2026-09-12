@@ -1,6 +1,6 @@
 ---
-name: handoff
-description: Compact the current conversation into a handoff document for another agent to pick up.
+name: handoff-session
+description: Compact the current conversation into a handoff document for another agent to pick up. Use for the whole session; for one unsolved problem use offload-task.
 argument-hint: "What will the next session be used for?"
 ---
 
