@@ -275,8 +275,9 @@ footer{border-top:1px solid var(--line);margin-top:12px}
 └─ <b>skills/</b>
    ├─ compact-markdown/ ─┐
    ├─ humanize/       ─┘ paired
-   ├─ handoff/
-   ├─ writing-rules/
+   ├─ handoff-session/ ─┐
+   ├─ offload-task/    ─┘ paired
+   ├─ claude-project-rules/
    ├─ html-landing-page/
    ├─ git-merge/
    └─ zoom-out/</div>
@@ -285,6 +286,7 @@ footer{border-top:1px solid var(--line);margin-top:12px}
       <li><a href="#overview">Overview</a></li>
       <li><a href="#styles">Output styles</a></li>
       <li><a href="#skills">Skills</a></li>
+      <li><a href="#claude-md">CLAUDE.md</a></li>
     </ul>
   </aside>
 
@@ -297,13 +299,13 @@ footer{border-top:1px solid var(--line);margin-top:12px}
       <p>Kept in git, so it survives a rebuild and anyone can lift one file. Output styles, <code>CLAUDE.md</code>, and skills are published; more arrive as they are generalised.</p>
       <ul class="parts">
         <li class="live">
-          <div class="n">output-styles/<small>Published</small></div>
+          <div class="n">output-styles/</div>
           <div>
             <p>Replaces how Claude answers. Loads at session start; shapes every reply until you switch. Two are here.</p>
           </div>
         </li>
         <li class="live">
-          <div class="n">CLAUDE.md<small>Published</small></div>
+          <div class="n">CLAUDE.md</div>
           <div>
             <p>Standing instructions. Loads in every session, in every project — engineering defaults, comment style, and what needs approval.</p>
           </div>
@@ -446,12 +448,16 @@ pursue.</pre>
           <div><p>Remove AI writing patterns from prose. Use for human-facing writing where voice matters.</p></div>
         </li>
         <li class="live">
-          <div class="n">handoff</div>
-          <div><p>Compact the current conversation into a handoff doc for the next session.</p></div>
+          <div class="n">handoff-session</div>
+          <div><p>Hand the whole session to the next one — current state, decisions made, blockers, next steps. Dead ends and resolved detail are dropped.</p></div>
         </li>
         <li class="live">
-          <div class="n">writing-rules<small>Claude only</small></div>
-          <div><p>Author <code>.claude/rules/*.md</code> with correct <code>paths:</code> scoping and lazy-load.</p></div>
+          <div class="n">offload-task</div>
+          <div><p>Write one stuck problem into a standalone brief — goal, failing behaviour, repro, and every attempt already ruled out.</p></div>
+        </li>
+        <li class="live">
+          <div class="n">claude-project-rules<small>Claude only</small></div>
+          <div><p>Author <code>.claude/rules/*.md</code> — <code>paths:</code> scoping, lazy-load against always-on, shared rules by symlink, and when a rule beats <code>CLAUDE.md</code> or a skill.</p></div>
         </li>
         <li class="live">
           <div class="n">html-landing-page</div>
@@ -466,7 +472,39 @@ pursue.</pre>
           <div><p>Map an unfamiliar code area before touching it — purpose, flow, callers, boundaries, risks. Nothing is edited and no mutating command runs until the map is done. Invoked by hand with <code>/zoom-out</code>.</p></div>
         </li>
       </ul>
+      <p class="note">Both <code>handoff-session</code> and <code>offload-task</code> write a markdown file for a session that was not here — what differs is the payload. <strong>handoff-session</strong> carries the session: state, decisions, blockers, next steps, so the work continues. <strong>offload-task</strong> carries one unsolved problem and the dead ends already burned on it, so a fresh session or another agent can take a run at it without repeating them.</p>
       <p class="note"><code>compact-markdown</code> also ships <code>references/skill-authoring.md</code> — good practices for writing effective skills, distilled from Claude Code, Codex, and mattpocock/skills.</p>
+    </section>
+
+    <section id="claude-md">
+      <p class="kicker">Published</p>
+      <h2>CLAUDE.md</h2>
+      <p>Standing instructions, loaded at the start of every session in every project. Nothing invokes it and nothing selects it — it is simply always there, which is why it stays short: five headings, 30 lines, 217 words.</p>
+      <p>That length is the whole discipline. A rule that only matters in one file area does not belong here; it belongs in <code>.claude/rules/</code>, where it loads only once a matching file is opened.</p>
+      <ul class="parts">
+        <li class="live">
+          <div class="n">General</div>
+          <div><p>Never guess — one targeted question when a request is ambiguous, not a wall of options. Carries <strong>Response Style</strong>: lead with the result, no narration, no filler. That subsection is the fallback voice for sessions running no output style at all.</p></div>
+        </li>
+        <li class="live">
+          <div class="n">Engineering</div>
+          <div><p>KISS and YAGNI. No abstraction, parameter, or flag until a third caller needs it. Deleting beats adding, unexpected state fails loudly instead of being recovered from, and several options get one recommendation rather than a survey.</p></div>
+        </li>
+        <li class="live">
+          <div class="n">File &amp; Command Safety</div>
+          <div><p>What has to be approved before it happens — deleting, moving, or overwriting a file. Also the commit message format, on request.</p></div>
+        </li>
+        <li class="live">
+          <div class="n">Comments</div>
+          <div><p>Comment the constraint, never the code that is already visible. Which of <code>//</code>, <code>/* */</code>, and <code>/** */</code> belongs where.</p></div>
+        </li>
+        <li class="live">
+          <div class="n">External Docs</div>
+          <div><p>Library, framework, SDK, and CLI questions go to <a href="https://context7.com/">context7</a> instead of memory — training data lags releases. Questions about your own code stay in the codebase, where the answer actually lives.</p></div>
+        </li>
+      </ul>
+      <p class="note">Copy it to <code>~/.claude/CLAUDE.md</code> to get it everywhere, or to a repo root to scope it to one project. Both load together, root first and the project file after — they <strong>concatenate</strong>, so a project file adds to the global one instead of replacing it.</p>
+      <p class="note"><strong>External Docs</strong> only does anything once the context7 MCP server is connected. That is a one-line install, <a href="#install">in the next section</a>.</p>
     </section>
 
     <section id="install">
@@ -493,6 +531,14 @@ pursue.</pre>
       </figure>
 
       <p class="note">Use a <code>.claude/</code> folder inside a repo instead of <code>~/.claude/</code> to scope any of this to that one project. Copying <code>CLAUDE.md</code> replaces whatever sits at the target, so read your own first.</p>
+
+      <h3 class="sub">Connect context7</h3>
+      <p>The <code>External Docs</code> section of <code>CLAUDE.md</code> sends library, framework, and CLI questions to <a href="https://context7.com/">context7</a> instead of letting Claude answer from memory. That is an MCP server, not a file in this repo — copy <code>CLAUDE.md</code> without it and the instruction falls back to a web search. Connect it once, at user scope:</p>
+      <figure class="code">
+        <figcaption>shell</figcaption>
+<pre><span class="k">claude</span> mcp add --scope user --transport http --header <span class="k">"Authorization: Bearer YOUR_API_KEY"</span> context7 https://mcp.context7.com/mcp</pre>
+      </figure>
+      <p class="note">A free key comes from the <a href="https://context7.com/dashboard">context7 dashboard</a>. For a local server instead: <code>claude mcp add --scope user context7 -- npx -y @upstash/context7-mcp --api-key YOUR_API_KEY</code>.</p>
 
       <h3 class="sub">Turn on an output style</h3>
       <p>Copying the file does not select it. Type <code>/config</code> in a session and pick one under <strong>Output style</strong>. Claude Code saves that choice per project, in <code>.claude/settings.local.json</code>.</p>
