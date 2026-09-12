@@ -1,6 +1,6 @@
 ---
 name: offload-task
-description: Write one stuck problem into a standalone markdown brief so a fresh Claude Code session in this repo can attack it without inheriting the dead ends. Use when the user says they want to offload a problem, take it to a new chat or another agent, or asks for a prompt/doc explaining a problem they need help with.
+description: Write one stuck problem into a standalone markdown brief so a fresh session in any coding agent can attack it without inheriting the dead ends. Use when the user says they want to offload a problem, take it to a new chat or another agent, or asks for a prompt/doc explaining a problem they need help with.
 argument-hint: "Which problem to offload (optional)"
 ---
 
@@ -15,7 +15,7 @@ Not a session summary. `handoff-session` covers the whole session so work contin
 
 ## Reader
 
-A Claude Code session in this same repo, no prior context, full file access.
+A coding agent with this repo checked out — no prior context, full file access.
 
 - Reference `path/to/file.ts:123`. Do not paste code the reader can open.
 - Inline only what cannot be opened: error output, terminal logs, user observations of the live UI, values from screenshots.
