@@ -48,6 +48,7 @@ paths:
   ln -s ~/shared-claude-rules .claude/rules/shared
   ln -s ~/company-standards/security.md .claude/rules/security.md
   ```
+  A target outside the working dir counts as an external import: nothing loads until external imports are approved for the project, and then only rules **without** `paths:`. Approval is prompted only by an `@path` import in a project memory file, never by a symlink alone — no such import, no prompt, no linked rules. `~/.claude/rules/` avoids all of it.
 - **Exclude noisy inherited rules** with `claudeMdExcludes` (glob vs absolute path) in `.claude/settings.local.json`. Arrays merge across settings layers. For a symlinked rule, a pattern matching *either* the `.claude/rules/` path or the link target excludes it (v2.1.239+).
   ```json
   { "claudeMdExcludes": ["/home/user/monorepo/other-team/.claude/rules/**"] }
@@ -76,7 +77,7 @@ A fact stated in two places drifts: one copy gets updated, the other lies. Befor
 - **Don't overlap scopes silently.** Two rules whose `paths:` match the same files both load together. Fine only if they cover *different* topics. Same topic → merge into one file.
 - **Don't contradict.** Conflicting instructions get picked arbitrarily. If reality changed, update the existing statement in place.
 - When a fact spans areas, put it in the single most-specific home and cross-link with a pointer, not a copy.
-- Editing a rule → grep the other rules + every loaded `CLAUDE.md` (`./CLAUDE.md`, `.claude/CLAUDE.md`, ancestors, `~/.claude/CLAUDE.md`) for the same term first.
+- Editing a rule → grep the other rules + every loaded instruction file (`./CLAUDE.md`, `.claude/CLAUDE.md`, `CLAUDE.local.md`, ancestors, nested ones in subdirs, `~/.claude/CLAUDE.md`) for the same term first.
 - Edit only the requested rule and files this project owns. A stale or conflicting copy in an ancestor or in `~/.claude/` → report it and ask before touching it.
 
 ## Content style
