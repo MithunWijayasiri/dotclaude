@@ -33,7 +33,7 @@ Report observations. Omit your own diagnoses, hunches, and "likely cause" reason
 
 Unknowns belong in Open Questions as questions, not as answers.
 
-Exception: a hypothesis already tested and disproved belongs in Ruled Out as a fact.
+Exception: a hypothesis already tested and disproved belongs in Attempts as a fact.
 
 ## Structure
 
@@ -49,8 +49,8 @@ What happens instead. Verbatim error output. Exact file:line.
 ## Reproduce
 Command, spec, or steps.
 
-## Ruled out
-- Tried X → Y happened.
+## Attempts
+- Tried X → Y happened. Code attempts and manual checks both.
 
 ## Evidence
 Observations from the live app, logs, screenshots, network/console.
