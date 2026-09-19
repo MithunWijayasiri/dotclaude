@@ -5,7 +5,7 @@ Read when the diff touches auth, user input, SQL, file paths, secrets, external 
 ## Checks
 
 **Input & injection**
-- SQL built by string concatenation or a template literal → parameterize.
+- SQL built by string concatenation or an untagged template literal → parameterize. A tagged template (postgres.js, Slonik, Prisma `$queryRaw`) parameterizes — check the API before flagging.
 - Command/shell construction from user data.
 - Output encoded before rendering (XSS); template auto-escaping not bypassed.
 - Path traversal on any user-controlled file path.
