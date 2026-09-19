@@ -22,7 +22,7 @@ Review a change for defects. Bugs first, structure second, style last.
 
 Three-dot is merge-base: `A...B` shows **B's** side. Point it the wrong way and you silently review the opposite branch. Run `git branch --show-current` before choosing the row.
 
-Verify the ref resolves (`git rev-parse <ref>`) and the diff is non-empty **before** reviewing. Bad ref or empty diff → stop and say so. A file path is not a ref — check it exists and is readable, then review it whether or not it changed.
+Verify the target and a non-empty diff **before** reviewing. A ref — branch, commit, tag, range — must resolve: `git rev-parse <ref>`. A PR is not a local ref, and a fork PR may have none locally: validate with `gh pr view <n>`. A file path is not a ref either: check it exists and is readable, then review it whether or not it changed. Bad target or empty diff → stop and say so.
 
 Collect the counts the §7 header needs while you are here: `git diff --shortstat <range>`, or for a PR `gh pr view <n> --json title,body,additions,deletions,changedFiles` — which also returns the intent §2 looks for.
 

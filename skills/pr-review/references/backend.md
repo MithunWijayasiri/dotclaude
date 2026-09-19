@@ -53,6 +53,6 @@ for (const batch of chunk(ids, 10)) {
 Not defects — report on the `**Needs a second look:**` closing line (SKILL.md §7), not as a severity:
 
 - Database schema modifications.
-- API contract changes with no migration path.
+- API contract changes whose blast radius is unclear. A confirmed breaking change is a defect — see `api.md`, and give it a severity.
 - New framework or library adoption.
 - Changes to performance-critical or security-sensitive paths.
