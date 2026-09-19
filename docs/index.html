@@ -280,6 +280,7 @@ footer{border-top:1px solid var(--line);margin-top:12px}
    ├─ claude-project-rules/
    ├─ html-landing-page/
    ├─ git-merge/
+   ├─ pr-review/
    └─ zoom-out/</div>
 
     <ul class="toc" id="toc">
@@ -468,8 +469,12 @@ pursue.</pre>
           <div><p>Merge a branch into yours without losing local unstaged work. Diagnose each conflict, then run the repo's own checks to catch the ones git merged cleanly but wrongly.</p></div>
         </li>
         <li class="live">
+          <div class="n">pr-review<small>Manual only</small></div>
+          <div><p>Review a PR, branch, commit, or uncommitted work for defects — bugs first, structure second, style last. The target is resolved explicitly, and a bad ref or an empty diff stops the run rather than being guessed at. Findings come back grouped <strong>Blocker / Should fix / Nit</strong>, each with <code>file:line</code>, the concrete input that breaks it, and a fix. Invoked manually with <code>/pr-review</code>.</p></div>
+        </li>
+        <li class="live">
           <div class="n">zoom-out<small>Manual only</small></div>
-          <div><p>Map an unfamiliar code area before touching it — purpose, flow, callers, boundaries, risks. Nothing is edited and no mutating command runs until the map is done. Invoked by hand with <code>/zoom-out</code>.</p></div>
+          <div><p>Map an unfamiliar code area before touching it — purpose, flow, callers, boundaries, risks. Nothing is edited and no mutating command runs until the map is done. Invoked manually with <code>/zoom-out</code>.</p></div>
         </li>
       </ul>
       <p class="note">Both <code>handoff-session</code> and <code>offload-task</code> write a markdown file for a session that was not here — what differs is the payload. <strong>handoff-session</strong> carries the session: state, decisions, blockers, next steps, so the work continues. <strong>offload-task</strong> carries one unsolved problem and the dead ends already burned on it, so a fresh session or another agent can take a run at it without repeating them.</p>
