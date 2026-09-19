@@ -92,6 +92,7 @@ A skill is a task procedure Claude Code loads on demand — one way to do one jo
 - **claude-project-rules** — author `.claude/rules/*.md` with correct `paths:` scoping, lazy-load, and shared-rule symlinks.
 - **html-landing-page** — design a distinctive static landing page. Plan palette, type, and one signature element before any HTML.
 - **git-merge** — merge a branch into yours without losing local unstaged work. Diagnose each conflict, then run the repo's own checks to catch the ones git merged cleanly but wrongly.
+- **pr-review** — review a PR, branch, commit, or uncommitted work for defects. Findings grouped Blocker / Should fix / Nit, each with `file:line`, the input that breaks it, and a fix. Manual: `/pr-review`.
 - **zoom-out** — map an unfamiliar code area before touching it. Nothing is edited and no mutating command runs until the map is done. Manual: `/zoom-out`.
 
 ## Install
