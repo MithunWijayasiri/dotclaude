@@ -26,42 +26,19 @@ Plain markdown in `~/.claude` — *output styles* shape how Claude answers, *ski
 An **output style** is a markdown file that replaces Claude Code's default response voice with your own. Drop it in `~/.claude/output-styles/`, select it, and every answer follows your rules.
 
 > [!TIP]
-> The [project page](https://mithunwijayasiri.github.io/dotclaude/) answers one question in both styles and in Claude Code's default voice, side by side — the fastest way to see the difference.
+> The [project page](https://mithunwijayasiri.github.io/dotclaude/) answers one question in ASD-STE100 and in Claude Code's built-in `Concise` and `Default` styles, side by side — the fastest way to see the difference.
 
 ### ASD-STE100
 
-Structured output following [ASD-STE100](https://www.asd-ste100.org/) English standards. Short sentences, one word per meaning, active voice. Every answer opens with the result, then labelled bullets (`Verified:`, `Updated:`, `Skipped:`, `Remaining:`, `Next:`). Code, paths, and commands are never reworded.
+Structured output following [ASD-STE100](https://www.asd-ste100.org/) English standards. Short sentences, everyday words, one word per meaning, active voice. Every answer opens with the result, then labelled bullets (`Verified:`, `Updated:`, `Skipped:`, `Remaining:`, `Next:`). Every fact, name, number, and path is kept; code and commands are never reworded.
 
 Pick this when you want to scan an answer fast.
 
-### Always Friday
-
-Plain-English prose, no label protocol — short, simple, and easier to read. Everyday words, one idea per sentence; every fact and path kept. No rigid structure or sign-off — you understand the answer right away.
-
-> [!NOTE]
-> Pick **ASD-STE100** to get the job done with minimal words and structured output. Use **Always Friday** when you collaborate with AI on tasks beyond coding.
-
-Both style files are short and plain — open one and edit it. To stop Claude reaching for a word you dislike, keep a vocabulary table in your own style and add a row whenever a word annoys you:
-
-```markdown
-### Word choice
-
-Prefer plain words. Keep a long word if a short word changes the meaning.
-
-| Avoid | Use |
-|---|---|
-| stale | out of date / no longer needed — specify |
-| initiate, commence, kick off | start |
-| utilize, leverage | use |
-| in order to / prior to / subsequent to | to / before / after |
-```
-
-> [!TIP]
-> The abstract rule *one term per meaning* doesn't hold on its own — an explicit row does. The same goes for examples: rules describe the shape, an example shows it.
+The style file is short and plain — open it and edit it.
 
 ## CLAUDE.md
 
-`CLAUDE.md` holds the instructions that apply everywhere, so it stays short: engineering defaults, comment style, and when to look a library up instead of answering from memory.
+`CLAUDE.md` holds the instructions that apply everywhere, so it stays short: engineering defaults, what needs approval, comment style, and when to look a library up instead of answering from memory.
 
 Copy it to `~/.claude/CLAUDE.md` for global scope, or to a repo root to scope it to one project:
 
@@ -146,10 +123,9 @@ The value is the `name:` field from the file's frontmatter, not the filename. A 
 
 ## Credits
 
-Thank you to both of these projects.
+Thank you to this project.
 
 - **[mattpocock/skills](https://github.com/mattpocock/skills)** — Matt Pocock's skills, and the knowledge he shared along with them.
-- **[gvzdv/claudish-to-english](https://github.com/gvzdv/claudish-to-english)** — where the Always Friday style came from.
 
 ## License
 
