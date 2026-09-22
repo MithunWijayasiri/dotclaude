@@ -171,12 +171,10 @@ p:last-child{margin-bottom:0}
 .tok{color:var(--term-blue)}
 .count{font:400 12px/1.5 var(--mono);color:var(--faint);margin-top:12px}
 
-/* ── comparison of the two styles ───────────────────────────────────── */
-.compare{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;margin-top:44px}
+/* ── style summary ───────────────────────────────────────────────────── */
+.compare{margin-top:44px}
 .compare > div{border-top:2px solid var(--ink);padding-top:18px}
-.compare > div:last-child{border-top-color:var(--line-2)}
 .compare h3{font-family:var(--mono);font-size:15px;font-weight:700;letter-spacing:-.01em}
-.compare .role{font:500 10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
 .compare p{font-size:17px;line-height:1.62;max-width:none;color:var(--muted)}
 .compare ul{list-style:none;margin:16px 0 0}
 .compare li{
@@ -228,8 +226,6 @@ footer{border-top:1px solid var(--line);margin-top:12px}
   .rail{position:static;padding:36px 0 0;border-bottom:1px solid var(--line);padding-bottom:30px}
   .tree{overflow-x:auto}
   .toc{display:none}
-  .compare{grid-template-columns:1fr;gap:32px}
-  .compare > div:last-child{border-top-color:var(--ink)}
 }
 @media (max-width:640px){
   body{font-size:17.5px}
@@ -269,8 +265,7 @@ footer{border-top:1px solid var(--line);margin-top:12px}
     <p class="rail-label">Repository</p>
 <div class="tree" aria-label="Folder layout of the repository"><b>~/.claude/</b>
 ├─ <b>output-styles/</b>
-│  ├─ asd-ste100.md
-│  └─ always-friday.md
+│  └─ asd-ste100.md
 ├─ <b>CLAUDE.md</b>
 └─ <b>skills/</b>
    ├─ compact-markdown/ ─┐
@@ -302,7 +297,7 @@ footer{border-top:1px solid var(--line);margin-top:12px}
         <li class="live">
           <div class="n">output-styles/</div>
           <div>
-            <p>Replaces how Claude answers. Loads at session start; shapes every reply until you switch. Two are here.</p>
+            <p>Replaces how Claude answers. Loads at session start; shapes every reply until you switch. One is here.</p>
           </div>
         </li>
         <li class="live">
@@ -324,16 +319,15 @@ footer{border-top:1px solid var(--line);margin-top:12px}
       <p class="kicker">Published</p>
       <h2>Output styles</h2>
       <p>An output style is a markdown file — two frontmatter fields, <code>name</code> and <code>description</code>, plus a body of writing rules that replaces Claude Code's default response guidance. It can change sentence length, banned words, and the shape of a result report.</p>
-      <p>Ask one question four times. The first two styles are here. The last two are Claude Code's own built-ins: <code>Concise</code>, which leads with the result and skips preamble (added in v2.1.237), and <code>Default</code>. The diagnosis is the same in all four — what moves is the length, the wording, and how much unasked-for material rides along.</p>
+      <p>Ask one question three times. The first style is here. The last two are Claude Code's own built-ins: <code>Concise</code>, which leads with the result and skips preamble (added in v2.1.237), and <code>Default</code>. The diagnosis is the same in all three — what moves is the length, the structure, and how much supporting detail comes with it.</p>
 
       <div class="switch" role="group" aria-label="Choose an output style">
         <button type="button" data-t="a" aria-pressed="true">ASD-STE100</button>
-        <button type="button" data-t="b" aria-pressed="false">Always Friday</button>
         <button type="button" data-t="c" aria-pressed="false">Concise</button>
         <button type="button" data-t="d" aria-pressed="false">Default</button>
       </div>
 
-      <div class="term" aria-label="Terminal showing the same answer in four output styles">
+      <div class="term" aria-label="Terminal showing the same answer in three output styles">
         <div class="term-bar">
           <span>claude</span>
           <span>style: <b id="active">ASD-STE100</b></span>
@@ -351,51 +345,36 @@ footer{border-top:1px solid var(--line);margin-top:12px}
   the mount in <span class="tok">server.js</span>.</pre>
           </div>
 
-          <div class="answer" id="b" hidden>
-<pre>The request fails because the server registers a different path.
-
-In <span class="tok">server.js</span> the router is mounted at <span class="tok">/api/user</span>, with no s at
-the end. The request asks for <span class="tok">/api/users</span>. Express compares the
-two, finds no match, and answers with 404.
-
-Tell me which spelling you want to keep. Then I will change either
-the mount or the request, so both sides use one path.</pre>
-          </div>
-
           <div class="answer" id="c" hidden>
-<pre>Mount path mismatch in <span class="tok">server.js</span>: the users router is mounted at
-<span class="tok">/api/user</span>, the request hits <span class="tok">/api/users</span>. Express prefix-matches the
-mount exactly, so no handler is reached and the default 404 answers.
+<pre><span class="tok">server.js</span> mounts the router at <span class="tok">/api/user</span>, but the request goes to
+<span class="tok">/api/users</span>. Express matches mount paths by whole segment, so the
+request never reaches the router and falls through to the default 404.
 
-Fix either side &mdash; rename the mount to plural, or point the caller at
-the singular. Which spelling is canonical?</pre>
+Fix: rename the mount to <span class="tok">/api/users</span> &mdash; collections are usually
+plural. Want me to change it?</pre>
           </div>
 
           <div class="answer" id="d" hidden>
-<pre>The 404 originates from a discrepancy between the path at which the
-router is registered and the path the client is requesting.
+<pre>The router is mounted at a different path from the one you're requesting.
 
-Within <span class="tok">server.js</span>, the Express application instantiates a router
-dedicated to user resources and subsequently registers it against the
-mount point <span class="tok">/api/user</span>. The incoming request, by contrast, targets
-<span class="tok">/api/users</span>, which incorporates a pluralised resource segment.
-Express performs exact prefix matching when resolving a mounted
-router, so the supplementary character causes resolution to fail, and
-the request falls through to the framework's terminal 404 handler
-rather than arriving at the intended route handler.
+In <span class="tok">server.js</span>:
 
-This category of defect is comparatively prevalent in codebases where
-route paths are not centralised, given that the mount path and the
-calling path are declared in two separate locations and can therefore
-diverge without any compile-time or lint-time signal.
+  app.use(<span class="tok">'/api/user'</span>, usersRouter);
 
-Regarding remediation, there are essentially two avenues available.
-The mount path could be amended to the plural form, which resolves
-the immediate symptom whilst preserving the underlying duplication.
-Alternatively, a shared route constant could be introduced and
-imported by both sides, which would be materially more resilient over
-the longer term. Let me know which direction you would prefer to
-pursue.</pre>
+The request goes to <span class="tok">/api/users</span>. Express matches a mount path by whole
+path segments, so <span class="tok">users</span> doesn't match <span class="tok">user</span>. The request never
+reaches <span class="tok">usersRouter</span>, no other route handles it, and Express falls
+through to its default 404.
+
+Two ways to fix it:
+
+- Change the mount to <span class="tok">/api/users</span>. Plural is the usual convention
+  for a collection, and it's a one-line change.
+- Change the caller to <span class="tok">/api/user</span>, if other clients already depend
+  on the singular path.
+
+I'd go with the first unless something else already calls <span class="tok">/api/user</span>.
+Want me to make the change?</pre>
           </div>
         </div>
       </div>
@@ -403,36 +382,20 @@ pursue.</pre>
 
       <div class="compare">
         <div>
-          <p class="role">Primary</p>
           <h3>ASD-STE100</h3>
           <p>Structured output following ASD-STE100 English standards. Named for the controlled English of aircraft maintenance manuals — where a technician must not read a procedure two ways.</p>
           <ul>
+            <li>Answer first, detail after; every fact, name, number, and path kept</li>
             <li>One term per meaning, held for the whole answer</li>
-            <li>Max 20 words per sentence, simple tenses, no <code>-ing</code> forms</li>
+            <li>Max 20 words and one idea per sentence, simple tenses, no <code>-ing</code> forms</li>
+            <li>Everyday words; a technical term explained on first use</li>
             <li>Active voice, imperative instructions</li>
-            <li>Plain words preferred, unless the short word changes the meaning</li>
             <li>Result first, then <code>Verified:</code> <code>Updated:</code> <code>Skipped:</code> <code>Remaining:</code> <code>Next:</code></li>
             <li>Each label once; two or more items nest under it</li>
           </ul>
-          <p class="stat">33 lines · 211 words</p>
-        </div>
-        <div>
-          <p class="role">Lighter</p>
-          <h3>Always Friday</h3>
-          <p>Plain-English prose, no label protocol — short, simple, and easier to read. It reads naturally, with no rigid structure or sign-off, so you understand the answer right away.</p>
-          <ul>
-            <li>Answer first, detail after</li>
-            <li>Every fact, name, number, and path kept</li>
-            <li>One idea per sentence, everyday words</li>
-            <li>Code, commands, and log output left untouched</li>
-            <li>No labels, no preamble, no sign-off</li>
-          </ul>
-          <p class="stat">40 lines · 221 words</p>
+          <p class="stat">35 lines · 254 words</p>
         </div>
       </div>
-
-      <p class="note">Pick <strong>ASD-STE100</strong> to get the job done with minimal words and structured output. Use <strong>Always Friday</strong> when you collaborate with AI on tasks beyond coding.</p>
-      <p class="note">Want a word you hate banned by name? Keep a <strong>vocabulary table</strong> in your own style — the abstract rule does not hold on its own, an explicit row does. Copy the example from the <a href="https://github.com/MithunWijayasiri/dotclaude#output-styles">README</a>.</p>
     </section>
 
     <section id="skills">
@@ -572,11 +535,10 @@ pursue.</pre>
   /* ── style switcher ─────────────────────────────────────────────── */
   var meta={
     a:{name:'ASD-STE100',count:'46 words · one result line, three labels'},
-    b:{name:'Always Friday',count:'64 words · three paragraphs, no labels'},
-    c:{name:'Concise',count:'50 words · terse and dense, no preamble or narration'},
-    d:{name:'Default',count:'194 words · four paragraphs, elevated wording, four times the length'}
+    c:{name:'Concise',count:'48 words · cause and one recommendation, no preamble'},
+    d:{name:'Default',count:'108 words · code excerpt, two options, a recommendation'}
   };
-  var ids=['a','b','c','d'];
+  var ids=['a','c','d'];
   var btns=document.querySelectorAll('.switch button');
   var active=document.getElementById('active');
   var count=document.getElementById('count');
