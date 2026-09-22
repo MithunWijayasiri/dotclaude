@@ -38,7 +38,7 @@ The style file is short and plain — open it and edit it.
 
 ## CLAUDE.md
 
-`CLAUDE.md` holds the instructions that apply everywhere, so it stays short: engineering defaults, comment style, and when to look a library up instead of answering from memory.
+`CLAUDE.md` holds the instructions that apply everywhere, so it stays short: engineering defaults, what needs approval, comment style, and when to look a library up instead of answering from memory.
 
 Copy it to `~/.claude/CLAUDE.md` for global scope, or to a repo root to scope it to one project:
 

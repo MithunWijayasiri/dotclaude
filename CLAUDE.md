@@ -12,8 +12,9 @@
 - Multiple options: recommend one, state the tradeoff.
 
 # File & Command Safety
-- Require approval before anything destructive: deleting files or directories, `rm`, `mv`, or overwriting existing files.
-- When asked, provide Conventional Commit messages as a single line.
+- Require approval before anything destructive: deleting files or directories, `rm`, `mv`, discarding uncommitted work, or replacing a file wholesale.
+- `gh` CLI available — use it for GitHub work (PRs, issues, releases, Actions), not the web UI or raw API guesses.
+- When asked, provide Conventional Commit messages: single-line subject, body (if any) one short plain sentence.
 
 # Comments
 - No justifications or reader-directed prose. Don't restate what the code shows.

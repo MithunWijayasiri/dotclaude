@@ -318,13 +318,13 @@ footer{border-top:1px solid var(--line);margin-top:12px}
     <section id="styles">
       <p class="kicker">Published</p>
       <h2>Output styles</h2>
-      <p>An output style is a markdown file — two frontmatter fields, <code>name</code> and <code>description</code>, plus a body of writing rules that replaces Claude Code's default response guidance. It can change sentence length, banned words, and the shape of a result report.</p>
-      <p>Ask one question three times. The first style is here. The last two are Claude Code's own built-ins: <code>Concise</code>, which leads with the result and skips preamble (added in v2.1.237), and <code>Default</code>. The diagnosis is the same in all three — what moves is the length, the structure, and how much supporting detail comes with it.</p>
+      <p>An output style is a markdown file — two frontmatter fields, <code>name</code> and <code>description</code>, plus a body of writing rules that replaces Claude Code's default response guidance. It can change sentence length, wording, and the shape of a result report.</p>
+      <p>Ask one question three times. The first is this repo's style. The last two are Claude Code's own built-ins: <code>Concise</code>, which leads with the result and skips preamble (added in v2.1.237), and <code>Default</code>. The diagnosis is the same in all three — what moves is the length, the structure, and how much supporting detail comes with it.</p>
 
       <div class="switch" role="group" aria-label="Choose an output style">
         <button type="button" data-t="a" aria-pressed="true">ASD-STE100</button>
-        <button type="button" data-t="c" aria-pressed="false">Concise</button>
-        <button type="button" data-t="d" aria-pressed="false">Default</button>
+        <button type="button" data-t="b" aria-pressed="false">Concise</button>
+        <button type="button" data-t="c" aria-pressed="false">Default</button>
       </div>
 
       <div class="term" aria-label="Terminal showing the same answer in three output styles">
@@ -340,12 +340,11 @@ footer{border-top:1px solid var(--line);margin-top:12px}
 
 <span class="lbl">- Verified:</span> <span class="tok">server.js</span> mounts the router at <span class="tok">/api/user</span>. The
   request asked for <span class="tok">/api/users</span>. The plural broke the match.
-<span class="lbl">- Updated:</span> None yet.
-<span class="lbl">- Next:</span> Confirm which spelling you want, then I will change
-  the mount in <span class="tok">server.js</span>.</pre>
+<span class="lbl">- Next:</span> Approve a rename of the mount to <span class="tok">/api/users</span>. A
+  collection name is usually plural.</pre>
           </div>
 
-          <div class="answer" id="c" hidden>
+          <div class="answer" id="b" hidden>
 <pre><span class="tok">server.js</span> mounts the router at <span class="tok">/api/user</span>, but the request goes to
 <span class="tok">/api/users</span>. Express matches mount paths by whole segment, so the
 request never reaches the router and falls through to the default 404.
@@ -354,7 +353,7 @@ Fix: rename the mount to <span class="tok">/api/users</span> &mdash; collections
 plural. Want me to change it?</pre>
           </div>
 
-          <div class="answer" id="d" hidden>
+          <div class="answer" id="c" hidden>
 <pre>The router is mounted at a different path from the one you're requesting.
 
 In <span class="tok">server.js</span>:
@@ -378,19 +377,19 @@ Want me to make the change?</pre>
           </div>
         </div>
       </div>
-      <p class="count" id="count">46 words · one result line, three labels</p>
+      <p class="count" id="count">44 words · one result line, two labels</p>
 
       <div class="compare">
         <div>
           <h3>ASD-STE100</h3>
           <p>Structured output following ASD-STE100 English standards. Named for the controlled English of aircraft maintenance manuals — where a technician must not read a procedure two ways.</p>
           <ul>
-            <li>Answer first, detail after; every fact, name, number, and path kept</li>
+            <li>Every fact, name, number, and path kept</li>
             <li>One term per meaning, held for the whole answer</li>
             <li>Max 20 words and one idea per sentence, simple tenses, no <code>-ing</code> forms</li>
             <li>Everyday words; a technical term explained on first use</li>
             <li>Active voice, imperative instructions</li>
-            <li>Result first, then <code>Verified:</code> <code>Updated:</code> <code>Skipped:</code> <code>Remaining:</code> <code>Next:</code></li>
+            <li>Result first, detail after, then <code>Verified:</code> <code>Updated:</code> <code>Skipped:</code> <code>Remaining:</code> <code>Next:</code></li>
             <li>Each label once; two or more items nest under it</li>
           </ul>
           <p class="stat">35 lines · 254 words</p>
@@ -447,7 +446,7 @@ Want me to make the change?</pre>
     <section id="claude-md">
       <p class="kicker">Published</p>
       <h2>CLAUDE.md</h2>
-      <p>Standing instructions, loaded at the start of every session in every project. Nothing invokes it and nothing selects it — it is simply always there, which is why it stays short: five headings, 30 lines, 217 words.</p>
+      <p>Standing instructions, loaded at the start of every session in every project. Nothing invokes it and nothing selects it — it is simply always there, which is why it stays short: five headings, 31 lines, 246 words.</p>
       <p>That length is the whole discipline. A rule that only matters in one file area does not belong here; it belongs in <code>.claude/rules/</code>, where it loads only once a matching file is opened.</p>
       <ul class="parts">
         <li class="live">
@@ -460,7 +459,7 @@ Want me to make the change?</pre>
         </li>
         <li class="live">
           <div class="n">File &amp; Command Safety</div>
-          <div><p>What has to be approved before it happens — deleting, moving, or overwriting a file. Also the commit message format, on request.</p></div>
+          <div><p>What has to be approved before it happens — deleting, moving, or replacing a file, or discarding uncommitted work. Claude uses the <code>gh</code> CLI for GitHub work, and writes Conventional Commit messages on request.</p></div>
         </li>
         <li class="live">
           <div class="n">Comments</div>
@@ -534,11 +533,11 @@ Want me to make the change?</pre>
 (function(){
   /* ── style switcher ─────────────────────────────────────────────── */
   var meta={
-    a:{name:'ASD-STE100',count:'46 words · one result line, three labels'},
-    c:{name:'Concise',count:'48 words · cause and one recommendation, no preamble'},
-    d:{name:'Default',count:'108 words · code excerpt, two options, a recommendation'}
+    a:{name:'ASD-STE100',count:'44 words · one result line, two labels'},
+    b:{name:'Concise',count:'48 words · cause and one recommendation, no preamble'},
+    c:{name:'Default',count:'108 words · code excerpt, two options, a recommendation'}
   };
-  var ids=['a','c','d'];
+  var ids=['a','b','c'];
   var btns=document.querySelectorAll('.switch button');
   var active=document.getElementById('active');
   var count=document.getElementById('count');
