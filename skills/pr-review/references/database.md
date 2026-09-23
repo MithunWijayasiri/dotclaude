@@ -1,16 +1,6 @@
 # Database Review
 
-Read when the diff touches queries, ORM calls, migrations, schema, or transactions.
-
 ## Queries
-
-- **Eager-loading the world** — the opposite failure: `include` pulling relations nobody reads, on a hot path.
-- **No `LIMIT`** on a query whose result set grows with data.
-- **Filter or sort on an unindexed column** introduced by this change.
-- **Query built by string concatenation** — see `security.md`.
-- **`SELECT *`** where the caller needs two columns and the row is wide.
-- **Count-then-fetch races** — the count is stale by the time the fetch runs.
-- **ORM chain that generates a surprising query.** Read the generated SQL, not the fluent chain — a filter applied after an aggregate or across a join often produces something other than what it reads like.
 
 N+1 in ORM form:
 
@@ -25,6 +15,13 @@ const items = await db.orderItem.findMany({
   where: { orderId: { in: orders.map(o => o.id) } },
 });
 ```
+
+- **Eager-loading the world** — the opposite of N+1: `include` pulling relations nobody reads, on a hot path.
+- **No `LIMIT`** on a query whose result set grows with data.
+- **Filter or sort on an unindexed column** introduced by this change.
+- **`SELECT *`** where the caller needs two columns and the row is wide.
+- **Count-then-fetch races** — the count is stale by the time the fetch runs.
+- **ORM chain that generates a surprising query.** Read the generated SQL, not the fluent chain — a filter applied after an aggregate or across a join often produces something other than what it reads like.
 
 ## Transactions
 

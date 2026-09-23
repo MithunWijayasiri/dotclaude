@@ -6,6 +6,17 @@ SKILL.md-specific rules. Read when creating/editing a skill. General compact-mar
 
 A skill buys **predictability** — a consistent process from a stochastic model. Judge every line by whether it changes behavior vs. the default.
 
+## Align with the user first
+
+Skill encodes the user's process, not the agent's assumptions. Before writing, ask until both share the same picture:
+
+- Triggers — when should it fire, when not.
+- Steps and order; what "done" looks like.
+- Inputs, outputs, tools, sibling skills it routes to.
+- Edge cases and hard rules.
+
+Ask targeted questions, few at a time. Don't fill gaps with guesses — a wrong assumption gets baked into every future run.
+
 ## Description field
 
 The description does the invocation work — it decides when the skill fires.

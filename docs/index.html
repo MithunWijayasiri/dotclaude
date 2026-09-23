@@ -141,6 +141,7 @@ p:last-child{margin-bottom:0}
 .parts .soon small{color:var(--faint)}
 .parts p{font-size:17px;line-height:1.65;color:var(--muted);max-width:58ch}
 .parts p strong{color:var(--ink);font-weight:500}
+section > .parts:last-child li:last-child{border-bottom:0} /* section border follows */
 
 /* ── switcher ───────────────────────────────────────────────────────── */
 .switch{display:flex;flex-wrap:wrap;gap:7px;margin:30px 0 16px}
@@ -231,7 +232,7 @@ footer{border-top:1px solid var(--line);margin-top:12px}
   body{font-size:17.5px}
   .masthead-in,.footer-in{padding-left:20px;padding-right:20px}
   .shell{padding-left:20px;padding-right:20px}
-  .masthead nav{display:none}
+  .footer-in{justify-content:center;text-align:center}
   .parts li{grid-template-columns:minmax(0,1fr)}
   .parts .n small{display:inline;margin-left:10px}
   section{padding:40px 0}
@@ -292,7 +293,6 @@ footer{border-top:1px solid var(--line);margin-top:12px}
       <p class="eyebrow">Overview</p>
       <h1>Claude Code reads three kinds of file. This repo holds mine.</h1>
       <p class="lede">Plain markdown in <code>~/.claude</code> — <em>output styles</em> shape how Claude answers, <em>skills</em> add repeatable jobs, and <code>CLAUDE.md</code> sets the defaults. Nothing is a plugin; every file is text you can read and edit.</p>
-      <p>Kept in git, so it survives a rebuild and anyone can lift one file. Output styles, <code>CLAUDE.md</code>, and skills are published; more arrive as they are generalised.</p>
       <ul class="parts">
         <li class="live">
           <div class="n">output-styles/</div>
@@ -307,7 +307,7 @@ footer{border-top:1px solid var(--line);margin-top:12px}
           </div>
         </li>
         <li class="live">
-          <div class="n">skills/<small>Available</small></div>
+          <div class="n">skills/</div>
           <div>
             <p>A repeatable job in <code>~/.claude/skills/&lt;name&gt;/SKILL.md</code>, loaded <strong>on demand</strong> when the task matches its description.</p>
           </div>
@@ -318,8 +318,7 @@ footer{border-top:1px solid var(--line);margin-top:12px}
     <section id="styles">
       <p class="kicker">Published</p>
       <h2>Output styles</h2>
-      <p>An output style is a markdown file — two frontmatter fields, <code>name</code> and <code>description</code>, plus a body of writing rules that replaces Claude Code's default response guidance. It can change sentence length, wording, and the shape of a result report.</p>
-      <p>Ask one question three times. The first is this repo's style. The last two are Claude Code's own built-ins: <code>Concise</code>, which leads with the result and skips preamble (added in v2.1.237), and <code>Default</code>. The diagnosis is the same in all three — what moves is the length, the structure, and how much supporting detail comes with it.</p>
+      <p>One question, three styles: this repo's ASD-STE100 against Claude Code's built-in <code>Concise</code> and <code>Default</code>.</p>
 
       <div class="switch" role="group" aria-label="Choose an output style">
         <button type="button" data-t="a" aria-pressed="true">ASD-STE100</button>
@@ -444,34 +443,31 @@ Want me to make the change?</pre>
     </section>
 
     <section id="claude-md">
-      <p class="kicker">Published</p>
+      <p class="kicker">Always loaded</p>
       <h2>CLAUDE.md</h2>
-      <p>Standing instructions, loaded at the start of every session in every project. Nothing invokes it and nothing selects it — it is simply always there, which is why it stays short: five headings, 31 lines, 246 words.</p>
-      <p>That length is the whole discipline. A rule that only matters in one file area does not belong here; it belongs in <code>.claude/rules/</code>, where it loads only once a matching file is opened.</p>
+      <p>Standing instructions for every session. Five sections:</p>
       <ul class="parts">
         <li class="live">
           <div class="n">General</div>
-          <div><p>Never guess — one targeted question when a request is ambiguous, not a wall of options. Carries <strong>Response Style</strong>: lead with the result, no narration, no filler. That subsection is the fallback voice for sessions running no output style at all.</p></div>
+          <div><p>Never guess; ask one targeted question. Lead with the result, no filler.</p></div>
         </li>
         <li class="live">
           <div class="n">Engineering</div>
-          <div><p>KISS and YAGNI. No abstraction, parameter, or flag until a third caller needs it. Deleting beats adding, unexpected state fails loudly instead of being recovered from, and several options get one recommendation rather than a survey.</p></div>
+          <div><p>KISS, YAGNI, fail fast. One recommendation, not a survey.</p></div>
         </li>
         <li class="live">
           <div class="n">File &amp; Command Safety</div>
-          <div><p>What has to be approved before it happens — deleting, moving, or replacing a file, or discarding uncommitted work. Claude uses the <code>gh</code> CLI for GitHub work, and writes Conventional Commit messages on request.</p></div>
+          <div><p>Approval before anything destructive. <code>gh</code> for GitHub, Conventional Commits on request.</p></div>
         </li>
         <li class="live">
           <div class="n">Comments</div>
-          <div><p>Comment the constraint, never the code that is already visible. Which of <code>//</code>, <code>/* */</code>, and <code>/** */</code> belongs where.</p></div>
+          <div><p>Constraints only, never a restatement of the code.</p></div>
         </li>
         <li class="live">
           <div class="n">External Docs</div>
-          <div><p>Library, framework, SDK, and CLI questions go to <a href="https://context7.com/">context7</a> instead of memory — training data lags releases. Questions about your own code stay in the codebase, where the answer actually lives.</p></div>
+          <div><p>Library questions go to <a href="https://context7.com/">context7</a>, not memory. <a href="#install">Setup below</a>.</p></div>
         </li>
       </ul>
-      <p class="note">Copy it to <code>~/.claude/CLAUDE.md</code> to get it everywhere, or to a repo root to scope it to one project. Both load together, root first and the project file after — they <strong>concatenate</strong>, so a project file adds to the global one instead of replacing it.</p>
-      <p class="note"><strong>External Docs</strong> prefers the context7 MCP server; without it connected, those lookups fall back to a web search. Connecting it is a one-line install, <a href="#install">in the next section</a>.</p>
     </section>
 
     <section id="install">

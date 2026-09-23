@@ -1,7 +1,5 @@
 # Test Review
 
-Read when the diff adds or changes tests, or when a change ships without them.
-
 ## Is the test worth having?
 
 - **Tests behavior, not implementation.** A test asserting internal calls breaks on every refactor and catches no regression.
@@ -30,6 +28,4 @@ Read when the diff adds or changes tests, or when a change ships without them.
 - **Cleanup not registered at creation.** An entity created mid-test must be queued for teardown immediately, not at the end — the test may never reach the end.
 - **Test depends on another test's leftover data**, or on a fixed record that another run mutates.
 - **Hardcoded environment values** — URLs, credentials, tenant ids that only resolve in one env.
-- **A silent no-op interaction.** Not the hidden-element case — `.click()`/`.fill()` wait for visible/enabled/editable and then throw. The silent failure is a stale locator resolving to the **wrong visible element** (a `text=`/placeholder selector that now matches something else, a drifted index): the action lands harmlessly, the field stays empty, and it looks identical to the app failing to populate it. Assert post-interaction state (`toHaveValue`, the resulting control appearing), not that the selector resolved.
-
-Repo conventions override everything here. Check `CLAUDE.md` and `.claude/rules/` for the project's own locator, waiting, and cleanup rules first.
+- **Silent no-op interaction.** A stale locator matches the **wrong visible element**, so the action hits the wrong control and looks like an app bug. Assert post-interaction state (`toHaveValue`, the resulting control appearing), not that the selector resolved.
