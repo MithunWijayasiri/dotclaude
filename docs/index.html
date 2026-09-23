@@ -19,6 +19,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400&amp;family=Schibsted+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<script>
+// Set before first paint: saved choice, else system preference.
+try{var saved=localStorage.getItem('theme')}catch(e){}
+document.documentElement.dataset.theme=saved||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+</script>
 <style>
 /* ── tokens ─────────────────────────────────────────────────────────── */
 :root{
@@ -37,12 +42,35 @@
   --term-ink:#DEDCD7;
   --term-dim:#83828B;
   --term-blue:#9DC1E4;
+  --term-edge:transparent;
+  --ink-2:#33333A;
+  --on-proof:#fff;
+  --masthead:rgba(250,250,249,.92);
+  color-scheme:light;
 
   --display:'Schibsted Grotesk',system-ui,sans-serif;
   --serif:'Newsreader',Georgia,serif;
   --mono:'JetBrains Mono',ui-monospace,monospace;
 
   --measure:68ch;
+}
+:root[data-theme="dark"]{
+  --bg:#17171A;
+  --surface:#1F1F23;
+  --line:#2B2B31;
+  --line-2:#43434B;
+  --ink:#E8E6E1;
+  --ink-2:#CFCDC8;
+  --muted:#9D9CA3;
+  --faint:#6F6E76;
+  --proof:#E56473;
+  --proof-wash:rgba(229,100,115,.16);
+  --on-proof:#17171A;
+  --term:#0E0E10;
+  --term-2:#141417;
+  --term-edge:#2B2B31;
+  --masthead:rgba(23,23,26,.92);
+  color-scheme:dark;
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -63,7 +91,7 @@ a code{color:inherit}
 /* ── masthead ───────────────────────────────────────────────────────── */
 .masthead{
   position:sticky;top:0;z-index:20;
-  background:rgba(250,250,249,.92);
+  background:var(--masthead);
   backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   border-bottom:1px solid var(--line);
 }
@@ -73,9 +101,18 @@ a code{color:inherit}
 }
 .brand{font:700 16px/1 var(--mono);letter-spacing:-.03em}
 .brand span{color:var(--proof)}
-.masthead nav{display:flex;gap:22px;font:500 12px/1 var(--mono);letter-spacing:.02em}
+.masthead nav{display:flex;align-items:center;gap:22px;font:500 12px/1 var(--mono);letter-spacing:.02em}
 .masthead nav a{color:var(--muted);border:0}
 .masthead nav a:hover{color:var(--ink)}
+.masthead nav .gh{
+  display:inline-flex;align-items:center;gap:7px;padding:7px 13px;
+  border:1px solid var(--ink);border-radius:100px;color:var(--ink);
+  transition:color .16s,background .16s;
+}
+.masthead nav .gh:hover{background:var(--ink);color:var(--bg)}
+.theme{display:inline-flex;padding:4px;border:0;background:none;color:var(--muted);cursor:pointer;transition:color .16s}
+.theme:hover{color:var(--ink)}
+.masthead svg{display:block}
 
 /* ── shell ──────────────────────────────────────────────────────────── */
 .shell{
@@ -126,7 +163,7 @@ h2{font:600 clamp(24px,3.4vw,31px)/1.15 var(--display);letter-spacing:-.028em;ma
 h3{font:600 17px/1.3 var(--display);letter-spacing:-.015em;margin-bottom:6px}
 p{max-width:var(--measure);margin-bottom:18px}
 p:last-child{margin-bottom:0}
-.lede{font-size:21px;line-height:1.62;color:#33333A}
+.lede{font-size:21px;line-height:1.62;color:var(--ink-2)}
 .lede em{font-style:italic;color:var(--ink)}
 
 /* ── definition rows: the three parts ───────────────────────────────── */
@@ -152,10 +189,10 @@ section > .parts:last-child li:last-child{border-bottom:0} /* section border fol
   transition:color .16s,border-color .16s,background .16s;
 }
 .switch button:hover{color:var(--ink);border-color:var(--ink)}
-.switch button[aria-pressed="true"]{background:var(--proof);border-color:var(--proof);color:#fff}
+.switch button[aria-pressed="true"]{background:var(--proof);border-color:var(--proof);color:var(--on-proof)}
 
 /* ── the one dark object ────────────────────────────────────────────── */
-.term{background:var(--term);border-radius:8px;overflow:hidden}
+.term{background:var(--term);border-radius:8px;overflow:hidden;box-shadow:0 0 0 1px var(--term-edge)}
 .term-bar{
   display:flex;align-items:center;justify-content:space-between;gap:14px;
   padding:11px 18px;background:var(--term-2);border-bottom:1px solid var(--term-line);
@@ -166,6 +203,7 @@ section > .parts:last-child li:last-child{border-bottom:0} /* section border fol
 .term-body pre,.ask{font:400 13.3px/1.78 var(--mono);white-space:pre-wrap;word-break:break-word}
 .ask{color:var(--term-dim);margin-bottom:16px}
 .ask i{font-style:normal;color:var(--proof)}
+.cursor{display:inline-block;width:.6em;height:1.15em;margin-left:3px;vertical-align:-.2em;background:var(--term-dim)}
 .term-body pre{color:var(--term-ink)}
 .answer[hidden]{display:none}
 .lbl{color:#E1808C}
@@ -174,7 +212,7 @@ section > .parts:last-child li:last-child{border-bottom:0} /* section border fol
 
 /* ── style summary ───────────────────────────────────────────────────── */
 .compare{margin-top:44px}
-.compare > div{border-top:2px solid var(--ink);padding-top:18px}
+.compare > div{border-top:1px solid var(--line);padding-top:18px}
 .compare h3{font-family:var(--mono);font-size:15px;font-weight:700;letter-spacing:-.01em}
 .compare p{font-size:17px;line-height:1.62;max-width:none;color:var(--muted)}
 .compare ul{list-style:none;margin:16px 0 0}
@@ -201,7 +239,7 @@ figure.code figcaption{
   padding:8px 14px;border-bottom:1px solid var(--line);
   font:500 10.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);
 }
-figure.code pre{padding:14px;overflow-x:auto;font:400 13px/1.7 var(--mono);color:#2B2B31}
+figure.code pre{padding:14px;overflow-x:auto;font:400 13px/1.7 var(--mono);color:var(--ink-2)}
 figure.code .c{color:var(--faint)}
 figure.code .k{color:var(--proof)}
 
@@ -244,8 +282,10 @@ footer{border-top:1px solid var(--line);margin-top:12px}
   .masthead-in,.rail,main > section:first-child{animation:rise .6s ease both}
   .rail{animation-delay:.08s}
   .answer{animation:rise .28s ease both}
-  @keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
-}
+  .term-body pre{transition:opacity .2s}
+  .term.busy .term-body pre{opacity:.3}
+  .cursor{animation:blink 1.1s steps(1) infinite}  @keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+  @keyframes blink{50%{opacity:0}}}
 </style>
 </head>
 <body>
@@ -255,7 +295,8 @@ footer{border-top:1px solid var(--line);margin-top:12px}
     <div class="brand">dot<span>claude</span></div>
     <nav aria-label="Sections">
       <a href="#install">install</a>
-      <a href="https://github.com/MithunWijayasiri/dotclaude">github</a>
+      <a class="gh" href="https://github.com/MithunWijayasiri/dotclaude"><svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>github</a>
+      <button type="button" class="theme" id="theme" aria-label="Dark mode" aria-pressed="false"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/></svg></button>
     </nav>
   </div>
 </header>
@@ -332,7 +373,7 @@ footer{border-top:1px solid var(--line);margin-top:12px}
           <span>style: <b id="active">ASD-STE100</b></span>
         </div>
         <div class="term-body">
-          <p class="ask"><i>&gt;</i> why does GET /api/users return 404?</p>
+          <p class="ask"><i>&gt;</i> <span id="q">why does GET /api/users return 404?</span><span class="cursor" aria-hidden="true"></span></p>
 
           <div class="answer" id="a">
 <pre>The router sits on a different path. One file needs a change.
@@ -527,6 +568,20 @@ Want me to make the change?</pre>
 
 <script>
 (function(){
+  /* ── theme toggle ───────────────────────────────────────────────── */
+  var still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var root=document.documentElement;
+  var themeBtn=document.getElementById('theme');
+  themeBtn.setAttribute('aria-pressed',String(root.dataset.theme==='dark'));
+  function flipTheme(){
+    root.dataset.theme=root.dataset.theme==='dark'?'light':'dark';
+    themeBtn.setAttribute('aria-pressed',String(root.dataset.theme==='dark'));
+    try{localStorage.setItem('theme',root.dataset.theme);}catch(e){}
+  }
+  themeBtn.addEventListener('click',function(){
+    if(document.startViewTransition&&!still)document.startViewTransition(flipTheme); // cross-fade
+    else flipTheme();
+  });
   /* ── style switcher ─────────────────────────────────────────────── */
   var meta={
     a:{name:'ASD-STE100',count:'44 words · one result line, two labels'},
@@ -537,19 +592,39 @@ Want me to make the change?</pre>
   var btns=document.querySelectorAll('.switch button');
   var active=document.getElementById('active');
   var count=document.getElementById('count');
+  var term=document.querySelector('.term');
+  var q=document.getElementById('q');
+  var question=q.textContent;
+  var typing;
+
+  function showAnswer(t){
+    term.classList.remove('busy');
+    ids.forEach(function(id){
+      var el=document.getElementById(id);
+      if(id!==t){el.hidden=true;return;}
+      el.hidden=false;
+      el.style.animation='none';void el.offsetWidth;el.style.animation='';
+    });
+  }
 
   btns.forEach(function(btn){
     btn.addEventListener('click',function(){
       var t=btn.dataset.t;
       btns.forEach(function(o){o.setAttribute('aria-pressed',String(o===btn));});
-      ids.forEach(function(id){
-        var el=document.getElementById(id);
-        if(id!==t){el.hidden=true;return;}
-        el.hidden=false;
-        el.style.animation='none';void el.offsetWidth;el.style.animation='';
-      });
       active.textContent=meta[t].name;
       count.textContent=meta[t].count;
+      clearInterval(typing);
+      if(still){showAnswer(t);return;}
+      // Dim the old answer and retype the prompt, then swap.
+      term.classList.add('busy');
+      var n=0;
+      q.textContent='';
+      typing=setInterval(function(){
+        q.textContent=question.slice(0,++n);
+        if(n<question.length)return;
+        clearInterval(typing);
+        showAnswer(t);
+      },16);
     });
   });
 
