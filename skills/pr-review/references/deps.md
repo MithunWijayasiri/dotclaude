@@ -2,7 +2,7 @@
 
 ## New dependency
 
-- From a trusted source, actively maintained, no known vulnerabilities (`npm audit`).
+- From a trusted source, actively maintained, no known vulnerabilities (`npm audit` or the ecosystem's equivalent).
 - License compatible with the project.
 
 ## Upgrades

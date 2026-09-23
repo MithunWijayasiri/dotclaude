@@ -28,4 +28,4 @@
 - **Cleanup not registered at creation.** An entity created mid-test must be queued for teardown immediately, not at the end — the test may never reach the end.
 - **Test depends on another test's leftover data**, or on a fixed record that another run mutates.
 - **Hardcoded environment values** — URLs, credentials, tenant ids that only resolve in one env.
-- **Silent no-op interaction.** A stale locator matches the **wrong visible element**, so the action lands harmlessly and looks like an app bug. Assert post-interaction state (`toHaveValue`, the resulting control appearing), not that the selector resolved.
+- **Silent no-op interaction.** A stale locator matches the **wrong visible element**, so the action hits the wrong control and looks like an app bug. Assert post-interaction state (`toHaveValue`, the resulting control appearing), not that the selector resolved.

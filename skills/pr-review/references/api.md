@@ -19,7 +19,7 @@
 ## Semantics
 
 - **Status codes** — 200 with an error body; 500 for what is a client validation failure; 404 vs 403 leaking existence.
-- **Non-idempotent `PUT`/`DELETE`**, or a `GET` with side effects.
+- **Non-idempotent `PUT`/`DELETE`**, a retryable `POST` or webhook with no idempotency key, or a `GET` with side effects.
 - **No pagination** on a list endpoint, or pagination added without a stable sort — unstable ordering makes pages overlap and skip.
 - **Partial success reported as success** — a batch endpoint returning 200 when some items failed, with no per-item outcome.
 

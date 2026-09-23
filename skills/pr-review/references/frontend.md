@@ -13,7 +13,7 @@
 
 ## React
 
-- **Stale closure** — a callback, interval, or subscription capturing state from the render it was created in. Missing effect dependencies are lint's job (`react-hooks/exhaustive-deps`); flag only when that rule is off or suppressed.
+- **Stale closure** — a callback, interval, or subscription capturing state from the render it was created in. Missing effect dependencies are lint's job (`react-hooks/exhaustive-deps`); flag only when that rule is off, suppressed, or not configured for the custom hook (`additionalHooks`).
 - **`useEffect` doing event-handler work.** Reacting to a user action belongs in the handler, not in an effect watching the resulting state.
 - **Unstable props** — object/array/function literals passed to a memoized child defeat the memo.
 - **Race in async effects** — no abort/ignore flag, so a slow earlier request overwrites a fast later one.
