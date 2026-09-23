@@ -569,7 +569,7 @@ Want me to make the change?</pre>
 <script>
 (function(){
   /* ── theme toggle ───────────────────────────────────────────────── */
-  var still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var still=matchMedia('(prefers-reduced-motion: reduce)');
   var root=document.documentElement;
   var themeBtn=document.getElementById('theme');
   themeBtn.setAttribute('aria-pressed',String(root.dataset.theme==='dark'));
@@ -579,7 +579,7 @@ Want me to make the change?</pre>
     try{localStorage.setItem('theme',root.dataset.theme);}catch(e){}
   }
   themeBtn.addEventListener('click',function(){
-    if(document.startViewTransition&&!still)document.startViewTransition(flipTheme); // cross-fade
+    if(document.startViewTransition&&!still.matches)document.startViewTransition(flipTheme); // cross-fade
     else flipTheme();
   });
   /* ── style switcher ─────────────────────────────────────────────── */
@@ -614,7 +614,7 @@ Want me to make the change?</pre>
       active.textContent=meta[t].name;
       count.textContent=meta[t].count;
       clearInterval(typing);
-      if(still){showAnswer(t);return;}
+      if(still.matches){showAnswer(t);return;}
       // Dim the old answer and retype the prompt, then swap.
       term.classList.add('busy');
       var n=0;
