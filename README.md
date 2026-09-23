@@ -23,33 +23,18 @@ Plain markdown in `~/.claude` — *output styles* shape how Claude answers, *ski
 
 ## Output styles
 
-An **output style** is a markdown file that replaces Claude Code's default response voice with your own. Drop it in `~/.claude/output-styles/`, select it, and every answer follows your rules.
-
 > [!TIP]
-> The [project page](https://mithunwijayasiri.github.io/dotclaude/) answers one question in ASD-STE100 and in Claude Code's built-in `Concise` and `Default` styles, side by side — the fastest way to see the difference.
+> The [project page](https://mithunwijayasiri.github.io/dotclaude/) compares ASD-STE100 with Claude Code's built-in `Concise` and `Default` on the same question.
 
 ### ASD-STE100
 
-Structured output following [ASD-STE100](https://www.asd-ste100.org/) English standards. Short sentences, everyday words, one word per meaning, active voice. Every answer opens with the result, then labelled bullets (`Verified:`, `Updated:`, `Skipped:`, `Remaining:`, `Next:`). Every fact, name, number, and path is kept; code and commands are never reworded.
-
-Pick this when you want to scan an answer fast.
-
-The style file is short and plain — open it and edit it.
+Structured output following [ASD-STE100](https://www.asd-ste100.org/) English standards: short sentences, everyday words, one word per meaning, active voice. The result comes first, then labelled bullets (`Verified:`, `Updated:`, `Skipped:`, `Remaining:`, `Next:`). Code and commands are never reworded.
 
 ## CLAUDE.md
 
-`CLAUDE.md` holds the instructions that apply everywhere, so it stays short: engineering defaults, what needs approval, comment style, and when to look a library up instead of answering from memory.
+Standing instructions for every session: General, Engineering, File & Command Safety, Comments, External Docs. Copy it to `~/.claude/CLAUDE.md`, or to a repo root for one project.
 
-Copy it to `~/.claude/CLAUDE.md` for global scope, or to a repo root to scope it to one project:
-
-```bash
-cp dotclaude/CLAUDE.md ~/.claude/CLAUDE.md
-```
-
-> [!NOTE]
-> Its `## Response Style` section is a lightweight fallback — lead with the result, skip filler — for sessions where a different output style is selected, or none at all.
-
-Its `## External Docs` section sends library, framework, and CLI questions to [context7](https://context7.com/) instead of letting Claude answer from memory. That is an MCP server, not a file in this repo — copy `CLAUDE.md` without it and the instruction quietly falls back to a web search. Connect it once, at user scope:
+`## External Docs` sends library questions to [context7](https://context7.com/), an MCP server. Without it, Claude falls back to a web search. Connect it once:
 
 ```bash
 claude mcp add --scope user --transport http --header "Authorization: Bearer YOUR_API_KEY" context7 https://mcp.context7.com/mcp
@@ -74,7 +59,7 @@ A skill is a task procedure Claude Code loads on demand — one way to do one jo
 
 ## Install
 
-Clone the repo, or grab the [latest release](https://github.com/MithunWijayasiri/dotclaude/releases/latest) — the ZIP bundles the output styles, skills, `CLAUDE.md`, README, and license at the top level, so its contents unpack straight into `~/.claude/`.
+Clone the repo, or unzip the [latest release](https://github.com/MithunWijayasiri/dotclaude/releases/latest) straight into `~/.claude/`.
 
 ```bash
 git clone https://github.com/MithunWijayasiri/dotclaude.git
@@ -108,7 +93,7 @@ curl -o ~/.claude/output-styles/asd-ste100.md \
 
 </details>
 
-Then pick one. Type `/config` in a session and choose under **Output style** — that saves per project. To make it your default everywhere, set the field directly in `~/.claude/settings.json`:
+Then pick a style under `/config` → **Output style** (saved per project). For a global default, set it in `~/.claude/settings.json`:
 
 ```json
 {
@@ -116,10 +101,7 @@ Then pick one. Type `/config` in a session and choose under **Output style** —
 }
 ```
 
-The value is the `name:` field from the file's frontmatter, not the filename. A style is part of the system prompt, so it takes effect after `/clear` or in your next session.
-
-> [!TIP]
-> Output styles are project-scoped too. A `.claude/output-styles/` folder inside a repo only applies while you're working in that repo — useful if one project wants terse reports and another wants prose.
+The value is the frontmatter `name:`, not the filename. It takes effect after `/clear` or in a new session.
 
 ## Credits
 
