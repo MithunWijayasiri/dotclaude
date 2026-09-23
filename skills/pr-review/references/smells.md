@@ -1,11 +1,6 @@
 # Structural Smells
 
-Fowler baseline (_Refactoring_, ch.3). Read when the diff is refactor-heavy or a structural problem is suspected.
-
-Two binding rules:
-
-- **Repo overrides.** A documented repo standard always wins. Where it endorses something here, suppress the smell.
-- **Always a judgement call.** Each entry is a labelled heuristic ("possible Feature Envy"), never a hard violation. Report as Should fix or Nit, never Blocker.
+Fowler baseline (_Refactoring_, ch.3). Each entry is a labelled heuristic ("possible Feature Envy"), never a hard violation. Report as Should fix or Nit, never Blocker.
 
 ## Catalogue
 
@@ -52,9 +47,3 @@ Exception: complete file deletions and mechanical refactors, where the reviewer 
 **Watch total file size, not just diff size.** A file already past several hundred lines is an inspection signal, not a hard cap. A change that materially grows one → ask whether to extract first, then add.
 
 **Refactoring + new behavior in one change = two changes.** Small cleanups (renames) can ride along at reviewer discretion.
-
-## Dead code
-
-After a refactor, name code now unreachable or unused — do not delete silently, do not leave it lying around. Report it on the `**Needs a second look:**` closing line (SKILL.md §7), naming each symbol and why it is dead:
-
-`**Needs a second look:** formatLegacyDate() in src/utils/date.ts (replaced by formatDate()), LEGACY_API_URL in src/config.ts (no remaining references) — safe to remove?`

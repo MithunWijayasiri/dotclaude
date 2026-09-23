@@ -36,7 +36,7 @@ Counts for the §7 header: `git diff --shortstat <range>`, or `gh pr view <n> --
 A diff alone misleads — code wrong in isolation is often right in context, and vice versa.
 
 - Full file for up to ~5 key changed files (entry points, trust boundaries, shared modules); hunk plus enclosing function for the rest. Over ~15 files → state which you read in full.
-- Repo standards if present: `CLAUDE.md`, `.claude/rules/*.md`, `CONTRIBUTING.md`, `CODING_STANDARDS.md`, `AGENTS.md`, `CONVENTIONS.md`. A documented standard overrides every default here.
+- Repo standards if present: `CLAUDE.md`, `.claude/rules/*.md`, `CONTRIBUTING.md`, `CODING_STANDARDS.md`, `AGENTS.md`, `CONVENTIONS.md`. A documented standard overrides every default here and in `references/`.
 - Spec: issue ref in commits (`gh issue view <n>`), ticket key in branch name, or a doc under `docs/`/`specs/`. None → skip the spec axis, say so in the report. Never invent requirements.
 - Input, auth, storage, network, rendering, or secrets touched → trace the trust boundary, not just the changed lines.
 
@@ -65,7 +65,7 @@ Ordered by leverage; spend effort top-down.
 - Changed code is reachable by hostile input unless verifiably not.
 - Validation and authorization at the real boundary, not the UI or the caller.
 
-**Performance** — only when obvious: N+1, unbounded loops or fetches, blocking I/O on a hot path, missing pagination.
+**Performance** — only when obvious: N+1, unbounded loops or fetches, O(n²) on growing data, blocking I/O on a hot path, missing pagination. Quantify ("~50ms per item") or state the growth ("one query per line item; an order carries up to 50") — never "this could be slow".
 
 ## 4. References
 
@@ -74,14 +74,13 @@ One file per concern the diff warrants; a second only when a finding spans areas
 | Diff touches | Read |
 |---|---|
 | Auth, user input, SQL, file paths, secrets, external data, serialization, rendering | `references/security.md` |
-| Queries, loops over remote calls, list endpoints, hot paths | `references/performance.md` |
 | Refactor-heavy PR, duplication, or a structural concern you are about to flag | `references/smells.md` |
 | Components, templates, state, styling, client routing (React/Angular) | `references/frontend.md` |
-| Services, handlers, jobs, CLIs, Node/server-side modules, outbound HTTP clients | `references/backend.md` |
-| ORM calls, raw SQL, migrations, schema, transactions | `references/database.md` |
+| Services, handlers, jobs, CLIs, Node/server-side modules, outbound HTTP clients, loops over remote calls | `references/backend.md` |
+| ORM calls, raw SQL, queries in loops, migrations, schema, transactions | `references/database.md` |
 | HTTP handlers, routes, request/response shapes, API clients | `references/api.md` |
 | Test files, or a change shipping without tests | `references/testing.md` |
-| `package.json`, lockfiles, Renovate/Dependabot bumps | `references/security.md` (Dependency upgrades) |
+| `package.json`, lockfiles, Renovate/Dependabot bumps | `references/deps.md` |
 | CI workflows, Dockerfiles, infra config | `references/security.md` (Secrets, Trust boundaries) |
 
 ## 5. Before flagging anything
@@ -132,7 +131,12 @@ Exactly this shape. Skip any severity section with no findings.
 - Blocker / Should fix: location + why + fix. Nit: one line, location + claim only.
 - Closing lines, each only if applicable:
   - `**Not flagged:** <thing> — <reason>.` — considered and deliberately skipped.
-  - `**Needs a second look:** <thing> — <why>.` — non-defect needing human sign-off (schema or contract change, new dependency, dead code left behind). No severity.
+  - `**Needs a second look:** <thing> — <why>.` — non-defect needing human sign-off. No severity. Covers:
+    - Schema change.
+    - API contract change of unclear blast radius. A confirmed breaking change is a defect — give it a severity.
+    - New dependency or framework.
+    - Change to a performance- or security-sensitive path.
+    - Dead code left by the change — name each symbol and why it's dead, e.g. `formatLegacyDate() in src/utils/date.ts (replaced by formatDate()) — safe to remove?`. Never delete silently.
   - No spec found.
 - Nothing found → `**Verdict:** Approve — no findings.` plus one line on what you checked.
 
