@@ -1,0 +1,82 @@
+name: CI
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  leaks:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Scan for private details
+        env:
+          LEAK: '\b[A-Z][A-Z0-9]+-[0-9]{2,}\b|[A-Za-z]:\\Users\\[^\\ ]+|/(Users|home)/[A-Za-z0-9_.-]+|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}|\b(trig|env)_01[A-Za-z0-9]+'
+          ALLOW: ':(PROJ-[0-9]+|/home/user)$' # placeholders used in examples
+        run: |
+          rc=0
+          hits=$(git grep -nIoE "$LEAK") || rc=$?
+          if [ "$rc" -gt 1 ]; then exit "$rc"; fi
+          hits=$(printf '%s\n' "$hits" | grep -vE "$ALLOW") || true
+          if [ -n "$hits" ]; then
+            printf '%s\n' "$hits"
+            echo "::error::Private detail found: ticket id, absolute path, email, or account id"
+            exit 1
+          fi
+
+      - uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  structure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Check skills and output styles
+        run: |
+          status=0
+          fail() { echo "::error file=$1::$2"; status=1; }
+          field() {
+            awk 'NR==1 { if ($0 != "---") exit; next } $0 == "---" { exit } { print }' "$1" \
+              | sed -n "s/^$2: *//p" | head -1
+          }
+
+          for dir in skills/*/; do
+            dir=${dir%/}
+            skill=${dir#skills/}
+            file=$dir/SKILL.md
+            if [ ! -f "$file" ]; then fail "$dir" "missing SKILL.md"; continue; fi
+
+            name=$(field "$file" name)
+            [ "$name" = "$skill" ] || fail "$file" "name '$name' does not match folder '$skill'"
+            [ -n "$(field "$file" description)" ] || fail "$file" "missing description"
+            grep -q "^- \*\*$skill\*\* —" skills/README.md || fail skills/README.md "missing entry for $skill"
+
+            for ref in $(grep -oE 'references/[A-Za-z0-9_-]+\.md' "$file" | sort -u); do
+              [ -f "$dir/$ref" ] || fail "$file" "links missing $ref"
+            done
+            for ref in "$dir"/references/*.md; do
+              [ -e "$ref" ] || continue
+              grep -qF "references/${ref##*/}" "$file" || fail "$ref" "not referenced from SKILL.md"
+            done
+          done
+
+          for entry in $(sed -nE 's/^- \*\*([^*]+)\*\* —.*/\1/p' skills/README.md); do
+            [ -d "skills/$entry" ] || fail skills/README.md "entry '$entry' has no skill folder"
+          done
+
+          for file in output-styles/*.md; do
+            [ -n "$(field "$file" name)" ] || fail "$file" "missing name"
+            [ -n "$(field "$file" description)" ] || fail "$file" "missing description"
+          done
+
+          exit "$status"
