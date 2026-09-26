@@ -20,7 +20,7 @@ jobs:
       - name: Scan for private details
         env:
           LEAK: '\b[A-Z][A-Z0-9]+-[0-9]{2,}\b|[A-Za-z]:\\Users\\[^\\ ]+|/(Users|home)/[A-Za-z0-9_.-]+|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}|\b(trig|env)_01[A-Za-z0-9]+'
-          ALLOW: ':(PROJ-[0-9]+|/home/user)$' # placeholders used in examples
+          ALLOW: ':(PROJ-1042|/home/user)$' # placeholders used in examples
         run: |
           rc=0
           hits=$(git grep -nIoE "$LEAK") || rc=$?
@@ -46,7 +46,7 @@ jobs:
           status=0
           fail() { echo "::error file=$1::$2"; status=1; }
           field() {
-            awk 'NR==1 { if ($0 != "---") exit; next } $0 == "---" { exit } { print }' "$1" \
+            awk 'NR==1 { if ($0 != "---") exit; next } $0 == "---" { printf "%s", fm; exit } { fm = fm $0 "\n" }' "$1" \
               | sed -n "s/^$2: *//p" | head -1
           }
 
