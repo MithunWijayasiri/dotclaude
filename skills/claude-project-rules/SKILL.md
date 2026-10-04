@@ -14,7 +14,7 @@ Rules are **context, not enforcement**. To hard-block an action, use a `PreToolU
 - File under `.claude/rules/` (project) or `~/.claude/rules/` (user). `.md` discovered recursively; subdirs allowed (`rules/frontend/`).
 - **No `paths:` frontmatter → loaded at launch, always-on**, same priority as `.claude/CLAUDE.md`. Costs context every turn.
 - **`paths:` frontmatter (YAML list of globs) → lazy-loaded**, injected when Claude reads a matching file. Zero cost until then.
-- Precedence: user rules load first, project rules after (project wins).
+- Load order: user rules first, then project rules. Neither overrides the other — on conflict Claude may follow either, so resolve conflicts instead of relying on order.
 - After `/compact`: a path-scoped rule reloads only once a matching file is read again. Don't put must-always-hold facts in one.
 
 **Default to `paths:`-scoped.** Omit `paths:` ONLY when the rule genuinely governs all work (rare — that's usually CLAUDE.md's job).
@@ -39,7 +39,7 @@ paths:
 
 - Brace budget: a rule's whole `paths:` list shares 1,000 expanded patterns / 4 MiB. Each group multiplies (`{a,b}/{c,d}/*.{ts,tsx}` = 8). Over budget → the pattern is used **unexpanded**, so its literal braces match nothing. Keep brace groups shallow; prefer extra list entries over nested groups.
 - `[` starts a bracket expression. `photos [2024/**` is invalid and matches nothing (other patterns in the rule still work). Escape as `photos \[2024/**`.
-- Symlinked checkouts: matching works through a symlinked path to the project dir (v2.1.198+).
+- Symlinked checkouts: matching works through a symlinked path to the project dir.
 
 ## Sharing and excluding
 
@@ -49,11 +49,11 @@ paths:
   ln -s ~/company-standards/security.md .claude/rules/security.md
   ```
   A target outside the working dir counts as an external import: nothing loads until external imports are approved for the project, and then only rules **without** `paths:`. Approval is prompted only by an `@path` import in a project memory file, never by a symlink alone — no such import, no prompt, no linked rules. `~/.claude/rules/` avoids all of it.
-- **Exclude noisy inherited rules** with `claudeMdExcludes` (glob vs absolute path) in `.claude/settings.local.json`. Arrays merge across settings layers. For a symlinked rule, a pattern matching *either* the `.claude/rules/` path or the link target excludes it (v2.1.239+).
+- **Exclude noisy inherited rules** with `claudeMdExcludes` (glob vs absolute path) in `.claude/settings.local.json`. Arrays merge across settings layers. For a symlinked rule, a pattern matching *either* the `.claude/rules/` path or the link target excludes it.
   ```json
   { "claudeMdExcludes": ["/home/user/monorepo/other-team/.claude/rules/**"] }
   ```
-- Project rules are skipped when `project` is excluded from `--setting-sources` (lazy ones too, v2.1.211+).
+- Project rules are skipped when `project` is excluded from `--setting-sources`, lazy ones included.
 - `--add-dir` dirs contribute rules only with `CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1`.
 
 ## Never `@import` a rule into CLAUDE.md

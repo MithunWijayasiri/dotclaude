@@ -1,6 +1,6 @@
 ---
 name: handoff-session
-description: Compact the current conversation into a handoff document for another agent to pick up. Use for the whole session; for one unsolved problem use offload-task.
+description: Compact the current conversation into a handoff document for another agent to pick up.
 argument-hint: "What will the next session be used for?"
 ---
 
@@ -17,14 +17,6 @@ Keep the doc compact by excluding:
 - Fully resolved issues — exclude them unless the resolution affects future work
 - Off-topic tangents — side discussions unrelated to the main work
 - Redundant iterations — multiple rounds of the same fix/tweak
-
-Include:
-- Current state — what's working, what's broken, what's in progress
-- Blockers — anything stopping progress
-- Decisions made — architectural choices, trade-offs accepted
-- Next steps — what needs to happen next
-- Open questions — unresolved decisions the next agent should address
-- Key file paths — locations of relevant code/configs
 
 Use this structure:
 
@@ -43,7 +35,7 @@ Use this structure:
 [Anything stopping progress]
 
 ## Decisions Made
-[Key choices and trade-offs]
+[Key choices — architectural, trade-offs accepted]
 
 ## Next Steps
 [Prioritized list of concrete actions, including dependencies or conditions when a step cannot start immediately]
@@ -52,7 +44,7 @@ Use this structure:
 [Unresolved decisions for the next agent]
 
 ## Key Files
-[Relevant paths]
+[Relevant code/config paths]
 
 Redact any sensitive information, such as API keys, passwords, or personally identifiable information.
 
