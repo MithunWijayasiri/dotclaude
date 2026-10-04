@@ -1,71 +1,74 @@
 ---
 name: html-landing-page
-description: Design distinctive static landing pages — single/few-file HTML/CSS/JS (project sites, GitHub Pages, product one-pagers). Trigger when creating, redesigning, or reviewing a landing page. Not for app UIs, dashboards, or framework SPAs.
+description: Static landing pages — single/few-file HTML/CSS/JS for project sites, GitHub Pages, product one-pagers. Build, redesign, or review. Layers on frontend-design; not for app UIs, dashboards, or framework SPAs.
+disable-model-invocation: true
 ---
 
 # HTML Landing Page
 
-Goal: a page that could not be mistaken for anyone else's. Every design decision derives from the subject — no house style. The enemy is the "AI-default look" (see Banned defaults).
+Landing-page layer on top of `frontend-design:frontend-design`.
 
-## Process — plan before code, always
+## Precedence
 
-1. **Ground.** Name the subject, its audience, and the page's single job (usually one action). Mine the project's real material first: files, structure, vernacular, concrete numbers. The subject's own world is where distinctive choices come from.
-   - Example: Cleanfox is literally a patch applied to Betterfox → hero = animated diff in an editor window; sections named after the file's own comment banners.
-2. **Plan.** Write a short design plan before any HTML:
-   - Palette: 4–6 named hex values.
-   - Type: display + body (+ mono if code appears), each a deliberate pick. Google Fonts allowed.
-   - Layout: one-sentence concept + ASCII sketch.
-   - Signature: the ONE element the page will be remembered by. Must embody something true about the subject.
-3. **Self-check.** Would this plan come out for any similar brief? If any part matches Banned defaults or feels interchangeable → revise that part before coding.
-4. **Build.** Follow the plan exactly; derive every color/type value from it.
-5. **Critique.** Reread as a design lead: remove one accessory (Chanel). Verify every factual claim in the copy against the project — never ship a plausible-but-false line.
+- Invoke `frontend-design:frontend-design` via Skill tool first, unless already loaded this session. It owns: grounding, plan → self-check → build → critique passes, AI-default looks, typography, motion budget, copy voice, general quality floor, screenshot critique.
+- This file adds only static-landing-page specifics. frontend-design updates far more often than this file → never restate or override its guidance here.
+- Conflict on design taste → frontend-design wins. Conflict on landing-page constraints (checkpoint, copy verification, assets, deploy, Quality floor below) → this file wins.
+- Editing this skill: before adding a rule, check frontend-design doesn't already cover it; delete rules here once it does.
 
-## Banned defaults
+## Modes
 
-The three looks AI design clusters around — never spend a free axis on them:
+- **Build** — new page → full Process.
+- **Review** — existing page → audit against frontend-design's AI-default list, Landing-page tells, Quality floor, copy accuracy (Process step 6). Report findings, most severe first. Wait for go-ahead before changing anything.
+- **Redesign** — Review, then run Process only on what failed; keep what passes.
 
-- Warm cream bg (~#F4F1EA) + high-contrast serif display + terracotta accent.
-- Near-black bg + single acid-green or vermilion accent + hairline rules.
-- Broadsheet: hairline rules, zero border-radius, dense newspaper columns.
+## Process
 
-Common tells to avoid:
+Runs inside frontend-design's passes; adds these steps.
 
-- Numbered 01/02/03 markers when content isn't a real sequence. Numbers only for actual order (install steps qualify).
-- Hero = big number + small label + supporting stats + gradient accent.
-- Purple-blue gradients, gradient text, glassmorphism cards.
-- Emoji as feature icons. Decorative ✨/🚀 anywhere.
-- Scattered scroll animations on everything.
-- Same layout every time: centered hero → 3 feature cards → CTA band.
+1. **Mine the project.** Read real material first: files, structure, vernacular, concrete numbers, command strings. Distinctive choices come from the subject's own world.
+2. **Extend the plan.** Beyond frontend-design's token plan, add:
+   - Signature: the ONE element the page is remembered by; must embody something true about the subject.
+   - Contrast: every text/bg pair ≥ 4.5:1 (body), ≥ 3:1 (large text, UI). Distinctive palettes fail this most often.
+   - Theme: light-only, dark-only, or follows `prefers-color-scheme`. State it — otherwise it gets decided by accident.
+3. **Checkpoint.** Show plan (palette, type, layout sketch, signature, theme); wait for approval before writing HTML. Skip only if user said to build without review. Plan changes are cheap; built-page changes aren't.
+4. **Build** to the approved plan.
+5. **Render.** Open page in a browser; screenshot at ~375px and ~1280px; check console for errors. Judge screenshots, not source — overflow, spacing, and specificity bugs only show rendered.
+6. **Verify copy.** Check every factual claim against project source. Plausible-but-false → cut.
 
-## Design rules
+## Examples
 
-- **Hero is a thesis.** Open with the most characteristic artifact of the subject — a live demo, a diff, a file, an interactive moment — not a template headline block.
-- **Typography carries personality.** The display face is a memorable choice, used with restraint. If the subject is code, mono is a first-class citizen, not decoration.
-- **Structure is information.** Eyebrows, dividers, labels, section names must encode something true about the content (e.g. section names taken from the actual file), never decorate.
-- **Spend boldness in one place.** The signature element is the one loud thing; everything around it stays quiet and disciplined. Not taking a risk is also a risk — take exactly one, justifiable.
-- **Contrast as concept.** A page can encode an idea in its surfaces (e.g. clean light page, dark code objects = "the page is clean; the file is the machine").
+Copy the reasoning, never the output — reusing an example's hero is itself a template.
 
-## Motion
+- Cleanfox (literally a patch applied to Betterfox) → hero = animated diff in an editor window; section names taken from the file's own comment banners; hover-to-uncomment teaches how the file works; clean light page vs dark code objects = "the page is clean; the file is the machine".
+- Bakery pre-order page (hypothetical) → hero = tomorrow's real bake schedule, one oven-timer countdown per loaf; sections follow the day's bake order; sold-out items stay listed, struck through, so the page shows what sells.
 
-- One orchestrated load moment (hero sequence) + quiet hover micro-interactions. That's the default budget.
-- Scroll reveals allowed but subtle; never on every element.
-- Micro-interactions should teach, not decorate (hover-to-uncomment teaches how the file works).
-- Always: `@media (prefers-reduced-motion: no-preference)` wraps all motion; no-JS/no-IO fallback shows everything.
+## Landing-page tells
+
+Additions to frontend-design's AI-default list; same rule — use only when the brief asks.
+
+- Same skeleton every time: centered hero → 3 feature cards → CTA band.
+- Bento-grid feature sections.
+- "Trusted by" logo strips; invented testimonials or user counts (also fail step 6).
+- Purple-blue gradients, gradient text, glassmorphism.
+- Glowing blurred blobs behind hero; dotted-grid or noise-texture backgrounds.
+- Emoji as feature icons; decorative sparkle/rocket emoji anywhere.
+- Scroll reveal on every section.
 
 ## Copy
 
-Copy is half of why pages read as AI-made.
+frontend-design owns voice. Additions:
 
-- Specific > clever. Real numbers, names, and pref/file/command strings from the project ("3 defaults relaxed", "17 telemetry prefs off").
-- Buttons say exactly what happens: "Download user.js", not "Get started".
+- Specific > clever: real numbers, names, and file/pref/command strings from the project ("3 defaults relaxed", "17 telemetry prefs off", "Download user.js").
 - Banned slop: Unleash, Elevate, Seamless, Effortless, Supercharge, Empower, Revolutionize, "Built for the modern web".
-- Active voice, user-side naming (what people control, not how the system is built).
-- Verify every claim against the source before shipping. Wrong-but-nice copy gets cut.
 
-## Quality floor (build silently, never announce)
+## Quality floor
 
-- Responsive to mobile; wide code/tables scroll in own `overflow-x: auto` container, body never scrolls horizontally.
-- Visible `:focus-visible` styles; semantic HTML; `aria-label` on figure-like code blocks.
-- Favicon (inline SVG/emoji data URI) + `<title>` + meta description + og tags.
-- Watch CSS specificity — section/element selectors cancelling each other's spacing is a classic self-inflicted bug.
-- Assets: Google Fonts OK; everything else self-contained (inline SVG, data URIs, no icon/JS CDNs).
+Build silently, never announce.
+
+- Body never scrolls horizontally; wide code/tables scroll in own `overflow-x: auto` container.
+- `aria-label` on figure-like code blocks.
+- All motion inside `@media (prefers-reduced-motion: no-preference)`. No JS / no IntersectionObserver → all content visible (content starts visible; JS hides it pre-reveal).
+- `<title>`, meta description, favicon (inline SVG or emoji data URI), og tags. `og:image` = absolute URL to a real image (~1200×630); relative URLs break link previews.
+- Self-contained assets: inline SVG, data URIs; no icon/JS CDNs. Google Fonts is the only allowed external.
+- Fonts: `preconnect` to `fonts.googleapis.com` and `fonts.gstatic.com` (crossorigin), `display=swap`, request only weights actually used.
+- Relative asset paths only. GitHub Pages project sites serve from `/<repo>/` → root-absolute `/style.css` 404s.

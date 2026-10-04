@@ -11,7 +11,6 @@ Markdown docs here exist for AI agents, not human reading pleasure. Write conten
 
 - Apply to any `.md` being created or edited — **except `README.md`** (skip this skill entirely for README.md).
 - Apply only to **content you write or edit**. Do not rewrite existing surrounding prose you weren't asked to touch.
-- Human-facing prose in `.md` (a doc written for people, not agents) → use `humanize` instead.
 - Compress wording; keep markdown valid and navigable.
 - Authoring a `SKILL.md`? Read `references/skill-authoring.md` for skill-specific rules (frontmatter, triggering, what not to compact).
 
@@ -28,7 +27,8 @@ Judgment overrides compression. **Never compress if it loses important info.** W
 
 ## Strip
 
-- Emojis, Badges.
+- Emojis — all of them.
+- Badges — shields.io pills, image status badges (`![build](...)`).
 - Filler headers — empty `## Overview` / `## Introduction` whose body just restates the title. Collapse into actual content or open straight with facts.
 - Congratulatory / motivational lines — "Great!", "Congrats!", "That's it!", "Happy coding!", "Now you're ready to...".
 - Hedging and throat-clearing — "It's worth noting that", "Basically", "Simply", "Of course", "As you can see".
@@ -49,8 +49,8 @@ Judgment overrides compression. **Never compress if it loses important info.** W
 
 ## Shape
 
-- Prefer lists and tables over paragraphs.
-- One fact per line where it reads cleanly.
+- Reference data (commands, paths, options, values) → lists and tables, one fact per line.
+- Behavioral rules → keep the rule and its reason together in one line or sentence; a bullet that drops the "because" loses the rule's scope.
 - `→` for cause/result, conditions, flows.
 - Lead with the rule, then the why (only if non-obvious), then example.
 

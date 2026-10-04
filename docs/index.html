@@ -310,8 +310,8 @@ footer{border-top:1px solid var(--line);margin-top:12px}
 │  └─ asd-ste100.md
 ├─ <b>CLAUDE.md</b>
 └─ <b>skills/</b>
-   ├─ compact-markdown/ ─┐
-   ├─ humanize/       ─┘ paired
+   ├─ compact-markdown/
+   ├─ ask-first/
    ├─ handoff-session/ ─┐
    ├─ offload-task/    ─┘ paired
    ├─ claude-project-rules/
@@ -447,8 +447,8 @@ Want me to make the change?</pre>
           <div><p>Telegraphic markdown for AI-facing docs. Strips filler, keeps code, examples, and concrete detail — compact and still human-readable.</p></div>
         </li>
         <li class="live">
-          <div class="n">humanize</div>
-          <div><p>Remove AI writing patterns from prose. Use for human-facing writing where voice matters.</p></div>
+          <div class="n">ask-first</div>
+          <div><p>Ask clarifying questions before acting instead of guessing. Reads the code first, asks one question at a time with a recommended answer, and restates the plan before editing.</p></div>
         </li>
         <li class="live">
           <div class="n">handoff-session</div>
@@ -463,8 +463,8 @@ Want me to make the change?</pre>
           <div><p>Author <code>.claude/rules/*.md</code> — <code>paths:</code> scoping, lazy-load against always-on, shared rules by symlink, and when a rule beats <code>CLAUDE.md</code> or a skill.</p></div>
         </li>
         <li class="live">
-          <div class="n">html-landing-page</div>
-          <div><p>Design a distinctive static landing page. Plan palette, type, and one signature element before any HTML — and never ship the AI-default look.</p></div>
+          <div class="n">html-landing-page<small>Manual only</small></div>
+          <div><p>Design a distinctive static landing page on top of <code>frontend-design</code>. Plan palette, type, and one signature element before any HTML — and never ship the AI-default look. Invoked manually with <code>/html-landing-page</code>.</p></div>
         </li>
         <li class="live">
           <div class="n">git-merge</div>
