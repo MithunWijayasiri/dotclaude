@@ -31,7 +31,7 @@ jobs:
       - name: Package installable files
         env:
           TAG: ${{ steps.tag.outputs.name }}
-        run: zip -r "dotclaude-$TAG.zip" output-styles skills CLAUDE.md README.md LICENSE -x "skills/deprecated/*"
+        run: zip -r "dotclaude-$TAG.zip" output-styles rules skills CLAUDE.md README.md LICENSE -x "skills/deprecated/*"
 
       - name: Create release
         env:
