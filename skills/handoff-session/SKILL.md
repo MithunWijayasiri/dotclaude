@@ -44,7 +44,7 @@ Use this structure:
 [Unresolved decisions for the next agent]
 
 ## Key Files
-[Relevant code/config paths]
+[Relevant file paths]
 
 Redact any sensitive information, such as API keys, passwords, or personally identifiable information.
 
