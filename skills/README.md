@@ -9,11 +9,11 @@ Reusable task workflows. A skill loads on demand when the task matches its descr
 - **claude-project-rules** — author `.claude/rules/*.md`: `paths:` scoping, lazy-load vs always-on, symlinked shared rules, exclusions, and when a rule beats CLAUDE.md or a skill.
 - **html-landing-page** — design a distinctive static landing page on top of `frontend-design`. Plan palette, type, and one signature element before any HTML; bans the AI-default look. Manual: invoke it with `/html-landing-page`.
 - **git-merge** — merge a branch into yours without losing local unstaged work. Diagnose each conflict, then run the repo's own checks to catch the ones git merged cleanly but wrongly.
-- **pr-review** — review a PR, branch, commit, or uncommitted work for defects. Bugs first, structure second, style last. Resolves the target explicitly and stops on a bad ref or an empty diff. Findings are grouped Blocker / Should fix / Nit, each with `file:line`, the input that breaks it, and a fix. Manual: invoke it with `/pr-review`.
 - **zoom-out** — map an unfamiliar code area before touching it. Purpose, flow, callers, boundaries, risks, and the questions the codebase does not answer. Nothing is edited and no mutating command runs until the map is done. Manual: invoke it with `/zoom-out`.
 
 ## Deprecated
 
 `deprecated/` holds retired skills, kept for reference. Not installed by the release zip.
 
-- `humanize` — remove AI writing patterns from prose.
+- `humanize` — remove AI writing patterns from prose. Replaced by [`unslop`](https://github.com/cursor/plugins/blob/main/pstack/skills/unslop/SKILL.md) by poteto: simpler, better, and actively maintained.
+- `pr-review` — review a PR, branch, or diff for defects. Replaced by Claude Code's built-in code review: the skill's diff handling used too many tokens and the built-in handles diffs better.
