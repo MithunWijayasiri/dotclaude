@@ -1,7 +1,7 @@
 <h1 align="center">dotclaude</h1>
 
 <p align="center">
-  My Claude Code setup — output styles, CLAUDE.md, and skills.
+  My Claude Code setup — output styles, CLAUDE.md, rules, and skills.
 </p>
 
 <p align="center">
@@ -12,12 +12,13 @@
 
 ---
 
-Plain markdown in `~/.claude` — *output styles* shape how Claude answers, *skills* add repeatable jobs, and `CLAUDE.md` sets the defaults. 
+Plain markdown in `~/.claude` — *output styles* shape how Claude answers, *skills* add repeatable jobs, *rules* load by file type, and `CLAUDE.md` sets the defaults.
 
 ## Table of contents
 
 - [Output styles](#output-styles)
 - [CLAUDE.md](#claudemd)
+- [Rules](#rules)
 - [Skills](#skills)
 - [Install](#install)
 
@@ -43,6 +44,12 @@ claude mcp add --scope user --transport http --header "Authorization: Bearer YOU
 > [!TIP]
 > A free key comes from the [context7 dashboard](https://context7.com/dashboard). Prefer a local server? `claude mcp add --scope user context7 -- npx -y @upstash/context7-mcp --api-key YOUR_API_KEY`.
 
+## Rules
+
+A rule is a `.md` file in `~/.claude/rules/` that loads when Claude touches a file matching its `paths:` glob.
+
+- **compact-markdown** — on any `**/*.md`, points Claude at the `compact-markdown` skill. Keeps code, commands, and concrete details verbatim; README is exempt.
+
 ## Skills
 
 A skill is a task procedure Claude Code loads on demand — one way to do one job. See [`skills/README.md`](skills/README.md) for usage.
@@ -63,8 +70,9 @@ Clone the repo, or unzip the [latest release](https://github.com/MithunWijayasir
 
 ```bash
 git clone https://github.com/MithunWijayasiri/dotclaude.git
-mkdir -p ~/.claude/output-styles ~/.claude/skills
+mkdir -p ~/.claude/output-styles ~/.claude/rules ~/.claude/skills
 cp dotclaude/output-styles/*.md ~/.claude/output-styles/
+cp dotclaude/rules/*.md ~/.claude/rules/
 cp dotclaude/CLAUDE.md ~/.claude/CLAUDE.md
 cp -r dotclaude/skills/* ~/.claude/skills/
 ```
@@ -74,8 +82,9 @@ cp -r dotclaude/skills/* ~/.claude/skills/
 
 ```powershell
 git clone https://github.com/MithunWijayasiri/dotclaude.git
-New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\output-styles", "$env:USERPROFILE\.claude\skills"
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\output-styles", "$env:USERPROFILE\.claude\rules", "$env:USERPROFILE\.claude\skills"
 Copy-Item dotclaude\output-styles\*.md "$env:USERPROFILE\.claude\output-styles\" -Force
+Copy-Item dotclaude\rules\*.md "$env:USERPROFILE\.claude\rules\" -Force
 Copy-Item dotclaude\CLAUDE.md "$env:USERPROFILE\.claude\CLAUDE.md" -Force
 Copy-Item dotclaude\skills\* "$env:USERPROFILE\.claude\skills\" -Recurse -Force
 ```

@@ -309,6 +309,8 @@ footer{border-top:1px solid var(--line);margin-top:12px}
 ├─ <b>output-styles/</b>
 │  └─ asd-ste100.md
 ├─ <b>CLAUDE.md</b>
+├─ <b>rules/</b>
+│  └─ compact-markdown.md
 └─ <b>skills/</b>
    ├─ compact-markdown/
    ├─ ask-first/
@@ -332,8 +334,8 @@ footer{border-top:1px solid var(--line);margin-top:12px}
 
     <section id="overview">
       <p class="eyebrow">Overview</p>
-      <h1>Claude Code reads three kinds of file. This repo holds mine.</h1>
-      <p class="lede">Plain markdown in <code>~/.claude</code> — <em>output styles</em> shape how Claude answers, <em>skills</em> add repeatable jobs, and <code>CLAUDE.md</code> sets the defaults. Nothing is a plugin; every file is text you can read and edit.</p>
+      <h1>My Claude Code setup, ready to copy.</h1>
+      <p class="lede">Plain markdown in <code>~/.claude</code> — <em>output styles</em> shape how Claude answers, <em>skills</em> add repeatable jobs, <em>rules</em> load by file type, and <code>CLAUDE.md</code> sets the defaults. Nothing is a plugin; every file is text you can read and edit.</p>
       <ul class="parts">
         <li class="live">
           <div class="n">output-styles/</div>
@@ -516,7 +518,7 @@ Want me to make the change?</pre>
       <h2>Install</h2>
       <p>Get the files, then copy the parts you want into <code>~/.claude/</code>. Nothing to build.</p>
 
-      <p>No git? <a href="https://github.com/MithunWijayasiri/dotclaude/releases/latest">Download the latest release</a> — the ZIP bundles the output styles, skills, <code>CLAUDE.md</code>, README, and license.</p>
+      <p>No git? <a href="https://github.com/MithunWijayasiri/dotclaude/releases/latest">Download the latest release</a> — the ZIP bundles the output styles, rules, skills, <code>CLAUDE.md</code>, README, and license.</p>
 
       <figure class="code">
         <figcaption>shell</figcaption>
@@ -528,6 +530,10 @@ Want me to make the change?</pre>
 
 <span class="c"># standing instructions</span>
 <span class="k">cp</span> dotclaude/CLAUDE.md ~/.claude/CLAUDE.md
+
+<span class="c"># rules — loaded by file type</span>
+<span class="k">mkdir</span> -p ~/.claude/rules
+<span class="k">cp</span> dotclaude/rules/*.md ~/.claude/rules/
 
 <span class="c"># skills — one folder per skill</span>
 <span class="k">mkdir</span> -p ~/.claude/skills
