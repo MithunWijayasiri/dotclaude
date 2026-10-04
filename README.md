@@ -48,7 +48,6 @@ claude mcp add --scope user --transport http --header "Authorization: Bearer YOU
 A skill is a task procedure Claude Code loads on demand — one way to do one job. See [`skills/README.md`](skills/README.md) for usage.
 
 - **compact-markdown** — telegraphic markdown for AI-facing docs. Strips filler, keeps code and examples.
-- **humanize** — remove AI writing patterns from prose. Use for human-facing writing where voice matters.
 - **ask-first** — ask clarifying questions before acting instead of guessing. One question at a time, each with a recommended answer.
 - **handoff-session** — hand the whole session over: state, decisions, blockers, next steps. Detail that no longer matters is dropped.
 - **offload-task** — write one stuck problem into a standalone brief a fresh session can attack: goal, failing behaviour, repro, and every attempt with what it produced — code and manual checks alike.

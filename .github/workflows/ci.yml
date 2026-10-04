@@ -53,6 +53,7 @@ jobs:
           for dir in skills/*/; do
             dir=${dir%/}
             skill=${dir#skills/}
+            [ "$skill" = deprecated ] && continue
             file=$dir/SKILL.md
             if [ ! -f "$file" ]; then fail "$dir" "missing SKILL.md"; continue; fi
 
