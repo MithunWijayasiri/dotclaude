@@ -10,6 +10,7 @@ Reusable task workflows. A skill loads on demand when the task matches its descr
 - **html-landing-page** — design a distinctive static landing page on top of `frontend-design`. Plan palette, type, and one signature element before any HTML; bans the AI-default look. Manual: invoke it with `/html-landing-page`.
 - **git-merge** — merge a branch into yours without losing local unstaged work. Diagnose each conflict, then run the repo's own checks to catch the ones git merged cleanly but wrongly.
 - **zoom-out** — map an unfamiliar code area before touching it. Purpose, flow, callers, boundaries, risks, and the questions the codebase does not answer. Nothing is edited and no mutating command runs until the map is done. Manual: invoke it with `/zoom-out`.
+- **skill-audit** — audit an existing skill and report findings before editing: stale refs, conflicts with CLAUDE.md or rules, trigger collisions, missing approval gates, and a tested description. Edits only what you approve. Manual: invoke it with `/skill-audit`.
 
 ## Deprecated
 
