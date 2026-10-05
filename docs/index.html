@@ -319,7 +319,8 @@ footer{border-top:1px solid var(--line);margin-top:12px}
    ├─ claude-project-rules/
    ├─ html-landing-page/
    ├─ git-merge/
-   └─ zoom-out/</div>
+   ├─ zoom-out/
+   └─ skill-audit/</div>
 
     <ul class="toc" id="toc">
       <li><a href="#overview">Overview</a></li>
@@ -474,6 +475,10 @@ Want me to make the change?</pre>
         <li class="live">
           <div class="n">zoom-out<small>Manual only</small></div>
           <div><p>Map an unfamiliar code area before touching it — purpose, flow, callers, boundaries, risks. Nothing is edited and no mutating command runs until the map is done. Invoked manually with <code>/zoom-out</code>.</p></div>
+        </li>
+        <li class="live">
+          <div class="n">skill-audit<small>Manual only</small></div>
+          <div><p>Audit an existing skill and report findings before editing — stale refs, conflicts with <code>CLAUDE.md</code> or rules, trigger collisions, missing approval gates, and a tested description. Edits only what you approve. Invoked manually with <code>/skill-audit</code>.</p></div>
         </li>
       </ul>
       <p class="note">Both <code>handoff-session</code> and <code>offload-task</code> write a markdown file for a session that was not here — what differs is the payload. <strong>handoff-session</strong> carries the session: state, decisions, blockers, next steps, so the work continues. <strong>offload-task</strong> carries one unsolved problem and the dead ends already burned on it, so a fresh session or another agent can take a run at it without repeating them.</p>

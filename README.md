@@ -62,6 +62,7 @@ A skill is a task procedure Claude Code loads on demand — one way to do one jo
 - **html-landing-page** — design a distinctive static landing page on top of `frontend-design`. Plan palette, type, and one signature element before any HTML. Manual: `/html-landing-page`.
 - **git-merge** — merge a branch into yours without losing local unstaged work. Diagnose each conflict, then run the repo's own checks to catch the ones git merged cleanly but wrongly.
 - **zoom-out** — map an unfamiliar code area before touching it. Nothing is edited and no mutating command runs until the map is done. Manual: `/zoom-out`.
+- **skill-audit** — audit an existing skill and report findings before editing. Edits only what you approve. Manual: `/skill-audit`.
 
 ## Install
 
