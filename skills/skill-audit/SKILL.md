@@ -10,8 +10,11 @@ Report-first. Edit only approved findings.
 
 ## Setup
 
-1. Load `compact-markdown`; read its `references/skill-authoring.md` — that is the rubric. Don't restate it in the report or here.
-2. Resolve targets: name → `<repo>/.claude/skills/<name>/`, then `~/.claude/skills/<name>/`. Both exist → ask which. No args → list skills in both locations, ask which.
+1. Load `compact-markdown`; read its `skill-authoring.md` reference — that is the rubric. Don't restate it in the report or here.
+2. Resolve targets:
+   - Path to a folder → use it. Path to `SKILL.md` → its parent folder.
+   - Name → `<repo>/.claude/skills/<name>/`, then `~/.claude/skills/<name>/`. Both exist → ask which.
+   - No args → list skills in both locations, ask which.
 
 ## Read
 
