@@ -50,7 +50,7 @@ git commit -m "Merge remote-tracking branch 'origin/<target>' into <current-bran
 bash scripts/merge-stash.sh pop                     # pops recorded SHA; no-op if push created none
 ```
 
-- **Nothing to merge** → recon `TARGET COMMITS: 0` (or `still missing after sync: 0`, after sync) means `origin/<target>` already in HEAD; `git merge` prints `Already up to date.`, leaves nothing to commit. Skip merge + commit, go straight to stash pop.
+- **Nothing to merge** → before the target merge (after sync, if any), `git merge-base --is-ancestor origin/<target> HEAD` exit 0 means target already in HEAD; `git merge` would print `Already up to date.` and leave nothing to commit. Skip merge + commit, go straight to stash pop.
 - **Stash first, then sync.** `merge --ff-only` also refuses to run when local edits overlap files the remote changed. Stash before either merge, not between them.
 - **`git stash push` exits 0 with nothing to stash**, so bare `git stash pop` pops whatever is on top (maybe a days-old user stash). `merge-stash.sh` compares `refs/stash` before/after, pops by SHA only if it created the stash. Pop conflict → git keeps the stash; script prints ref; resolve, then `git stash drop <ref>`.
 - **Short commit message — one line only.** `git commit --no-edit` after a conflicted merge auto-appends a `Conflicts:` file list → bloated message. Always commit with explicit `-m "Merge remote-tracking branch 'origin/<target>' into <current-branch>"`. Same for `--amend` (step 6): `git commit --amend -m "<same one-liner>"`, never `--amend --no-edit` (keeps bloated message).
