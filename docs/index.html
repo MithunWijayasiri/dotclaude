@@ -319,6 +319,8 @@ footer{border-top:1px solid var(--line);margin-top:12px}
    ├─ claude-project-rules/
    ├─ html-landing-page/
    ├─ git-merge/
+   ├─ git-worktree/
+   ├─ empty-commit/
    ├─ zoom-out/
    └─ skill-audit/</div>
 
@@ -470,7 +472,15 @@ Want me to make the change?</pre>
         </li>
         <li class="live">
           <div class="n">git-merge</div>
-          <div><p>Merge a branch into yours without losing local unstaged work. Diagnose each conflict, then run the repo's own checks to catch the ones git merged cleanly but wrongly.</p></div>
+          <div><p>Merge a branch into yours without losing local unstaged work. A recon script maps what collides first; then diagnose each conflict and run the repo's own checks to catch the ones git merged cleanly but wrongly.</p></div>
+        </li>
+        <li class="live">
+          <div class="n">git-worktree<small>Windows only</small></div>
+          <div><p>Create, switch to, or remove a git worktree with <code>node_modules</code> junctioned and <code>.env</code> copied, so it runs without a reinstall. A lockfile mismatch is reported, never linked silently.</p></div>
+        </li>
+        <li class="live">
+          <div class="n">empty-commit<small>Manual only</small></div>
+          <div><p>Push an empty commit to re-run CI when a pipeline failed on something unrelated. Refuses on staged files, the default branch, or a missing upstream. Invoked manually with <code>/empty-commit</code>.</p></div>
         </li>
         <li class="live">
           <div class="n">zoom-out<small>Manual only</small></div>

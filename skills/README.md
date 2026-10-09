@@ -8,7 +8,9 @@ Reusable task workflows. A skill loads on demand when the task matches its descr
 - **offload-task** — write one stuck problem into a standalone brief a fresh session can attack: goal, failing behaviour, repro, and every attempt with what it produced — code and manual checks alike.
 - **claude-project-rules** — author `.claude/rules/*.md`: `paths:` scoping, lazy-load vs always-on, symlinked shared rules, exclusions, and when a rule beats CLAUDE.md or a skill.
 - **html-landing-page** — design a distinctive static landing page on top of `frontend-design`. Plan palette, type, and one signature element before any HTML; bans the AI-default look. Manual: invoke it with `/html-landing-page`.
-- **git-merge** — merge a branch into yours without losing local unstaged work. Diagnose each conflict, then run the repo's own checks to catch the ones git merged cleanly but wrongly.
+- **git-merge** — merge a branch into yours without losing local unstaged work. A recon script maps what collides first, then you diagnose each conflict and run the repo's own checks to catch the ones git merged cleanly but wrongly.
+- **git-worktree** — create, switch to, or remove a git worktree with `node_modules` junctioned and `.env` copied, so it runs without a reinstall. A lockfile mismatch is reported, never linked silently. Windows and PowerShell only.
+- **empty-commit** — push an empty commit to re-run CI on the current branch when a pipeline failed on something unrelated. Refuses on staged files, the default branch, or a missing upstream. Manual: invoke it with `/empty-commit`.
 - **zoom-out** — map an unfamiliar code area before touching it. Purpose, flow, callers, boundaries, risks, and the questions the codebase does not answer. Nothing is edited and no mutating command runs until the map is done. Manual: invoke it with `/zoom-out`.
 - **skill-audit** — audit an existing skill and report findings before editing: stale refs, conflicts with CLAUDE.md or rules, trigger collisions, missing approval gates, and a tested description. Edits only what you approve. Manual: invoke it with `/skill-audit`.
 

@@ -60,7 +60,9 @@ A skill is a task procedure Claude Code loads on demand — one way to do one jo
 - **offload-task** — write one stuck problem into a standalone brief a fresh session can attack: goal, failing behaviour, repro, and every attempt with what it produced — code and manual checks alike.
 - **claude-project-rules** — author `.claude/rules/*.md` with correct `paths:` scoping, lazy-load, and shared-rule symlinks.
 - **html-landing-page** — design a distinctive static landing page on top of `frontend-design`. Plan palette, type, and one signature element before any HTML. Manual: `/html-landing-page`.
-- **git-merge** — merge a branch into yours without losing local unstaged work. Diagnose each conflict, then run the repo's own checks to catch the ones git merged cleanly but wrongly.
+- **git-merge** — merge a branch into yours without losing local unstaged work. A recon script maps what collides first; then diagnose each conflict and run the repo's own checks to catch the ones git merged cleanly but wrongly.
+- **git-worktree** — start a worktree with `node_modules` junctioned and `.env` copied, so it runs without a reinstall. Windows and PowerShell only.
+- **empty-commit** — push an empty commit to re-run CI when a pipeline failed on something unrelated. Guards against staged files, the default branch, and a missing upstream. Manual: `/empty-commit`.
 - **zoom-out** — map an unfamiliar code area before touching it. Nothing is edited and no mutating command runs until the map is done. Manual: `/zoom-out`.
 - **skill-audit** — audit an existing skill and report findings before editing. Edits only what you approve. Manual: `/skill-audit`.
 

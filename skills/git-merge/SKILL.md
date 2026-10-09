@@ -5,111 +5,77 @@ description: Merge one branch (usually master) into the current branch while pre
 
 # Git Merge — Safe Branch Integration
 
-Procedural workflow the main agent runs. Investigate before mutating; preserve the user's local-only unstaged changes; resolve conflicts by diagnosis not guessing; verify the merge passes the repo's existing checks before declaring done.
+Workflow the main agent runs. Investigate before mutating; preserve local-only unstaged changes; resolve conflicts by diagnosis; verify with the repo's own checks before done.
+
+Scripts in this skill's `scripts/` folder (bash, run with cwd = repo root, as `bash <skill-dir>/scripts/<name>.sh`) do the mechanical steps and print compact digests. Below, `scripts/` means that folder.
 
 ## Hard rules
 
-- Read-only investigation first. `fetch`, then map state, before any `stash`/`merge`.
+- Read-only investigation first. `merge-recon.sh` (fetch + map state) before any `stash`/`merge`.
 - Never auto-commit beyond the one merge the user authorized. `git commit`/`--amend` need explicit user approval — ask (amend / separate fixup / leave it).
 - `git add`/`stash`/`merge` are mutating — explain, then run (user already asked to merge = authorization for the merge itself).
 - Keep the user's local-only unstaged files OUT of any commit. Stage only merge-resolution files.
 - Never push unless asked.
-- Delegate read-only recon (steps 1–2) to a Haiku subagent; run `fetch`, conflict-reading, resolution, and every mutating step (`merge`/`add`/`commit`/`stash`) on the main model only.
+- Never install tooling mid-merge. Run only checks the repo already has.
 
-## 1. Map state
-
-**Fetch on the main model.** `git fetch` writes remote-tracking refs → mutating, so it never goes to the subagent. Fetch all of `origin`, not one branch: `git fetch origin <target>` refreshes `origin/<target>` only, leaving `origin/<current-branch>` stale — and step 1 compares against both.
+## 1. Recon
 
 ```bash
-git fetch origin          # both origin/<target> and origin/<current-branch>
+bash scripts/merge-recon.sh <target>   # default target: master; current branch from HEAD
 ```
 
-**Then delegate the noise.** The rest of steps 1–2 is high-noise, low-judgment. Spawn a Haiku subagent (the `git-digest` agent, or `general-purpose` pinned to Haiku) to run the `status`/`log`/`diff --name-only` reads and return ONLY the structured facts: commits + files the target brings, overlap with unstaged/untracked, and ahead/behind own remote. The main model then reads only the conflict hunks (step 5). Never let the subagent run a mutating command.
+Runs `git fetch origin` (all of origin, not one branch: `fetch origin <target>` leaves `origin/<current-branch>` outdated, and recon compares both), then prints one digest: target commits + merge-base, ahead/behind OWN remote (+ partial remote merge), files both merges bring, local unstaged/untracked/ignored, COLLISIONS. Dies on merge/rebase in progress, unmerged paths, detached HEAD, missing `origin/<target>`.
+
+Why:
+- **Local branch may be behind its own remote**, remote may already hold a partial `Merged <target>` commit → "merge properly" = two steps: sync (`--ff-only`) to `origin/<current-branch>`, then merge `origin/<target>`. Decide before touching tree.
+- **Ignored files matter.** Plain `git status` hides them; `merge` overwrites an ignored file **silently, exit 0** when incoming side tracks that path (local `.env`/config lost). Script uses `--ignored`.
+- **Both merges checked.** `--ff-only` sync rewrites tree too → same collisions.
+- COLLISIONS: modified → stash (step 3); untracked → merge aborts, move aside; ignored → silent overwrite, move aside. None → no stash needed.
+- Lists are capped (`+N more`), counts exact. Merge attempt names every conflict; trust it over lists.
+
+## 2. Confirm approach (when branch is behind its remote)
+
+Hard-to-reverse + user's call. Ask: sync-then-merge (recommended, fully up to date, clean FF push) vs merge-into-outdated-HEAD (diverges from remote → messy push). Note it creates one merge commit.
+
+Recon says DIVERGED (behind and ahead) → `--ff-only` sync fails. Ask instead: rebase local-only commits onto `origin/<current-branch>` (linear, rewrites unpushed commits only) vs merge `origin/<current-branch>` first (extra merge commit). Then merge target.
+
+## 3. Preserve local unstaged changes
 
 ```bash
-git status                          # branch, unstaged, untracked, ahead/behind OWN remote
-git log --oneline HEAD..origin/<target>      # commits target brings
-git merge-base HEAD origin/<target>
-git log --oneline HEAD..origin/<current-branch>   # is local behind its OWN remote?
-```
-
-Key discovery: **local branch may be behind its own remote**, and the remote may already contain a partial `Merged <target>` commit. If so, "merge properly" = two steps: sync local to `origin/<current-branch>` (fast-forward) first, then merge `origin/<target>`. Decide before touching the tree.
-
-## 2. Check unstaged-file collision
-
-User wants local unstaged changes kept → find whether the merge touches them.
-
-Check **both** merges, not just the target one — when the branch is behind its own remote, step 4's `--ff-only` sync also rewrites the tree and can hit the same collisions.
-
-```bash
-git diff --name-only <merge-base> origin/<target>          # files the target merge brings
-git diff --name-only HEAD origin/<current-branch>          # files the sync merge brings, if behind
-git status --short --ignored                                # unstaged + untracked + IGNORED
-```
-
-⚠️ **`--ignored` is not optional.** Plain `git status --short` hides ignored files, and `merge` overwrites an ignored file **silently, exit 0, no warning** when the incoming side tracks that path. A local `.env` or config the user has ignored for months is destroyed with no message. Ignored paths belong in the collision list like any other.
-
-- Overlap → those files block the merge / will conflict. Plan a stash.
-- No overlap → merge proceeds without disturbing local edits; no stash needed.
-
-⚠️ **Bash piped output can be truncated.** Do NOT trust a `--name-only` list as complete. Confirm against the actual merge attempt (it names every conflict), or re-run critical reads raw / via Read. A merge surfaced ~10 auto-merged files when `--name-only` showed only 3.
-
-## 3. Confirm approach (when branch is stale vs its remote)
-
-Hard-to-reverse + user's call. Ask: sync-then-merge (recommended, fully up to date, clean FF push) vs merge-into-stale-HEAD (diverges from remote → messy push). Note it creates one merge commit.
-
-## 4. Preserve local unstaged changes
-
-```bash
-git rev-parse -q --verify refs/stash           # record: pre-existing stash, or empty
-git stash push -m "local unstaged (merge)"     # tracked modified files only; untracked stay
-git rev-parse -q --verify refs/stash           # changed → this workflow made a stash
+bash scripts/merge-stash.sh push                    # records new stash SHA only if this call created one
 git merge --ff-only --no-overwrite-ignore origin/<current-branch>   # sync step, if branch was behind
-git merge --no-overwrite-ignore origin/<target> --no-edit
-# ... resolve conflicts (step 5) ...
+git merge --no-ff --no-commit --no-overwrite-ignore origin/<target>   # always stops before commit, even when clean or FF-able
+# ... resolve conflicts (step 4), verify (step 5) ...
 git commit -m "Merge remote-tracking branch 'origin/<target>' into <current-branch>" > commit.log 2>&1  # hook output to file; then check exit code + grep -iE 'error|fail' commit.log
-git stash pop <recorded-stash-sha>             # ONLY if the push above created one
+bash scripts/merge-stash.sh pop                     # pops recorded SHA; no-op if push created none
 ```
 
+- **Nothing to merge** → before the target merge (after sync, if any), `git merge-base --is-ancestor origin/<target> HEAD` exit 0 means target already in HEAD; `git merge` would print `Already up to date.` and leave nothing to commit. Skip merge + commit, go straight to stash pop.
 - **Stash first, then sync.** `merge --ff-only` also refuses to run when local edits overlap files the remote changed. Stash before either merge, not between them.
-- **`git stash push` exits 0 even with nothing to stash** — it just prints `No local changes to save`. So a bare `git stash pop` later pops whatever is on top, which may be a stash the user made days ago. Record `refs/stash` before and after the push; pop by that SHA, and only when the push actually created it.
-- **Short commit message — one line only.** `git commit --no-edit` after a conflicted merge auto-appends a `Conflicts:` file list → bloated message. Always commit with explicit `-m "Merge remote-tracking branch 'origin/<target>' into <current-branch>"`. Same applies to `--amend` (step 7): `git commit --amend -m "<same one-liner>"`, never `--amend --no-edit` (it keeps the bloated message).
-- **Redirect the commit's pre-commit hook output.** A lint/typecheck pre-commit hook can dump tens of KB into context on `git commit`. Send it to a file (`> commit.log 2>&1`) — never `--no-verify`, the hook must still run — then surface only the exit code + `grep -iE 'error|fail' commit.log`. `git commit` only — `git stash pop` runs no hooks.
-- Stash pop usually auto-merges shared files cleanly (3-way: stash base / merged file / local edits). If it re-conflicts, combine merged-target version + local tweaks. Its output is a restore/conflict listing — redirect it only if that listing is long.
-- **`--no-overwrite-ignore` on both merges.** Untracked files abort a merge by default, but *ignored* files are overwritten silently — that flag makes git abort on those too. Verified: it works on `--ff-only` as well.
-- Untracked files (a scratch dir, the Windows `nul` artifact) don't block merge — leave them. `git stash push` leaves them in place too.
-- **Exception: colliding path.** If either merge adds a tracked file at a path where an untracked or ignored file already sits, it aborts (`untracked working tree files would be overwritten`) — the `--ff-only` sync included. Check both step-2 file lists against the `--ignored` status output; move the colliding ones aside (or `git stash push -u -- <path>`) before merging, restore after. Same handling either way. Leave every non-colliding file alone.
+- **`git stash push` exits 0 with nothing to stash**, so bare `git stash pop` pops whatever is on top (maybe a days-old user stash). `merge-stash.sh` compares `refs/stash` before/after, pops by SHA only if it created the stash. Pop conflict → git keeps the stash; script prints ref; resolve, then `git stash drop <ref>`.
+- **Short commit message — one line only.** `git commit --no-edit` after a conflicted merge auto-appends a `Conflicts:` file list → bloated message. Always commit with explicit `-m "Merge remote-tracking branch 'origin/<target>' into <current-branch>"`. Same for `--amend` (step 6): `git commit --amend -m "<same one-liner>"`, never `--amend --no-edit` (keeps bloated message).
+- **Redirect pre-commit hook output.** Lint/typecheck hook can dump tens of KB on `git commit`. Send to file (`> commit.log 2>&1`); never `--no-verify`, hook must run; surface only exit code + `grep -iE 'error|fail' commit.log`. `git commit` only; `git stash pop` runs no hooks.
+- Stash pop usually auto-merges shared files cleanly (3-way: stash base / merged file / local edits). Re-conflict → combine merged-target version + local tweaks.
+- **`--no-overwrite-ignore` on both merges.** Untracked files abort a merge by default; *ignored* files are overwritten silently. Flag makes git abort on those too — verified on `--ff-only`; NOT on a true merge with git 2.54 (default `ort` strategy overwrote silently). Treat it as a backstop only: move every recon-reported ignored collision aside before merging.
+- Non-colliding untracked files (scratch dir, local notes, Windows `nul` artifact) don't block merge; leave them. `git stash push` leaves them too.
+- **Colliding path** (recon COLLISIONS, untracked/ignored): either merge adding a tracked file where an untracked/ignored file sits aborts (`untracked working tree files would be overwritten`), `--ff-only` sync included. Move colliding ones aside (or `git stash push -u -- <path>`) before merging. Never restore over the path after: it now holds the tracked version. Diff moved copy vs tracked, ask user how to reconcile (local secrets must not land in the tracked file). Leave every non-colliding file alone.
 
-## 5. Resolve conflicts — diagnose, don't guess
+## 4. Resolve conflicts — diagnose, don't guess
 
 Understand both sides before editing.
 
-- **Most conflicts are additive** — both sides added different methods/fields/params adjacent to each other → **keep both**.
-- Read the full file region (Read tool), not just the combined `diff --cc`. The combined diff hides shared context.
-- Overlapping logic → combine faithfully. Example: keep HEAD's guard AND master's new conditional branch:
-  ```ts
-  if (!skipOptionalDetails) {
-      await accordion.click();
-      if (await returningUserNo.isVisible()) {   // master
-          await returningUserNo.click();
-      } else if (!skipTermsConsent) {            // HEAD guard preserved
-          await consentYes.click();
-      }
-  }
-  ```
-- Both sides changed the SAME action → prefer the newer/more-robust pattern, for consistency with already-merged sibling blocks (e.g. master's `getByRole('radio')` over HEAD's `getByTestId('Yes')` when an already-merged sibling block uses the former).
-- A parameterized method (HEAD) whose defaults reproduce master's plain version → keep the parameterized superset.
+- **Most conflicts additive** — both sides added different methods/fields/params adjacent → **keep both**.
+- Read full file region (Read tool), not just combined `diff --cc`; it hides shared context.
+- Overlapping logic → combine faithfully (keep both guards/branches).
+- Both sides changed SAME action → prefer newer/more-robust pattern, consistent with already-merged sibling blocks.
+- Parameterized method (HEAD) whose defaults reproduce target's plain version → keep parameterized superset.
+- Examples + removed/renamed-param caller handling: `references/conflict-resolution.md` (load on demand).
 
-After each file: confirm no markers, verify referenced locators exist:
-```bash
-grep -rn "^<<<<<<<\|^=======\|^>>>>>>>" src
-git diff --name-only --diff-filter=U          # unmerged still in index
-```
-Then `git add` resolved files to mark resolved.
+After each file, `git add` it to mark resolved. Final marker/unmerged check is in step 5.
 
-## 6. Catch SILENT semantic conflicts — validate
+## 5. Catch SILENT semantic conflicts — verify
 
-Git merges files independently. A signature change in file A + a call in file B do NOT textually conflict but will NOT compile. **Always run the repo's OWN checks after resolving — and only those.** A merge must not introduce a toolchain the branch didn't have.
+Git merges files independently. Signature change in file A + call in file B do NOT textually conflict but will NOT compile. **Always run the repo's OWN checks after resolving — and only those.** A merge must not introduce a toolchain the branch didn't have.
 
 Find what already exists before running anything:
 
@@ -118,43 +84,34 @@ git show HEAD:package.json     # declared scripts: typecheck / lint / build / te
 git ls-files | grep -iE 'tsconfig|eslint|biome|go\.mod|Cargo\.toml|pyproject'
 ```
 
-- Declared script → run it (`npm run typecheck`, `npm run lint`). Repo's choice wins.
+- Declared script → use it (`npm run typecheck`, `npm run lint`). Repo's choice wins.
 - No script but a tracked `tsconfig.json` → `npx --no-install tsc --noEmit -p tsconfig.json`. `--no-install` keeps it on the repo's own TypeScript; if that errors, TS isn't a dependency here → don't install one, skip.
 - Not a TS repo → same rule with its own tooling (`go build ./...`, `cargo check`, `mypy`). Configured-only.
-- Nothing configured → no static check available. Say that plainly and rely on step 5's marker/locator greps. Don't add tooling mid-merge.
+- Nothing configured → no static check available. Say that plainly and rely on the marker/unmerged checks. Don't add tooling mid-merge.
 
-Gotchas:
-
-- An invalid `"ignoreDeprecations": "6.0"` in tsconfig makes TS 5.8 fail with TS5103. CLI `--ignoreDeprecations 5.0` overrides it — the flag wins over tsconfig.
-- When a param was removed/renamed across the merge (`{ legacyFlag }` → `{ channel, addAddress }`): grep all CALLERS. If no caller exercised the old param's truthy path, the old default == new default → call with no arg. Don't invent a mapping.
-
-## 7. Commit discipline
-
-- The authorized merge commit must pass whatever step 6 found. If a check reveals a fix only AFTER committing, ask the user: amend merge commit / separate fixup commit / leave unstaged for them.
-- Amend = stage ONLY the fix file (local-only unstaged files stay out); use the explicit one-line `-m` from step 4, never `--amend --no-edit`.
-
-## 8. Pre-push verification
+Pass the chosen command to the verify script:
 
 ```bash
-git merge-base --is-ancestor origin/<current-branch> HEAD && echo "FF-safe"   # clean push, no force
-git log --oneline origin/<current-branch>..HEAD                                # what will push
-git diff --cached --name-only                                                  # should be empty
+bash scripts/merge-verify.sh -- npm run typecheck   # or no `--` part when nothing is configured
 ```
 
-Confirm: fast-forward push, no conflict markers, nothing wrongly staged, step-6 checks clean. Local-only unstaged changes are not committed → won't push. Don't run `git push` — tell the user the command.
+Prints: conflict markers (tracked, non-binary), unmerged files, check exit code + first 20 error lines (command runs from repo root, output redirected to a temp file), pre-push checks, final `PASS`/`FAIL: reasons`. Mid-merge (before commit) push checks are skipped; staged resolution files expected.
 
-## 9. Cleanup
+- Param removed/renamed across merge: grep all CALLERS; don't invent a mapping (see `references/conflict-resolution.md`).
 
-Remove any scratch files created during investigation (e.g. a temp `git show > file` used to read a pre-merge version — Read can't open `/tmp` on Windows).
+## 6. Commit discipline
 
-## Extra: fix an already-pushed merge message
+- Authorized merge commit must pass whatever step 5 found. Check reveals a fix only AFTER committing → ask user: amend merge commit / separate fixup commit / leave unstaged.
+- Amend = stage ONLY the fix file (local-only unstaged files stay out); explicit one-line `-m` from step 3, never `--amend --no-edit`.
 
-Only when the bad message was already pushed (not the normal flow). Rewrites published history → confirm with user first.
+## 7. Pre-push verification
 
-```bash
-git rev-parse HEAD origin/<current-branch>   # equal → remote hasn't moved, safe
-git commit --amend -m "Merge remote-tracking branch 'origin/<target>' into <current-branch>"
-git push --force-with-lease origin <current-branch>   # NOT --force; lease aborts if a teammate pushed
-```
+After the commit, run `bash scripts/merge-verify.sh [-- <check command>]` again. `PASS` = no conflict markers, check clean, FF-safe (`origin/<current-branch>` ancestor of HEAD; clean push, no force), nothing staged. Local-only unstaged changes are not committed → won't push. Don't run `git push`; tell user the command.
 
-Amending a merge commit preserves both parents. A teammate who already pulled must reset their local copy.
+## 8. Cleanup
+
+Remove scratch files from investigation (e.g. `commit.log`, temp `git show > file`; Read can't open `/tmp` on Windows).
+
+## Extra
+
+Fix an already-pushed merge message (rewrites published history, confirm first): `references/fix-pushed-merge-message.md`.
