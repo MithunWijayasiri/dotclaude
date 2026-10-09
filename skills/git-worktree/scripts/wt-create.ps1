@@ -44,6 +44,8 @@ try {
     $mode = $null
     $nmWt = Join-Path $Wt 'node_modules'
     $nmMain = Join-Path $Main 'node_modules'
+    $lockMain = Join-Path $Main 'package-lock.json'
+    $lockWt = Join-Path $Wt 'package-lock.json'
     $exit = 0
 
     if (-not (Test-Path -LiteralPath (Join-Path $Wt 'package.json'))) {
@@ -51,13 +53,16 @@ try {
     }
     elseif (Test-Path -LiteralPath $nmWt) {
         $mode = 'skipped (node_modules already exists)'
+        if ((Get-Item -LiteralPath $nmWt -Force).LinkType -eq 'Junction') {
+            $match = (Test-Path -LiteralPath $lockMain) -and (Test-Path -LiteralPath $lockWt) -and
+                ((Get-FileHash -LiteralPath $lockMain).Hash -eq (Get-FileHash -LiteralPath $lockWt).Hash)
+            $mode = if ($match) { 'junction (existing)' } else { 'WARN junction (existing) but package-lock.json missing or differs from Main; run wt-remove.ps1 -Unlink before any install' }
+        }
     }
     elseif (-not (Test-Path -LiteralPath $nmMain -PathType Container)) {
         $mode = 'skipped (Main has no node_modules)'
     }
     else {
-        $lockMain = Join-Path $Main 'package-lock.json'
-        $lockWt = Join-Path $Wt 'package-lock.json'
         $same = $false
         $why = ''
         if (-not (Test-Path -LiteralPath $lockMain) -or -not (Test-Path -LiteralPath $lockWt)) {

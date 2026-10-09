@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Usage: merge-recon.sh <target> [current-branch]
+# Usage: merge-recon.sh <target>
 # Fetches origin (only mutation), prints one compact digest for the merge plan.
 set -u
 
@@ -11,8 +11,7 @@ count() { wc -l < "$1" | tr -d ' '; }
 TARGET=${1:-master}
 git rev-parse --git-dir >/dev/null 2>&1 || die "not a git repo"
 GD=$(git rev-parse --git-dir)
-CUR=${2:-$(git symbolic-ref -q --short HEAD)}
-[ -n "$CUR" ] || die "detached HEAD; pass current branch as arg 2"
+CUR=$(git symbolic-ref -q --short HEAD) || die "detached HEAD; check out a branch first"
 [ -e "$GD/MERGE_HEAD" ] && die "merge already in progress"
 if [ -d "$GD/rebase-merge" ] || [ -d "$GD/rebase-apply" ]; then die "rebase in progress"; fi
 [ -z "$(git ls-files -u | head -1)" ] || die "unmerged paths present"

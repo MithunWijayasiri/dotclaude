@@ -28,6 +28,9 @@ if ! git rev-parse --abbrev-ref --symbolic-full-name '@{u}' >/dev/null 2>&1; the
   exit 2
 fi
 
+remote=$(git config "branch.$branch.remote") || fail "no upstream remote for '$branch'"
+merge=$(git config "branch.$branch.merge") || fail "no upstream branch for '$branch'"
+
 out=$(mktemp) || fail "mktemp failed"
 trap 'rm -f "$out"' EXIT
 
@@ -40,8 +43,6 @@ if [ "$rc" -ne 0 ]; then
   exit 1
 fi
 
-remote=$(git config "branch.$branch.remote") || fail "no upstream remote for '$branch'"
-merge=$(git config "branch.$branch.merge") || fail "no upstream branch for '$branch'"
 git push "$remote" "HEAD:$merge" >"$out" 2>&1
 rc=$?
 if [ "$rc" -ne 0 ]; then

@@ -1,7 +1,7 @@
 # Pre-removal helper for a worktree. Never removes the worktree itself.
 # Usage: wt-remove.ps1 -Wt <worktree> [-Report] [-Unlink]
 #   -Report: uncommitted, ignored (minus node_modules), unpushed commits on HEAD (capped).
-#   -Unlink: remove node_modules junction only (cmd rmdir, never recursive).
+#   -Unlink: remove node_modules junction only (never recursive).
 # Exit: 0 ok, 1 error, 3 refused (node_modules is a non-junction link).
 param(
     [Parameter(Mandatory = $true)][string]$Wt,
@@ -44,8 +44,8 @@ try {
             Write-Output 'node_modules: none'
         }
         elseif ($item.LinkType -eq 'Junction') {
-            cmd /c rmdir "$nm"
-            if ($LASTEXITCODE -ne 0 -or (Test-Path -LiteralPath $nm)) { throw "rmdir failed on junction: $nm" }
+            $item.Delete() # non-recursive: removes the reparse point only
+            if (Test-Path -LiteralPath $nm) { throw "delete failed on junction: $nm" }
             Write-Output 'node_modules: junction unlinked (target untouched)'
         }
         elseif ($item.LinkType) {

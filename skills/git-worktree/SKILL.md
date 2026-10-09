@@ -52,6 +52,8 @@ Exit 2 (also when lockfile missing on either side) → not linked; branch's deps
 
 Exit 1 → report the printed error.
 
+`WARN junction (existing)` (exit 0, Switch re-run) → branch's lockfile changed since linking. Report it; any install needs `wt-remove.ps1 -Unlink` first, else `npm ci` writes into main's `node_modules`.
+
 **4. Report** path, branch, base, node_modules mode (junction / real / skipped), files copied, and what Not provisioned leaves out.
 
 ## Switch
@@ -88,7 +90,7 @@ Lists uncommitted files, ignored files (copied `.env`, build output; `node_modul
 powershell -NoProfile -File "$SKILL\scripts\wt-remove.ps1" -Wt "$WT" -Unlink
 ```
 
-Removes the junction only (`cmd /c rmdir`; target keeps contents). Real directory or none → untouched. Exit codes: 0 ok, 1 error, 3 `node_modules` is a non-junction link (e.g. symlink) → stop, tell user. Script never removes the worktree itself.
+Removes the junction only (non-recursive `DirectoryInfo.Delete()`; target keeps contents). Real directory or none → untouched. Exit codes: 0 ok, 1 error, 3 `node_modules` is a non-junction link (e.g. symlink) → stop, tell user. Script never removes the worktree itself.
 
 **4. Remove.** Session created the worktree via EnterWorktree → `ExitWorktree(action: "remove")` (`discard_changes: true` only after user confirmed step 2).
 
