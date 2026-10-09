@@ -40,7 +40,9 @@ if [ "$rc" -ne 0 ]; then
   exit 1
 fi
 
-git push >"$out" 2>&1
+remote=$(git config "branch.$branch.remote") || fail "no upstream remote for '$branch'"
+merge=$(git config "branch.$branch.merge") || fail "no upstream branch for '$branch'"
+git push "$remote" "HEAD:$merge" >"$out" 2>&1
 rc=$?
 if [ "$rc" -ne 0 ]; then
   echo "FAIL: git push exit $rc (commit created locally, not pushed)" >&2

@@ -1,6 +1,6 @@
 # Pre-removal helper for a worktree. Never removes the worktree itself.
 # Usage: wt-remove.ps1 -Wt <worktree> [-Report] [-Unlink]
-#   -Report: uncommitted + unpushed commits (capped).
+#   -Report: uncommitted, ignored (minus node_modules), unpushed commits on HEAD (capped).
 #   -Unlink: remove node_modules junction only (cmd rmdir, never recursive).
 # Exit: 0 ok, 1 error, 3 refused (node_modules is a non-junction link).
 param(
@@ -28,9 +28,12 @@ try {
     if ($Report) {
         $status = @(git -C $Wt status --short)
         if ($LASTEXITCODE -ne 0) { throw 'git status failed' }
-        $unpushed = @(git -C $Wt log --oneline --branches --not --remotes)
+        $ignored = @(git -C $Wt status --short --ignored | Where-Object { $_ -like '!! *' -and $_ -ne '!! node_modules/' })
+        if ($LASTEXITCODE -ne 0) { throw 'git status --ignored failed' }
+        $unpushed = @(git -C $Wt log --oneline HEAD --not --remotes)
         if ($LASTEXITCODE -ne 0) { throw 'git log failed' }
         ShowCapped 'uncommitted' $status
+        ShowCapped 'ignored' $ignored
         ShowCapped 'unpushed commits' $unpushed
     }
 

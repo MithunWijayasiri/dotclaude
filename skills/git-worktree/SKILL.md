@@ -48,7 +48,7 @@ Exit codes: 0 ok, 1 error/guard refusal, 2 lockfile **DRIFT**.
 
 Exit 2 (also when lockfile missing on either side) → not linked; branch's deps don't match what's installed. `.env` still copied. **Stop, report, ask user:**
 - junction anyway (read-only work, raising a PR without running anything) → re-run with `-ForceJunction`, or
-- `npm ci` in `$WT` — gives a real `node_modules`; slow, use a long timeout (10 min).
+- `npm ci` in `$WT` — gives a real `node_modules`; slow, use a long timeout (10 min). Needs `$WT\package-lock.json` or `npm-shrinkwrap.json`; neither → offer the project's own install command instead.
 
 Exit 1 → report the printed error.
 
@@ -64,6 +64,8 @@ git worktree list --porcelain
 
 `git -C <path> status --short` per entry for dirty state.
 
+Set `MAIN` = first `worktree` entry of that list (the main worktree) before entering; Create step 3 needs it.
+
 `EnterWorktree(path: "<chosen>")`, then re-run Create step 3 — worktrees from a bare `git worktree add`, or made before this skill, usually lack `node_modules` and `.env`.
 
 From inside a worktree, `EnterWorktree(path)` only reaches worktrees under the same repo's `.claude/worktrees/`. Worktrees elsewhere (sibling dirs) → exit to main repo first.
@@ -78,7 +80,7 @@ From inside a worktree, `EnterWorktree(path)` only reaches worktrees under the s
 powershell -NoProfile -File "$SKILL\scripts\wt-remove.ps1" -Wt "$WT" -Report
 ```
 
-Lists uncommitted files and unpushed commits (capped at 30 each). Wait for explicit confirmation. Either list non-empty → say so plainly; that work dies with the worktree.
+Lists uncommitted files, ignored files (copied `.env`, build output; `node_modules` excluded, step 3 handles it), and unpushed commits on the worktree's HEAD (capped at 30 each). Wait for explicit confirmation. Any list non-empty → say so plainly; that work dies with the worktree.
 
 **3. Unlink node_modules** — after confirmation, before any removal command touches the directory:
 

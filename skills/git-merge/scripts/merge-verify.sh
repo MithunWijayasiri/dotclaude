@@ -23,8 +23,9 @@ FAIL=()
 
 echo "branch: $BR"
 
-# --- conflict markers (tracked, non-binary)
-git grep -nIE '^(<<<<<<<( |$)|>>>>>>>( |$)|=======[[:space:]]*$)' > "$T/markers" 2>/dev/null
+# --- conflict markers (tracked, non-binary; working tree and index)
+# no ======= pattern: matches markdown setext underlines, and a real conflict always has <<<<<<< too
+{ git grep -nIE '^(<<<<<<<|>>>>>>>)( |$)'; git grep --cached -nIE '^(<<<<<<<|>>>>>>>)( |$)'; } 2>/dev/null | sort -u > "$T/markers"
 N=$(count "$T/markers")
 echo "conflict markers: $N"
 if [ "$N" -gt 0 ]; then cap 15 < "$T/markers"; FAIL+=("conflict markers in $N lines"); fi

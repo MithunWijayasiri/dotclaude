@@ -37,13 +37,15 @@ Why:
 
 Hard-to-reverse + user's call. Ask: sync-then-merge (recommended, fully up to date, clean FF push) vs merge-into-outdated-HEAD (diverges from remote → messy push). Note it creates one merge commit.
 
+Recon says DIVERGED (behind and ahead) → `--ff-only` sync fails. Ask instead: rebase local-only commits onto `origin/<current-branch>` (linear, rewrites unpushed commits only) vs merge `origin/<current-branch>` first (extra merge commit). Then merge target.
+
 ## 3. Preserve local unstaged changes
 
 ```bash
 bash scripts/merge-stash.sh push                    # records new stash SHA only if this call created one
 git merge --ff-only --no-overwrite-ignore origin/<current-branch>   # sync step, if branch was behind
-git merge --no-overwrite-ignore origin/<target> --no-edit
-# ... resolve conflicts (step 4) ...
+git merge --no-ff --no-commit --no-overwrite-ignore origin/<target>   # always stops before commit, even when clean or FF-able
+# ... resolve conflicts (step 4), verify (step 5) ...
 git commit -m "Merge remote-tracking branch 'origin/<target>' into <current-branch>" > commit.log 2>&1  # hook output to file; then check exit code + grep -iE 'error|fail' commit.log
 bash scripts/merge-stash.sh pop                     # pops recorded SHA; no-op if push created none
 ```
@@ -55,7 +57,7 @@ bash scripts/merge-stash.sh pop                     # pops recorded SHA; no-op i
 - Stash pop usually auto-merges shared files cleanly (3-way: stash base / merged file / local edits). Re-conflict → combine merged-target version + local tweaks.
 - **`--no-overwrite-ignore` on both merges.** Untracked files abort a merge by default; *ignored* files are overwritten silently. Flag makes git abort on those too — verified on `--ff-only`; NOT on a true merge with git 2.54 (default `ort` strategy overwrote silently). Treat it as a backstop only: move every recon-reported ignored collision aside before merging.
 - Non-colliding untracked files (scratch dir, local notes, Windows `nul` artifact) don't block merge; leave them. `git stash push` leaves them too.
-- **Colliding path** (recon COLLISIONS, untracked/ignored): either merge adding a tracked file where an untracked/ignored file sits aborts (`untracked working tree files would be overwritten`), `--ff-only` sync included. Move colliding ones aside (or `git stash push -u -- <path>`) before merging, restore after. Leave every non-colliding file alone.
+- **Colliding path** (recon COLLISIONS, untracked/ignored): either merge adding a tracked file where an untracked/ignored file sits aborts (`untracked working tree files would be overwritten`), `--ff-only` sync included. Move colliding ones aside (or `git stash push -u -- <path>`) before merging. Never restore over the path after: it now holds the tracked version. Diff moved copy vs tracked, ask user how to reconcile (local secrets must not land in the tracked file). Leave every non-colliding file alone.
 
 ## 4. Resolve conflicts — diagnose, don't guess
 
