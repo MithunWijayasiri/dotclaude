@@ -1,6 +1,7 @@
 ---
 name: skill-audit
 description: Use when reviewing, auditing, or tightening an existing Claude Code skill via `/skill-audit <name | path>...`. Handles SKILL.md, references, and description fixes. Not for writing new skills → `anthropic-skills:skill-creator`.
+argument-hint: "Skill name(s) or path(s)"
 disable-model-invocation: true
 ---
 
@@ -48,7 +49,7 @@ Decides when the skill fires, so it must make the model invoke the skill rather 
 - Triggers: user intents, action verbs, keywords, file types. Specific enough not to hijack unrelated prompts.
 - Target 20–35 words. Go over only for a needed `Not for` or routing clause.
 - No how-it-works, steps, models/subagents, or answers. That belongs in the body.
-- Manual-only (`disable-model-invocation: true`): same pattern, with the slash invocation replacing auto-trigger phrasing.
+- Manual-only (`disable-model-invocation: true`): same pattern, minus auto-trigger phrasing. Don't mention the slash command — it's the only way in.
 - Trigger test (auto-invocable only) — draft 3 should-fire prompts (names the skill; describes the task without naming it; task buried in a realistic request) and 1–2 near-miss should-not-fire prompts, ideally a sibling's territory. Judge current and proposed description against them; any misfire → finding. Show the prompts in the report.
 
 ## Report
@@ -69,4 +70,5 @@ User approves by number or "all".
 - Edit approved findings only, compact-markdown style. Code blocks, examples, and prompts sent to subagents stay verbatim unless a finding targets them.
 - Prefer targeted edits. Full-file rewrite only if the approved report said so.
 - Sibling files (agents, rules, CLAUDE.md) untouched unless an approved finding names them.
+- Description or invocation changed and `~/.claude/skills/SKILLS-REFERENCE.md` lists the skill → update its row.
 - Finish with per-skill applied/skipped list and line count before → after.
