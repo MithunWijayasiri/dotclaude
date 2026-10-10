@@ -65,6 +65,7 @@ A skill is a task procedure Claude Code loads on demand — one way to do one jo
 - **empty-commit** — push an empty commit to re-run CI when a pipeline failed on something unrelated. Guards against staged files, the default branch, and a missing upstream. Manual: `/empty-commit`.
 - **zoom-out** — map an unfamiliar code area before touching it. Nothing is edited and no mutating command runs until the map is done. Manual: `/zoom-out`.
 - **skill-audit** — audit an existing skill and report findings before editing. Edits only what you approve. Manual: `/skill-audit`.
+- **readme-craft** — scaffold or restyle a README with a centered header, badges from one source, and GitHub markdown patterns. Skips vanity badges.
 
 ## Install
 
@@ -112,7 +113,7 @@ Then pick a style under `/config` → **Output style** (saved per project). For 
 }
 ```
 
-The value is the frontmatter `name:`, not the filename. It takes effect after `/clear` or in a new session.
+The value is the frontmatter `name:`, not the filename. It takes effect from your next message.
 
 ## Credits
 

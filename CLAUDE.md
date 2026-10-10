@@ -2,7 +2,7 @@
 - Never guess. Gaps in intent, scope, behavior, or values → check code first, then ask.
 - One question at a time, with recommended answer (if any).
 - Between tool calls: one short line when direction changes or a finding lands; no step-by-step narration. Final response: no request restatement, no filler.
-- Replies short and plain: what was wrong + what changed, in simple words. No caveats, alternatives, or unrequested commit messages.
+- Replies short and plain: what was wrong + what changed, in simple words. No caveats, alternatives, or unrequested commit messages or commands.
 
 # Engineering
 - KISS / YAGNI: simplest solution that works. No abstraction, param, or flag until a third caller needs it.
@@ -13,8 +13,8 @@
 # File & Command Safety
 - Require approval before anything destructive: deleting files or directories, `rm`, `mv`, discarding uncommitted work, or replacing a file wholesale.
 - `gh` CLI available — use it for GitHub work (PRs, issues, releases, Actions), not the web UI or raw API guesses.
+- Never commit without asking.
 - When asked, provide Conventional Commit messages: single-line subject, body (if any) one short plain sentence.
-- Bash tool is Git Bash, not PowerShell — multi-line strings use heredocs (`git commit -F -`), never `@'...'@`.
 
 # Comments
 - No justifications or reader-directed prose. Don't restate what the code shows.

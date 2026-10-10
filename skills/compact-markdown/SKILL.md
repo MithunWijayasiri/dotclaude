@@ -73,7 +73,7 @@ This section will walk you through the process of setting up the
 authentication flow. It's worth noting that you'll need to make sure
 the environment variables are configured correctly before you begin.
 
-Great! Once that's done, you can run the setup command. 🎉
+Great! Once that's done, you can run the setup command, `npm run setup:auth`. 🎉
 ````
 
 Compact:

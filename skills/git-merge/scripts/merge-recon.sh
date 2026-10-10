@@ -8,8 +8,9 @@ die() { echo "merge-recon: $*" >&2; exit 1; }
 cap() { awk -v n="$1" 'NR<=n{print "  " $0} END{if(NR>n) printf "  +%d more\n", NR-n}'; }
 count() { wc -l < "$1" | tr -d ' '; }
 
-TARGET=${1:-master}
 git rev-parse --git-dir >/dev/null 2>&1 || die "not a git repo"
+TARGET=${1:-$(git ls-remote --symref origin HEAD 2>/dev/null | sed -n 's|^ref: refs/heads/\(.*\)[[:space:]]HEAD$|\1|p')}
+[ -n "$TARGET" ] || die "no target given and origin's default branch could not be read"
 GD=$(git rev-parse --git-dir)
 CUR=$(git symbolic-ref -q --short HEAD) || die "detached HEAD; check out a branch first"
 [ -e "$GD/MERGE_HEAD" ] && die "merge already in progress"

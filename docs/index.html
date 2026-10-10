@@ -322,7 +322,8 @@ footer{border-top:1px solid var(--line);margin-top:12px}
    ├─ git-worktree/
    ├─ empty-commit/
    ├─ zoom-out/
-   └─ skill-audit/</div>
+   ├─ skill-audit/
+   └─ readme-craft/</div>
 
     <ul class="toc" id="toc">
       <li><a href="#overview">Overview</a></li>
@@ -490,6 +491,10 @@ Want me to make the change?</pre>
           <div class="n">skill-audit<small>Manual only</small></div>
           <div><p>Audit an existing skill and report findings before editing — stale refs, conflicts with <code>CLAUDE.md</code> or rules, trigger collisions, missing approval gates, and a tested description. Edits only what you approve. Invoked manually with <code>/skill-audit</code>.</p></div>
         </li>
+        <li class="live">
+          <div class="n">readme-craft</div>
+          <div><p>Scaffold or restyle a README — centered icon header, badges from one chosen source (shieldcn.dev or shields.io) with vanity and redundant ones dropped, and GitHub markdown patterns like admonitions, collapsibles, and diagrams.</p></div>
+        </li>
       </ul>
       <p class="note">Both <code>handoff-session</code> and <code>offload-task</code> write a markdown file for a session that was not here — what differs is the payload. <strong>handoff-session</strong> carries the session: state, decisions, blockers, next steps, so the work continues. <strong>offload-task</strong> carries one unsolved problem and the dead ends already burned on it, so a fresh session or another agent can take a run at it without repeating them.</p>
       <p class="note"><code>compact-markdown</code> also ships <code>references/skill-authoring.md</code> — good practices for writing effective skills, distilled from Claude Code, Codex, and mattpocock/skills.</p>
@@ -569,7 +574,7 @@ Want me to make the change?</pre>
   <span class="k">"outputStyle"</span>: <span class="k">"ASD-STE100"</span>
 }</pre>
       </figure>
-      <p class="note">The value is the <code>name:</code> field from the file's frontmatter, not the filename. A style is part of the system prompt, so it takes effect after <code>/clear</code> or in your next session.</p>
+      <p class="note">The value is the <code>name:</code> field from the file's frontmatter, not the filename. A style is part of the system prompt, so it takes effect from your next message.</p>
     </section>
 
   </main>

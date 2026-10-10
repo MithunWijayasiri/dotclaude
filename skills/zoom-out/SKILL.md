@@ -1,6 +1,7 @@
 ---
 name: zoom-out
 description: Build a higher-level map of an unfamiliar code area. Use when you need to understand how modules, callers, data flow, boundaries, and project concepts fit together before changing code.
+argument-hint: "Code area or module to map (optional)"
 disable-model-invocation: true
 ---
 
