@@ -13,6 +13,7 @@ Reusable task workflows. A skill loads on demand when the task matches its descr
 - **empty-commit** — push an empty commit to re-run CI on the current branch when a pipeline failed on something unrelated. Refuses on staged files, the default branch, or a missing upstream. Manual: invoke it with `/empty-commit`.
 - **zoom-out** — map an unfamiliar code area before touching it. Purpose, flow, callers, boundaries, risks, and the questions the codebase does not answer. Nothing is edited and no mutating command runs until the map is done. Manual: invoke it with `/zoom-out`.
 - **skill-audit** — audit an existing skill and report findings before editing: stale refs, conflicts with CLAUDE.md or rules, trigger collisions, missing approval gates, and a tested description. Edits only what you approve. Manual: invoke it with `/skill-audit`.
+- **readme-craft** — scaffold or restyle a README: centered icon header, badges from one chosen source (shieldcn.dev or shields.io) with vanity and redundant ones filtered out, and GitHub markdown patterns — admonitions, collapsibles, diagrams, tables.
 
 ## Deprecated
 
