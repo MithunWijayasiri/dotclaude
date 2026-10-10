@@ -81,3 +81,30 @@ jobs:
           done
 
           exit "$status"
+
+  scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Check shell syntax
+        run: |
+          status=0
+          for f in $(git ls-files 'skills/*.sh'); do
+            bash -n "$f" || status=1
+          done
+          exit "$status"
+
+      - name: Check PowerShell syntax
+        shell: pwsh
+        run: |
+          $failed = $false
+          foreach ($f in git ls-files 'skills/*.ps1') {
+            $errors = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $f).Path, [ref]$null, [ref]$errors)
+            foreach ($e in $errors) {
+              Write-Output "::error file=$f,line=$($e.Extent.StartLineNumber)::$($e.Message)"
+              $failed = $true
+            }
+          }
+          if ($failed) { exit 1 }
