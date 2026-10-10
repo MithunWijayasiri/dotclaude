@@ -113,7 +113,7 @@ Then pick a style under `/config` → **Output style** (saved per project). For 
 }
 ```
 
-The value is the frontmatter `name:`, not the filename. It takes effect after `/clear` or in a new session.
+The value is the frontmatter `name:`, not the filename. It takes effect from your next message.
 
 ## Credits
 
