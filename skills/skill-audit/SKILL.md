@@ -1,6 +1,6 @@
 ---
 name: skill-audit
-description: Use when reviewing, auditing, or tightening an existing Claude Code skill via `/skill-audit <name | path>...`. Handles SKILL.md, references, and description fixes. Not for writing new skills → `anthropic-skills:skill-creator`.
+description: Use when reviewing, auditing, or tightening an existing Claude Code skill. Handles SKILL.md, references, and description fixes. Not for writing new skills → `anthropic-skills:skill-creator`.
 argument-hint: "Skill name(s) or path(s)"
 disable-model-invocation: true
 ---

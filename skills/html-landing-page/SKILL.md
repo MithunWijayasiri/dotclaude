@@ -35,13 +35,6 @@ Runs inside frontend-design's passes; adds these steps.
 5. **Render.** Open page in a browser; screenshot at ~375px and ~1280px; check console for errors. Judge screenshots, not source — overflow, spacing, and specificity bugs only show rendered.
 6. **Verify copy.** Check every factual claim against project source. Plausible-but-false → cut.
 
-## Examples
-
-Copy the reasoning, never the output — reusing an example's hero is itself a template.
-
-- Cleanfox (literally a patch applied to Betterfox) → hero = animated diff in an editor window; section names taken from the file's own comment banners; hover-to-uncomment teaches how the file works; clean light page vs dark code objects = "the page is clean; the file is the machine".
-- Bakery pre-order page (hypothetical) → hero = tomorrow's real bake schedule, one oven-timer countdown per loaf; sections follow the day's bake order; sold-out items stay listed, struck through, so the page shows what sells.
-
 ## Landing-page tells
 
 Additions to frontend-design's AI-default list; same rule — use only when the brief asks.
@@ -58,7 +51,7 @@ Additions to frontend-design's AI-default list; same rule — use only when the 
 
 frontend-design owns voice. Additions:
 
-- Specific > clever: real numbers, names, and file/pref/command strings from the project ("3 defaults relaxed", "17 telemetry prefs off", "Download user.js").
+- Specific > clever: real numbers, names, and file/command strings from the project.
 - Banned slop: Unleash, Elevate, Seamless, Effortless, Supercharge, Empower, Revolutionize, "Built for the modern web".
 
 ## Quality floor

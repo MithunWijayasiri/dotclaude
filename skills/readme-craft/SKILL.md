@@ -9,7 +9,7 @@ Two modes: **new** (scaffold from scratch) and **restyle** (upgrade an existing 
 
 ## Step 1 — ask badge source
 
-Before writing or touching any badge, ask via AskUserQuestion: **shieldcn.dev** or **shields.io**. Never default, never infer from existing badges, never mix sources in one README — mixed sources were the main failure of earlier runs. Skip only if the user already named the source in this request.
+Before writing or touching any badge, ask via AskUserQuestion: **shieldcn.dev** or **shields.io**. Never default, never infer from existing badges, never mix sources in one README. Skip only if the user already named the source in this request.
 
 Chosen source can't render a needed badge → tell user and drop it; don't silently fall back to the other source.
 

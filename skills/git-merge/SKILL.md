@@ -1,6 +1,6 @@
 ---
 name: git-merge
-description: Merge one branch (usually master) into the current branch while preserving local unstaged changes, resolving conflicts by understanding both sides, and catching silent semantic conflicts with the repo's own checks. Trigger on explicit `/git-merge`, or when the user asks to merge a branch/master into their current branch — especially when they want to keep local-only unstaged changes.
+description: Merge one branch (usually the default branch) into the current branch while preserving local unstaged changes, resolving conflicts by understanding both sides, and catching silent semantic conflicts with the repo's own checks. Trigger on explicit `/git-merge`, or when the user asks to merge a branch or the default branch into their current branch — especially when they want to keep local-only unstaged changes.
 ---
 
 # Git Merge — Safe Branch Integration
@@ -21,7 +21,7 @@ Scripts in this skill's `scripts/` folder (bash, run with cwd = repo root, as `b
 ## 1. Recon
 
 ```bash
-bash scripts/merge-recon.sh <target>   # default target: master; current branch from HEAD
+bash scripts/merge-recon.sh <target>   # default target: origin's default branch; current branch from HEAD
 ```
 
 Runs `git fetch origin` (all of origin, not one branch: `fetch origin <target>` leaves `origin/<current-branch>` outdated, and recon compares both), then prints one digest: target commits + merge-base, ahead/behind OWN remote (+ partial remote merge), files both merges bring, local unstaged/untracked/ignored, COLLISIONS. Dies on merge/rebase in progress, unmerged paths, detached HEAD, missing `origin/<target>`.
