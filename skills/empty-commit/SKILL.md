@@ -12,7 +12,7 @@ Any step fails → stop, report what failed; do not work around.
 
 1. Nothing staged: `git diff --cached --quiet`. Non-zero → `--allow-empty` would commit the staged files; list them (`git diff --cached --name-only`), stop.
 2. Branch: `git rev-parse --abbrev-ref HEAD`. `HEAD` (detached), `main`, or `master` → stop; empty commit on a shared branch is noise.
-3. Upstream: `git rev-parse --abbrev-ref --symbolic-full-name @{u}`. Fails → branch never pushed; tell user `git push -u origin <branch>` alone triggers CI, stop.
+3. Upstream: `git rev-parse --abbrev-ref --symbolic-full-name @{u}`. Fails → no upstream set; stop, ask user which case: never pushed → `git push -u origin <branch>` alone triggers CI; already pushed without `-u` → `git branch -u <remote>/<branch>`, re-run (re-pushing the same commit triggers nothing).
 4. Commit, subject only, no trailer of any kind:
 
    ```bash
