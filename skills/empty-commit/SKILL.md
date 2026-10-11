@@ -8,15 +8,19 @@ disable-model-invocation: true
 
 Empty commit + push → CI re-runs on the current branch. Zero file changes, so nothing can regress.
 
-Run from the repo, then report its output verbatim:
+Any step fails → stop, report what failed; do not work around.
 
-```bash
-bash ~/.claude/skills/empty-commit/scripts/empty-commit.sh
-```
+1. Nothing staged: `git diff --cached --quiet`. Non-zero → `--allow-empty` would commit the staged files; list them (`git diff --cached --name-only`), stop.
+2. Branch: `git rev-parse --abbrev-ref HEAD`. `HEAD` (detached), `main`, or `master` → stop; empty commit on a shared branch is noise.
+3. Upstream: `git rev-parse --abbrev-ref --symbolic-full-name @{u}`. Fails → no upstream set; stop, ask user which case: never pushed → `git push -u origin <branch>` alone triggers CI; already pushed without `-u` → `git branch -u <remote>/<branch>`, re-run (re-pushing the same commit triggers nothing).
+4. Commit, subject only, no trailer of any kind:
 
-Script checks guards (nothing staged, not `master`/`main`, upstream exists), commits `chore: trigger pipeline re-run` (subject only, no trailer), pushes, prints one line: SHA, branch, PR link if any.
+   ```bash
+   git commit --allow-empty -m "chore: trigger pipeline re-run"
+   ```
 
-Non-zero exit → report what failed; do not work around. Exit 2 = no upstream; script prints the `git push -u origin <branch>` guidance.
+5. `git push`. Fails → commit exists locally, not pushed; say so.
+6. Report one line: short SHA, branch, PR link if push output printed one.
 
 Unstaged and untracked files are ignored, they stay untouched.
 

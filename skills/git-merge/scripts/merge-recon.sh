@@ -55,7 +55,7 @@ if git rev-parse -q --verify "refs/remotes/origin/$CUR" >/dev/null; then
       echo "$MERGES" | cap 5
       echo " target commits already in origin/$CUR: $((TOT - MISSING)) of $TOT; still missing after sync: $MISSING"
     fi
-    git diff --name-only "HEAD...origin/$CUR" > "$T/sync"
+    git diff --name-only -z "HEAD...origin/$CUR" | tr '\0' '\n' > "$T/sync"
   fi
   if [ "$AHEAD" -gt 0 ]; then
     echo " ahead commits:"
@@ -67,7 +67,8 @@ else
 fi
 
 # --- incoming files
-git diff --name-only "$BASE" "origin/$TARGET" > "$T/tfiles"
+# -z: unquoted paths, to match status -z below
+git diff --name-only -z "$BASE" "origin/$TARGET" | tr '\0' '\n' > "$T/tfiles"
 echo
 echo "TARGET MERGE FILES: $(count "$T/tfiles")"
 cap 25 < "$T/tfiles"
