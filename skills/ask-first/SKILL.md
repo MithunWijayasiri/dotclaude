@@ -1,11 +1,19 @@
 ---
 name: ask-first
 description: Ask the user clarifying questions before acting, instead of filling gaps with guesses. Use when starting to implement a feature, fix a bug, write or change tests, refactor, or plan any change where intent, scope, expected behavior, values, or done-criteria aren't fully stated. Also use mid-task when a new unknown surfaces. Skip for fully-specified asks, pure questions, and read-only lookups.
+argument-hint: "[bug|feature|improvement|refactor|test|docs] - what needs doing"
 ---
 
 # Ask First
 
 Goal: shared understanding before code. User knows what I'll build; I know what they want. Guessed gap → wrong work baked in, costs a rework cycle.
+
+## Input
+
+- Shape: `<type> - <what needs doing>`, e.g. `bug - after I turn off save history, I cannot turn it on`. Often short or lazy — expected. Fill gaps by reading code, then asking.
+- Types: bug, feature, improvement, refactor, test, docs. Type picks the gap checklist below.
+- No type → infer from wording + code; state inferred type in first question so user confirms or corrects.
+- Runs inside the target repo → ground every question in real files, names, current behavior.
 
 ## Loop
 
@@ -22,9 +30,16 @@ Goal: shared understanding before code. User knows what I'll build; I know what 
 - User can observe what I can't (live UI, env, runtime output) → ask what they see rather than trial-and-error runs.
 - Targeted and concrete: real paths, names, values. Not "any other requirements?".
 
-## Bugs
+## Gaps by type
 
-Ask only what's unknown from logs/code: expected vs actual, repro steps, env, when it started, what changed. Don't propose a root cause as fact — ask to confirm.
+Check on top of the generic gaps. Ask only what code/logs don't answer.
+
+- **Bug** — expected vs actual, repro steps, env, when it started, what changed. Don't propose a root cause as fact — ask to confirm.
+- **Feature** — who uses it and when, entry point (UI, CLI, config), behavior incl. error/edge cases, scope out, existing pattern to follow, done-criteria.
+- **Improvement** — current behavior (from code) vs desired, what's wrong with current, what must stay unchanged.
+- **Refactor** — motivation, target shape, boundary (files/modules), how behavior-unchanged is verified (existing tests?).
+- **Test** — what's under test, level (unit/integration/e2e), cases incl. negative, test data/fixtures. Flaky → failure evidence.
+- **Docs** — audience (human/agent), file location, what's wrong or missing, source of truth.
 
 ## Playback
 
