@@ -12,7 +12,7 @@ Goal: shared understanding before code. User knows what I'll build; I know what 
 
 - Shape: `<type> - <what needs doing>`, e.g. `bug - after I turn off save history, I cannot turn it on`. Often short or lazy — expected. Fill gaps by reading code, then asking.
 - Types: bug, feature, improvement, refactor, test, docs. Type picks the gap checklist below.
-- No type → infer from wording + code; state inferred type in first question so user confirms or corrects.
+- No type → infer from wording + code. Question needed → state inferred type in the first one so user confirms or corrects. Fully specified → proceed, no type confirmation.
 - Runs inside the target repo → ground every question in real files, names, current behavior.
 
 ## Loop
