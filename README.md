@@ -1,7 +1,7 @@
 <h1 align="center">dotclaude</h1>
 
 <p align="center">
-  My Claude Code setup — output styles, CLAUDE.md, rules, and skills.
+  My Claude Code setup: output styles, CLAUDE.md, rules, and skills.
 </p>
 
 <p align="center">
@@ -12,7 +12,7 @@
 
 ---
 
-Plain markdown in `~/.claude` — *output styles* shape how Claude answers, *skills* add repeatable jobs, *rules* load by file type, and `CLAUDE.md` sets the defaults.
+Plain markdown files for `~/.claude`. *Output styles* shape how Claude answers, *skills* add repeatable jobs, *rules* load by file type, and `CLAUDE.md` sets the defaults.
 
 ## Table of contents
 
@@ -29,11 +29,11 @@ Plain markdown in `~/.claude` — *output styles* shape how Claude answers, *ski
 
 ### ASD-STE100
 
-Structured output following [ASD-STE100](https://www.asd-ste100.org/) English standards: short sentences, everyday words, one word per meaning, active voice. The result comes first, then labelled bullets (`Verified:`, `Updated:`, `Skipped:`, `Remaining:`, `Next:`). Code and commands are never reworded.
+Claude answers in [ASD-STE100](https://www.asd-ste100.org/) Simplified Technical English: short sentences, everyday words, one word per meaning, active voice. The result comes first, then labelled bullets (`Verified:`, `Updated:`, `Skipped:`, `Remaining:`, `Next:`). Claude never rewords code or commands.
 
 ## CLAUDE.md
 
-Standing instructions for every session: General, Engineering, File & Command Safety, Comments, External Docs. Copy it to `~/.claude/CLAUDE.md`, or to a repo root for one project.
+Standing instructions for every session: General, Engineering, File & Command Safety, Comments, Code Review Findings, External Docs. Copy it to `~/.claude/CLAUDE.md`, or to a repo root for one project.
 
 `## External Docs` sends library questions to [context7](https://context7.com/), an MCP server. Without it, Claude falls back to a web search. Connect it once:
 
@@ -42,31 +42,31 @@ claude mcp add --scope user --transport http --header "Authorization: Bearer YOU
 ```
 
 > [!TIP]
-> A free key comes from the [context7 dashboard](https://context7.com/dashboard). Prefer a local server? `claude mcp add --scope user context7 -- npx -y @upstash/context7-mcp --api-key YOUR_API_KEY`.
+> Get a free key from the [context7 dashboard](https://context7.com/dashboard). To run the server locally instead: `claude mcp add --scope user context7 -- npx -y @upstash/context7-mcp --api-key YOUR_API_KEY`.
 
 ## Rules
 
 A rule is a `.md` file in `~/.claude/rules/` that loads when Claude touches a file matching its `paths:` glob.
 
-- **compact-markdown** — on any `**/*.md`, points Claude at the `compact-markdown` skill. Keeps code, commands, and concrete details verbatim; README is exempt.
+- **compact-markdown**. On any `**/*.md`, points Claude at the `compact-markdown` skill. Keeps code, commands, and concrete details verbatim. README is exempt.
 
 ## Skills
 
-A skill is a task procedure Claude Code loads on demand — one way to do one job. See [`skills/README.md`](skills/README.md) for usage.
+A skill is a procedure for one job. Claude Code loads it on demand. See [`skills/README.md`](skills/README.md) for usage.
 
-- **compact-markdown** — telegraphic markdown for AI-facing docs. Strips filler, keeps code and examples.
-- **ask-first** — ask clarifying questions before acting instead of guessing. One question at a time, each with a recommended answer.
-- **handoff-session** — hand the whole session over: state, decisions, blockers, next steps. Detail that no longer matters is dropped.
-- **offload-task** — write one stuck problem into a standalone brief a fresh session can attack: goal, failing behaviour, repro, and every attempt with what it produced — code and manual checks alike.
-- **claude-project-rules** — author `.claude/rules/*.md` with correct `paths:` scoping, lazy-load, and shared-rule symlinks.
-- **html-landing-page** — design a distinctive static landing page on top of `frontend-design`. Plan palette, type, and one signature element before any HTML. Manual: `/html-landing-page`.
-- **git-merge** — merge a branch into yours without losing local unstaged work. A recon script maps what collides first; then diagnose each conflict and run the repo's own checks to catch the ones git merged cleanly but wrongly.
-- **git-worktree** — start a worktree with `node_modules` junctioned and `.env` copied, so it runs without a reinstall. Windows and PowerShell only.
-- **empty-commit** — push an empty commit to re-run CI when a pipeline failed on something unrelated. Guards against staged files, the default branch, and a missing upstream. Manual: `/empty-commit`.
-- **zoom-out** — map an unfamiliar code area before touching it. Nothing is edited and no mutating command runs until the map is done. Manual: `/zoom-out`.
-- **skill-audit** — audit an existing skill and report findings before editing. Edits only what you approve. Manual: `/skill-audit`.
-- **readme-craft** — scaffold or restyle a README with a centered header, badges from one source, and GitHub markdown patterns. Skips vanity badges.
-- **visualize-it** — explain a concept, feature, problem, or piece of code as one visual page, built from the real source. A Claude artifact when the Artifact tool is available; otherwise a standalone HTML file in the current folder. Manual: `/visualize-it`.
+- **compact-markdown**. Telegraphic markdown for AI-facing docs. Strips filler, keeps code and examples.
+- **ask-first**. Ask clarifying questions before acting instead of guessing. One question at a time, each with a recommended answer.
+- **handoff-session**. Hand the whole session over: state, decisions, blockers, next steps. Drops detail that no longer matters.
+- **offload-task**. Write one stuck problem into a standalone brief for a fresh session: goal, failing behaviour, repro, and every attempt with its result, whether a code change or a manual check.
+- **claude-project-rules**. Author `.claude/rules/*.md` with correct `paths:` scoping, lazy-load, and shared-rule symlinks.
+- **html-landing-page**. Design a distinctive static landing page with the `frontend-design` skill. Plan palette, type, and one signature element before any HTML. Manual: `/html-landing-page`.
+- **git-merge**. Merge a branch into yours without losing local unstaged work. A recon script maps the conflicts first. Claude then resolves each one and runs the repo's own checks to catch changes git merged without a conflict but wrongly.
+- **git-worktree**. Start a worktree with `node_modules` junctioned and `.env` copied, so it runs without a reinstall. Windows and PowerShell only.
+- **empty-commit**. Push an empty commit to re-run CI when a pipeline failed on something unrelated. Refuses to run with staged files, on the default branch, or without an upstream. Manual: `/empty-commit`.
+- **zoom-out**. Map an unfamiliar code area before touching it. Claude edits nothing and runs no mutating command until the map is done. Manual: `/zoom-out`.
+- **skill-audit**. Audit an existing skill and report findings before editing. Edits only what you approve. Manual: `/skill-audit`.
+- **readme-craft**. Scaffold or restyle a README with a centered header, badges from one source, and GitHub markdown patterns. Skips vanity badges.
+- **visualize-it**. Explain a concept, feature, problem, or piece of code as one visual page, built from the real source. The page is a Claude artifact when the Artifact tool is available, otherwise a standalone HTML file in the current folder. Manual: `/visualize-it`.
 
 ## Install
 
@@ -106,7 +106,7 @@ curl -o ~/.claude/output-styles/asd-ste100.md \
 
 </details>
 
-Then pick a style under `/config` → **Output style** (saved per project). For a global default, set it in `~/.claude/settings.json`:
+Then run `/config` and pick a style under **Output style**. Claude Code saves the choice per project. For a global default, set it in `~/.claude/settings.json`:
 
 ```json
 {
@@ -120,7 +120,7 @@ The value is the frontmatter `name:`, not the filename. It takes effect from you
 
 Thank you to this project.
 
-- **[mattpocock/skills](https://github.com/mattpocock/skills)** — Matt Pocock's skills, and the knowledge he shared along with them.
+- **[mattpocock/skills](https://github.com/mattpocock/skills)**. Matt Pocock's skills, and the knowledge shared along with them.
 
 ## License
 
