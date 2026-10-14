@@ -498,7 +498,7 @@ Want me to make the change?</pre>
         </li>
         <li class="live">
           <div class="n">visualize-it<small>Manual only</small></div>
-          <div><p>Explain a concept, feature, problem, or piece of code as one visual page — diagrams, charts, tables, interactive or animated sections, chosen per topic. Built from the real source, with inferences labelled. A Claude artifact in Claude; a standalone HTML file in the current folder elsewhere. Invoked manually with <code>/visualize-it</code>.</p></div>
+          <div><p>Explain a concept, feature, problem, or piece of code as one visual page — diagrams, charts, tables, interactive or animated sections, chosen per topic. Built from the real source, with inferences labelled. A Claude artifact when the Artifact tool is available; otherwise a standalone HTML file in the current folder. Invoked manually with <code>/visualize-it</code>.</p></div>
         </li>
       </ul>
       <p class="note">Both <code>handoff-session</code> and <code>offload-task</code> write a markdown file for a session that was not here — what differs is the payload. <strong>handoff-session</strong> carries the session: state, decisions, blockers, next steps, so the work continues. <strong>offload-task</strong> carries one unsolved problem and the dead ends already burned on it, so a fresh session or another agent can take a run at it without repeating them.</p>

@@ -66,7 +66,7 @@ A skill is a task procedure Claude Code loads on demand — one way to do one jo
 - **zoom-out** — map an unfamiliar code area before touching it. Nothing is edited and no mutating command runs until the map is done. Manual: `/zoom-out`.
 - **skill-audit** — audit an existing skill and report findings before editing. Edits only what you approve. Manual: `/skill-audit`.
 - **readme-craft** — scaffold or restyle a README with a centered header, badges from one source, and GitHub markdown patterns. Skips vanity badges.
-- **visualize-it** — explain a concept, feature, problem, or piece of code as one visual page, built from the real source. A Claude artifact in Claude; a standalone HTML file elsewhere. Manual: `/visualize-it`.
+- **visualize-it** — explain a concept, feature, problem, or piece of code as one visual page, built from the real source. A Claude artifact when the Artifact tool is available; otherwise a standalone HTML file in the current folder. Manual: `/visualize-it`.
 
 ## Install
 
