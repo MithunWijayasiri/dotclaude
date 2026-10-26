@@ -4,7 +4,7 @@ description: Use when the user wants to hand off, continue in a new session, or 
 argument-hint: "What will the next session be used for?"
 ---
 
-Summarise this conversation for a fresh agent to continue. Save to ~/Downloads/ with a descriptive hyphenated filename, like handoff-TICKETID.md or handoff-topic.md. If that name already exists, append a timestamp instead of overwriting. If the folder is missing or unwritable, ask for another destination. Report the saved path.
+Summarise this conversation for a fresh agent to continue. Save to ~/Downloads/ with a descriptive hyphenated filename prefixed by the project name in square brackets, like [Project]-handoff-TICKETID.md or [Project]-handoff-topic.md. Project = repo name from the `origin` remote URL, else the folder name; cut to 20 characters. If that name already exists, append a timestamp instead of overwriting. If the folder is missing or unwritable, ask for another destination. Report the saved path.
 
 Link to existing artifacts (PRDs, plans, ADRs, issues, commits, diffs) instead of copying their content.
 
