@@ -51,7 +51,11 @@ Issue body may hold images or text the user added after creation. Rewriting from
 
 ## Images
 
-`gh` cannot upload images. Add `<!-- drag the screenshot here -->` where the image goes; user attaches it on GitHub. Never reference local paths.
+Image or video exists as a local file → `--attach` on `gh issue create` / `edit` / `comment` uploads it and appends it to the body. Repeat the flag per file (max 50). Alt text after `#`: `--attach './login.png#Login error state'`; video takes none. Needs write access to the repo.
+
+File not available to the shell, or `--attach` unsupported or failing → add `<!-- drag the screenshot here -->` where the image goes; user attaches it on GitHub.
+
+Never reference local paths in the body.
 
 ## Code analysis
 
