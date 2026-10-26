@@ -85,6 +85,7 @@ A fact stated in two places drifts: one copy gets updated, the other lies. Befor
 - Lead with the rule, then the why only if non-obvious, then example. Telegraphic, present tense, one fact per line.
 - Encode invariants and the failure they prevent ("violating this is how the PR shipped bug X") — concrete beats abstract.
 - Tie heuristics to their source of truth. A rule that restates a priority/order list drifts from the code; point at the authoritative table and state the invariant ("scores live in SCORE, lower wins").
+- Examples: write a short generic shape inline (placeholders like `<env A>`, `PROJ-XXXXX`), not a pointer to code ("Ex: `foo.ts` `BAR_CONST`"). Code gets renamed, moved, or deleted; a dangling example leaves the agent with no pattern to follow. Point at a file only when the pattern is too large to inline, and then pick a stable file and also state the rule in words so it survives the file changing.
 - One topic per file, kebab-case filename.
 
 ## Verify it loaded
@@ -101,4 +102,5 @@ A fact stated in two places drifts: one copy gets updated, the other lies. Befor
 - [ ] Content is invariants/constraints, not a duplicate of code that will drift.
 - [ ] One topic, focused. Not a second CLAUDE.md.
 - [ ] Doesn't restate what CLAUDE.md or the code already says.
+- [ ] Examples are inline generic shapes, not links to specific code (unless too large to inline).
 - [ ] Needs hard enforcement, not guidance? → hook, not a rule.

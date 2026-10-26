@@ -66,7 +66,8 @@ Drop any heading with nothing real to put under it.
 
 ## Output
 
-- Save as `~/Downloads/offload-<TICKET>.md`, else `offload-<topic>.md`. Hyphenated.
+- Save as `~/Downloads/[<Project>]-offload-<TICKET>.md`, else `[<Project>]-offload-<topic>.md`. Hyphenated; the square brackets around the project name are literal.
+- `<Project>` = repo name from `origin` remote URL, else folder name; cut to 20 characters.
 - Name exists → append a timestamp. Never overwrite.
 - `~/Downloads` missing or unwritable → ask for a destination.
 - Redact secrets, credentials, PII.

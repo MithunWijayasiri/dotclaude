@@ -9,7 +9,7 @@
 <meta property="og:title" content="dotclaude: what lives in ~/.claude">
 <meta property="og:description" content="Output styles, skills, and CLAUDE.md for Claude Code, documented in one place.">
 <meta property="og:url" content="https://mithunwijayasiri.github.io/dotclaude/">
-<meta property="og:image" content="https://mithunwijayasiri.github.io/dotclaude/og.png">
+<meta property="og:image" content="https://mithunwijayasiri.github.io/dotclaude/assets/og.png">
 <meta property="og:image:width" content="2400">
 <meta property="og:image:height" content="1260">
 <meta property="og:image:alt" content="dotclaude: output styles, skills, and CLAUDE.md for Claude Code.">
@@ -331,6 +331,7 @@ footer{border-top:1px solid var(--line);margin-top:12px}
    ├─ <a href="#skill-empty-commit">empty-commit/</a>
    ├─ <a href="#skill-zoom-out">zoom-out/</a>
    ├─ <a href="#skill-skill-audit">skill-audit/</a>
+   ├─ <a href="#skill-github-issue-creator">github-issue-creator/</a>
    ├─ <a href="#skill-readme-craft">readme-craft/</a>
    └─ <a href="#skill-visualize-it">visualize-it/</a></div>
 
@@ -339,6 +340,7 @@ footer{border-top:1px solid var(--line);margin-top:12px}
       <li><a href="#styles">Output styles</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#claude-md">CLAUDE.md</a></li>
+      <li><a href="#tools">Additional tools</a></li>
     </ul>
   </aside>
 
@@ -500,6 +502,10 @@ Want me to make the change?</pre>
           <div class="n">skill-audit<small>Manual only</small></div>
           <div><p>Audit an existing skill and report findings before editing: outdated references, conflicts with <code>CLAUDE.md</code> or rules, trigger collisions, missing approval gates, and a new description tested against sample prompts. Edits only what you approve. Run it with <code>/skill-audit</code>.</p></div>
         </li>
+        <li class="live" id="skill-github-issue-creator">
+          <div class="n">github-issue-creator</div>
+          <div><p>Turn raw notes, error logs, dictation, or screenshots into a GitHub issue. Follows the repo's issue templates and labels, shows the draft in chat, and creates it with <code>gh</code> only after you approve. Edits keep images and manual changes already in the body.</p></div>
+        </li>
         <li class="live" id="skill-readme-craft">
           <div class="n">readme-craft</div>
           <div><p>Scaffold or restyle a README: centered icon header, badges from one source (shieldcn.dev or shields.io) without vanity or duplicate badges, and GitHub markdown patterns such as admonitions, collapsibles, and diagrams.</p></div>
@@ -541,6 +547,22 @@ Want me to make the change?</pre>
         <li class="live">
           <div class="n">External Docs</div>
           <div><p>Library questions go to <a href="https://context7.com/">context7</a>, not memory. <a href="#install">Setup below</a>.</p></div>
+        </li>
+      </ul>
+    </section>
+
+    <section id="tools">
+      <p class="kicker">Optional</p>
+      <h2>Additional tools</h2>
+      <p>Not files in this repo, but they make Claude Code far more useful. I use both.</p>
+      <ul class="parts">
+        <li class="live">
+          <div class="n">GitHub CLI<small>CLI</small></div>
+          <div><p>Claude works with PRs, issues, releases, and Actions runs through <a href="https://cli.github.com/"><code>gh</code></a> instead of the web UI. <code>CLAUDE.md</code> tells it to, and <code>github-issue-creator</code> creates issues with it. Sign in once with <code>gh auth login</code>.</p></div>
+        </li>
+        <li class="live">
+          <div class="n">context7<small>MCP</small></div>
+          <div><p>Pulls current library, framework, and CLI docs into the session so Claude does not answer from memory. The <code>External Docs</code> section of <code>CLAUDE.md</code> relies on it. <a href="#install">Setup below</a>.</p></div>
         </li>
       </ul>
     </section>

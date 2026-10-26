@@ -65,6 +65,7 @@ A skill is a procedure for one job. Claude Code loads it on demand. See [`skills
 - **empty-commit**. Push an empty commit to re-run CI when a pipeline failed on something unrelated. Refuses to run with staged files, on the default branch, or without an upstream. Manual: `/empty-commit`.
 - **zoom-out**. Map an unfamiliar code area before touching it. Claude edits nothing and runs no mutating command until the map is done. Manual: `/zoom-out`.
 - **skill-audit**. Audit an existing skill and report findings before editing. Edits only what you approve. Manual: `/skill-audit`.
+- **github-issue-creator**. Turn raw notes, logs, or screenshots into a GitHub issue that follows the repo's templates and labels. Shows the draft first and creates it with `gh` only after you approve.
 - **readme-craft**. Scaffold or restyle a README with a centered header, badges from one source, and GitHub markdown patterns. Skips vanity badges.
 - **visualize-it**. Explain a concept, feature, problem, or piece of code as one visual page, built from the real source. The page is a Claude artifact when the Artifact tool is available, otherwise a standalone HTML file in the current folder. Manual: `/visualize-it`.
 
