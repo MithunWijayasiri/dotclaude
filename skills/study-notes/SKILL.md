@@ -23,7 +23,7 @@ Ask only for what the user did not give, all in one question round.
 
 ## Large sources
 
-Token-heavy reads (long PDFs, big pages) → Sonnet subagents, one per chapter, in parallel. Ask each for a faithful digest: item names exact, ≤15-word gist per item, every pro/con and ordered list, no outside knowledge, source oddities flagged. Short chapters → read inline.
+Token-heavy reads (long PDFs, big pages) → subagents, one per chapter, in parallel. Before the first one, ask once which model to use: Sonnet (recommended — cheaper, enough for digests and fact-checks) or Opus (stronger on dense or ambiguous material). Use that model for every subagent in the run. Ask each for a faithful digest: item names exact, ≤15-word gist per item, every pro/con and ordered list, no outside knowledge, source oddities flagged. Short chapters → read inline.
 
 PDF → extract text once to a scratch file (`pypdf`), reuse it for every later read.
 
@@ -68,7 +68,7 @@ Rules:
 
 ## Step 4 — Verify (full mode)
 
-After the last chapter, a Sonnet subagent fact-checks the whole note against the source. Report only: factual errors, unsupported claims, items missing from a list presented as complete. Ask for the verbatim note snippet and source location per finding.
+After the last chapter, a subagent (model chosen above, else ask) fact-checks the whole note against the source. Report only: factual errors, unsupported claims, items missing from a list presented as complete. Ask for the verbatim note snippet and source location per finding.
 
 Re-check each finding against the source yourself before fixing — subagent output is a lead, not proof. Fix confirmed ones, skip the rest with a reason.
 
