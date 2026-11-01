@@ -4,7 +4,7 @@ One `.md` file per course, named `<Course Title>.md`. Same heading structure, le
 
 ## Location
 
-- Obsidian → `<vault>/<folder>/<Course Title>.md`. Vault path must contain `.obsidian/`; missing → confirm the path with the user before writing.
+- Obsidian → `<vault>/<folder>/<Course Title>.md`. Vault folder must have a `.obsidian/` subfolder; missing → confirm the path with the user before writing.
 - Plain → given path, else current folder.
 - Insert into an existing note with targeted edits; never rewrite the whole file.
 
@@ -22,7 +22,7 @@ One `.md` file per course, named `<Course Title>.md`. Same heading structure, le
 
 No spacer blocks — a blank line separates blocks.
 
-Obsidian only: frontmatter with tags.
+Obsidian only: frontmatter with tags, first thing in the file.
 
 ```markdown
 ---
