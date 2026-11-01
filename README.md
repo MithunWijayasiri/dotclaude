@@ -68,6 +68,7 @@ A skill is a procedure for one job. Claude Code loads it on demand. See [`skills
 - **github-issue-creator**. Turn raw notes, logs, or screenshots into a GitHub issue that follows the repo's templates and labels. Shows the draft first and creates it with `gh` only after you approve.
 - **readme-craft**. Scaffold or restyle a README with a centered header, badges from one source, and GitHub markdown patterns. Skips vanity badges.
 - **visualize-it**. Explain a concept, feature, problem, or piece of code as one visual page, built from the real source. The page is a Claude artifact when the Artifact tool is available, otherwise a standalone HTML file in the current folder. Manual: `/visualize-it`.
+- **study-notes**. Turn a syllabus, course PDF, markdown file, or link into study notes: an outline per chapter and learning objective, then notes that stick to the source. Writes to Notion, an Obsidian vault, or plain markdown. Manual: `/study-notes`.
 
 ## Install
 
