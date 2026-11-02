@@ -25,7 +25,7 @@ Ask only for what the user did not give, all in one question round.
 
 Token-heavy reads (long PDFs, big pages) → subagents, one per chapter, in parallel. Before the first one, ask once which model to use: Sonnet (recommended — cheaper, enough for digests and fact-checks) or Opus (stronger on dense or ambiguous material). Use that model for every subagent in the run. Ask each for a faithful digest: item names exact, learning objectives verbatim (code, level, exact text), ≤15-word gist per other item, every pro/con and ordered list, no outside knowledge, source oddities flagged. Short chapters → read inline.
 
-PDF → extract text once to a scratch file (`pypdf`), reuse it for every later read. Pages that extract empty or near-empty → read them with the Read tool (renders pages); still unreadable → name them in the report.
+PDF → extract text once to a scratch file (`pypdf`), reuse it for every later read. Pages that extract empty or near-empty, or have images (`page.images`) → read them with the Read tool (renders pages); still unreadable → name them in the report.
 
 Source is also the target → snapshot it before Step 2 writes; later reads and Step 4 use the snapshot.
 
