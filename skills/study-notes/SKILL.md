@@ -17,7 +17,7 @@ Ask only for what the user did not give, all in one question round.
 - **Target** — Notion, Obsidian, or plain markdown.
   - Notion → page URL or name (search if name only). Notion connector missing → say so, offer markdown instead.
   - Obsidian → vault path, plus folder inside the vault (default: vault root).
-  - Plain markdown → path, default current folder.
+  - Plain markdown → `.md` file or folder path, default current folder.
 - **Mode** — boilerplate only, or full notes.
 - **Style reference** (optional) — the user's earlier notes. Given → mirror their headings, markers, and colors over the defaults below.
 
