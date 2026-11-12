@@ -49,7 +49,7 @@ Issue body may hold images or text the user added after creation. Rewriting from
 3. Labels untouched unless asked.
 4. Placeholder `<!-- drag the screenshot here -->` → remove once body has media; else leave.
 5. Show what changed (before/after of edited parts) before `gh issue edit <n> --body-file -`. Apply only after user OK.
-6. After every OK, re-fetch the body right before writing. Differs from the body the current draft was built on → rebuild the edit from the latest body, show it again, repeat this step after the next OK.
+6. Re-fetch the body right before writing. Changed since step 1 → rebuild the edit on it and show it again.
 
 ## Images
 
