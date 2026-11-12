@@ -50,16 +50,23 @@ Diagram markup, both outputs:
 ```html
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@12.2.0/dist/mermaid.esm.min.mjs';
-  const css = getComputedStyle(document.documentElement), v = n => css.getPropertyValue(n).trim();
-  mermaid.initialize({ startOnLoad: false, theme: 'base', themeVariables: {
-    fontFamily: v('--font-body'), background: v('--panel'), primaryColor: v('--panel'),
-    primaryTextColor: v('--fg'), primaryBorderColor: v('--muted'), lineColor: v('--muted'),
-    textColor: v('--fg'), edgeLabelBackground: v('--panel'),
-    actorBkg: v('--panel'), actorBorder: v('--muted'), signalColor: v('--fg'), signalTextColor: v('--fg'),
-    pie1: v('--cat-1'), pie2: v('--cat-2'), pie3: v('--cat-3'), pie4: v('--cat-4'),
-    pieStrokeColor: v('--panel'), pieSectionTextColor: '#ffffff', pieLegendTextColor: v('--fg')
-  } });
-  await mermaid.run();
+  const diagrams = [...document.querySelectorAll('pre.mermaid')].map(el => [el, el.innerHTML]);
+  async function render() {
+    const css = getComputedStyle(document.documentElement), v = n => css.getPropertyValue(n).trim();
+    mermaid.initialize({ startOnLoad: false, theme: 'base', themeVariables: {
+      fontFamily: v('--font-body'), background: v('--panel'), primaryColor: v('--panel'),
+      primaryTextColor: v('--fg'), primaryBorderColor: v('--muted'), lineColor: v('--muted'),
+      textColor: v('--fg'), edgeLabelBackground: v('--panel'),
+      actorBkg: v('--panel'), actorBorder: v('--muted'), signalColor: v('--fg'), signalTextColor: v('--fg'),
+      pie1: v('--cat-1'), pie2: v('--cat-2'), pie3: v('--cat-3'), pie4: v('--cat-4'),
+      pieStrokeColor: v('--panel'), pieSectionTextColor: '#ffffff', pieLegendTextColor: v('--fg')
+    } });
+    // run() skips elements marked data-processed
+    for (const [el, src] of diagrams) { el.removeAttribute('data-processed'); el.innerHTML = src; }
+    await mermaid.run();
+  }
+  await render();
+  new MutationObserver(render).observe(document.documentElement, { attributeFilter: ['data-theme'] });
 </script>
 ```
 - Quote every label: `id["Text (x)"]`, edge `-->|"text"|`. Unquoted `( ) [ ] { } : ;` → syntax-error box instead of a diagram.
@@ -80,7 +87,7 @@ Diagram markup, both outputs:
 Show a structural change as **one** diagram (flow, state, tree, ER) with change markers, not a before and an after:
 
 - Added / removed / changed nodes → Mermaid `classDef added`, `classDef removed` (dashed stroke), `classDef changed`, applied with `class id added`. Unchanged nodes plain. Legend with `+` / `-` / `~` so meaning isn't colour alone.
-- Changed link/relation → old edge removed (dashed via `linkStyle`), new edge added.
+- Changed link/relation → old edge removed, new edge added. Flowchart → dash the old edge via `linkStyle`. State diagram has no `linkStyle` (parse error) → label the old transition `removed`.
 - Before / After toggle → keep the before and after sources as two more `pre.mermaid` blocks, show one at a time.
 
 ## Code
@@ -95,7 +102,7 @@ Show a structural change as **one** diagram (flow, state, tree, ER) with change 
 - Plain numbers, unit in the axis/label, highlight the one row the reader must see; grey the rest.
 - Bar axis starts at 0; line axis may start above 0.
 - Collapsed data table (`<details>`) under every chart.
-- Chart.js → `https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.6.1/chart.umd.min.js`, before the inline script that uses it. Colours from the page tokens via `getComputedStyle`; in an artifact, redraw on `data-theme` change (`MutationObserver`). Marks per the `dataviz` skill when available.
+- Chart.js → `https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.6.1/chart.umd.min.js`, before the inline script that uses it. Colours from the page tokens via `getComputedStyle`; redraw on `data-theme` change (`MutationObserver`). Marks per the `dataviz` skill when available.
 - Images only for what a diagram can't show (real UI), from existing files. Never generate or invent one.
 
 ## Page recipes by question type
