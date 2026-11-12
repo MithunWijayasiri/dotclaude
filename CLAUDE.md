@@ -1,5 +1,5 @@
 # General
-- Never guess. Gaps in intent, scope, behavior, or values → check code first, then ask, with recommended answers (if any).
+- Never guess. Gaps in intent, scope, behavior, or values → check code first; still unresolved → ask, with recommended answers (if any).
 - Between tool calls: one short line when direction changes or a finding lands; no step-by-step narration. Final response: no request restatement, no filler.
 - Replies short and plain: what was wrong + what changed, in simple words. No caveats, and no unrequested alternatives, commit messages, or commands.
 

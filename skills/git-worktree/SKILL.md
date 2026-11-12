@@ -54,7 +54,7 @@ Exit 1 → report the printed error.
 
 `WARN junction (existing)` (exit 0, Switch re-run) → branch's lockfile changed since linking. Report it; any install needs `wt-remove.ps1 -Unlink` first, else `npm ci` writes into main's `node_modules`.
 
-**4. Report** path, branch, base, node_modules mode (junction / real / skipped), files copied, and what Not provisioned leaves out. `$MAIN\.gitignore` lacks `.claude/worktrees/` → run Per-repo check.
+**4. Report** path, branch, base, node_modules mode (junction / real / skipped), files copied, and what Not provisioned leaves out. Then run Per-repo check.
 
 ## Switch
 
@@ -110,7 +110,7 @@ Only `.env*` copied. Other gitignored local state — saved auth/session state, 
 
 ## Per-repo check
 
-Root-level tooling that globs the whole tree compiles/lints every nested worktree copy. Runs from Create step 4 while `.gitignore` lacks the entry → check all three, offer fixes:
+Root-level tooling that globs the whole tree compiles/lints every nested worktree copy. Runs from Create step 4 → check all three independently (a `.gitignore` entry doesn't exclude worktrees from tsc or eslint), offer a fix for each missing exclusion:
 
 - **.gitignore** — needs `.claude/worktrees/`; Claude Code doesn't add it.
 - **tsconfig** — affected only when `include` is unanchored from repo root (`["./**/*.ts"]`). Includes anchored to a source dir (`["src/**/*.ts"]`) never reach `.claude/`; adding `exclude` there is dead config. When it applies, adding `exclude` discards TypeScript's implicit default → list `node_modules` alongside `.claude`.

@@ -11,7 +11,7 @@ Turn messy input into a clean issue, draft in chat, create with `gh` on approval
 
 Resolve from `git remote get-url origin` (repo name can differ from folder name). Never guess `owner/repo`.
 Before any `gh` write: `gh auth status`; active account must match the one project instructions require.
-`gh` missing, not signed in, wrong account, or no `origin` → stop and tell the user.
+`gh` missing, not signed in, wrong account, or no `origin` → stop and tell the user before creating or editing. Draft-only request → continue; state which of templates, labels, and title style couldn't be checked.
 
 ## Create flow
 
@@ -49,6 +49,7 @@ Issue body may hold images or text the user added after creation. Rewriting from
 3. Labels untouched unless asked.
 4. Placeholder `<!-- drag the screenshot here -->` → remove once body has media; else leave.
 5. Show what changed (before/after of edited parts) before `gh issue edit <n> --body-file -`. Apply only after user OK.
+6. After OK, re-fetch the body right before writing. Changed since step 1 → rebuild the edit from the latest body, show it again, write only after a new OK.
 
 ## Images
 

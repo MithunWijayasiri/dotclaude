@@ -5,7 +5,7 @@ description: Use when writing, editing, or restyling a README, or adding or refr
 
 # README craft
 
-Three modes: **new** (scaffold from scratch), **restyle** (upgrade an existing README's presentation), **content edit** (no badges or header touched → edit in place, skip Step 1). Same conventions in all.
+Three modes: **new** (scaffold from scratch), **restyle** (upgrade an existing README's presentation), **content edit** (badges untouched, incl. header-only edits like a tagline → edit in place, skip Step 1 and the restyle checklist). Same conventions in all.
 
 Output is human-facing prose, not compact-markdown style.
 
@@ -52,7 +52,7 @@ Base `https://shieldcn.dev`. Wrap every badge in `<picture>` with dark `<source>
 | Stars | `github/<owner>/<repo>/stars` |
 | Release | `github/<owner>/<repo>/release` |
 | License | `github/<owner>/<repo>/license` |
-| CI | `github/<owner>/<repo>/ci` |
+| CI | `github/<owner>/<repo>/ci` + `workflow=<file>.yml` param |
 | Release downloads | `github/downloads/<owner>/<repo>` |
 | npm version | `npm/<pkg>` |
 | npm downloads (weekly / monthly) | `npm/<pkg>/downloads` / `npm/dm/<pkg>` |
@@ -83,7 +83,7 @@ Metric structurally near-zero for this project (dependents on a leaf app, downlo
 
 ### Verify
 
-Check every metric badge once before shipping — swap `.svg` for `.json` (both sources support it) and confirm the value and link are real. shieldcn `ci` picks a workflow itself → confirm its `link` points at the intended workflow; wrong one → use a static badge or drop it. Can't fetch → list the unverified badges in the final response.
+Check every metric badge once before shipping — swap `.svg` for `.json` (both sources support it) and confirm the value and link are real. shieldcn `ci` without `workflow` reports the latest run of any workflow → always pass it, then confirm `link` is a run of that workflow; wrong one → use a static badge or drop it. Can't fetch → list the unverified badges in the final response.
 
 ### Grouping / ordering
 

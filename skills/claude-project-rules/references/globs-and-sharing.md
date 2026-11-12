@@ -3,7 +3,7 @@
 ## Glob gotchas
 
 - Brace budget: a rule's whole `paths:` list shares 1,000 expanded patterns / 4 MiB. Each group multiplies (`{a,b}/{c,d}/*.{ts,tsx}` = 8). Over budget → the pattern is used **unexpanded**, so its literal braces match nothing. Keep brace groups shallow; prefer extra list entries over nested groups.
-- `[` starts a bracket expression. `photos [2024/**` is invalid and matches nothing (other patterns in the rule still work). Escape as `photos \[2024/**`.
+- `[` starts a bracket expression. `photos [2024/**` is invalid and matches nothing (other patterns in the rule still work). Escape as `photos \[2024/**`, single-quoted in YAML: `- 'photos \[2024/**'`. Double quotes treat `\[` as an invalid escape → frontmatter fails to parse.
 - Symlinked checkouts: matching works through a symlinked path to the project dir.
 
 ## Sharing and excluding

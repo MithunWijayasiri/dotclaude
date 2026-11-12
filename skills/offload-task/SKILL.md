@@ -21,7 +21,7 @@ A coding agent with this repo checked out — no prior context, full file access
 - Reference `path/to/file.ts:123`. Do not paste code the reader can open.
 - Inline only what cannot be opened: error output, terminal logs, user observations of the live UI, values from screenshots.
 - Name the project rules that constrain the answer (`.claude/rules/*.md`, `CLAUDE.md`) by path — do not restate them.
-- Reader has no repo access (user says so) → inline the code the brief cites.
+- Reader has no repo access (user says so) → inline the code the brief cites and the rules that apply.
 
 ## Attempts are the payload
 
