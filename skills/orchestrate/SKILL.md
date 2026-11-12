@@ -46,16 +46,17 @@ Worker's own grep only checks old names → misses mangled new names (e.g. every
 - Stage the stage's paths only (`git status --short` lists them; never `git add -A` — it sweeps in unrelated files), then `git diff --cached -M --stat | tail -1`. Read `git diff --cached -M --summary` — renames, mode changes, creates/deletes don't show in the line filter.
 - Residual filter — print only lines a plain rename doesn't explain. `OLD`/`NEW` = the stage's rename pair; renames removed lines only, so mangled and reversed names still show. `OLD` is a sed regex → escape `.`, `[`, `*` (`a\.b`):
   ```bash
-  git diff --cached -M -U0 | grep "^[+-]" | grep -v "^+++\|^---" \
-    | sed '/^-/s/OLD/NEW/g' \
-    | awk '{s=substr($0,1,1); l=substr($0,2); if(s=="+")c[l]++; else c[l]--} END{for(k in c) if(c[k]!=0) print c[k], k}'
+  git diff --cached -M -U0 | sed '/^-/s/OLD/NEW/g' \
+    | awk '/^diff /{h=""; next} /^\+\+\+ /&&h==""{f=substr($0,5); next} /^@@/{h=f" "$2; next}
+        h!=""&&/^[+-]/{k=h"\t"substr($0,2); c[k]+=substr($0,1,1)=="+"?1:-1}
+        END{for(k in c) if(c[k]!=0) print c[k], k}'
   ```
-  Read every residual line.
+  Lines cancel only within the same file and hunk. Read every residual line.
 - Stages with no rename pair (strings, translations, build/fix loops) → read the whole staged diff (`git diff --cached -U0`).
 - Mangle check: grep new name glued to extra letters, e.g. `grep -rnE "[A-Za-z]NEW|NEW[A-Za-z]"`, and odd variants (doubled prefix, wrong case).
 - Check the worker's Uncertain list item by item.
 - Small fix → edit inline, re-stage, re-run the filter. Larger → `SendMessage` to same agent with the exact problem (keeps its context).
-- Run build + test + format yourself, quiet output (grep summary lines). Green → commit (if approved) with Conventional Commit subject → next stage. Red → no commit, no next stage; fix or send back.
+- Run build + test + format yourself, quiet output (grep summary lines). Checks rewrote tracked files → re-stage the stage's paths and re-run the filter. Green → commit (if approved) with Conventional Commit subject → next stage. Red → no commit, no next stage; fix or send back.
 
 ## 5. Report
 

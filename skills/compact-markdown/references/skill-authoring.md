@@ -54,5 +54,5 @@ The description does the invocation work — it decides when the skill fires, so
 - **Sediment** — outdated lines that pile up because adding feels safe, removing feels risky. Prune deliberately.
 - **Sprawl** — too long even when every line is live. Cure with the ladder: pointers + split by branch/sequence.
 - **No-op** — a line the model already obeys by default. Cut it.
-- **Missing gate** — step that deletes, pushes, overwrites, or writes externally (ticket, PR, message) with no ask-first step before it. Add the ask.
+- **Missing gate** — step that deletes, pushes, overwrites, or writes externally (ticket, PR, message) with no approval ask right before it — an earlier clarifying step doesn't count. Add the ask.
 - **Silent failure** — step that can fail (tool missing, command errors, ref not found) with no stated next action. State it.
