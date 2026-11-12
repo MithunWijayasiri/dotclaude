@@ -47,7 +47,7 @@ Worker's own grep only checks old names → misses mangled new names (e.g. every
 - Residual filter — print only lines a plain rename doesn't explain. `OLD`/`NEW` = the stage's rename pair; renames removed lines only, so mangled and reversed names still show. `OLD` is a sed regex → escape `.`, `[`, `*` (`a\.b`):
   ```bash
   git diff --cached -M -U0 | sed '/^-/s/OLD/NEW/g' \
-    | awk 'function flush(  i, n) { n = nr > na ? nr : na; for (i = 1; i <= n; i++) if (r[i] != a[i]) print h "\t-" r[i] "\t+" a[i]; nr = na = 0 }
+    | awk 'function flush(  i, n) { n = nr > na ? nr : na; for (i = 1; i <= n; i++) if (r[i] != a[i]) print h "\t-" r[i] "\t+" a[i]; nr = na = 0; split("", r); split("", a) }
         /^diff /{flush(); h=""; next} /^\+\+\+ /&&h==""{f=substr($0,5); next} /^@@/{flush(); h=f" "$2; next}
         h!=""&&/^-/{r[++nr]=substr($0,2)} h!=""&&/^\+/{a[++na]=substr($0,2)} END{flush()}'
   ```
