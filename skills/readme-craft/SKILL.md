@@ -5,7 +5,7 @@ description: Use when writing, editing, or restyling a README, or adding or refr
 
 # README craft
 
-Four modes: **new** (scaffold from scratch), **restyle** (upgrade an existing README's presentation), **content edit** (badges untouched, incl. header-only edits like a tagline → edit in place, skip Step 1 and the restyle checklist), **badge edit** (add or refresh named badges only → Step 1, touch and verify only those, skip the restyle checklist; existing badges from the other source → ask before converting them, never mix). Same conventions in all.
+Four modes: **new** (scaffold from scratch), **restyle** (upgrade an existing README's presentation), **content edit** (badges untouched, incl. header-only edits like a tagline → edit in place, skip Step 1 and the restyle checklist), **badge edit** (add or refresh named badges only → Step 1, touch and verify only those, skip the restyle checklist; existing badges from the other source → ask: convert them too, or add the new ones in their source; never mix). Same conventions in all.
 
 Output is human-facing prose, not compact-markdown style.
 
@@ -85,7 +85,7 @@ Metric structurally near-zero for this project (dependents on a leaf app, downlo
 
 ### Verify
 
-Check every metric badge once before shipping — swap `.svg` for `.json` (both sources support it) and confirm the value and link are real. shieldcn `ci` without `workflow` reports the latest run of any workflow → always pass it, then confirm `link` is a run of that workflow; wrong one → use a static badge or drop it. Can't fetch → list the unverified badges in the final response.
+Check every metric badge once before shipping — swap `.svg` for `.json`, or append `.json` to a suffix-less shields.io path (both sources support it) and confirm the value and link are real. shieldcn `ci` without `workflow` reports the latest run of any workflow → always pass it, then confirm `link` is a run of that workflow; wrong one → use a static badge or drop it. Can't fetch → list the unverified badges in the final response.
 
 ### Grouping / ordering
 
