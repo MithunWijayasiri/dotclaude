@@ -110,8 +110,9 @@ Only `.env*` copied. Other gitignored local state — saved auth/session state, 
 
 ## Per-repo check
 
-Root-level tooling that globs the whole tree compiles/lints every nested worktree copy. Runs from Create step 4 → check all three independently (a `.gitignore` entry doesn't exclude worktrees from tsc or eslint), offer a fix for each missing exclusion:
+Root-level tooling that globs the whole tree compiles/lints every nested worktree copy. Runs from Create step 4 → check each independently (a `.gitignore` entry doesn't exclude worktrees from eslint), offer a fix for each missing exclusion:
 
 - **.gitignore** — needs `.claude/worktrees/`; Claude Code doesn't add it.
-- **tsconfig** — affected only when `include` is unanchored from repo root (`["./**/*.ts"]`). Includes anchored to a source dir (`["src/**/*.ts"]`) never reach `.claude/`; adding `exclude` there is dead config. When it applies, adding `exclude` discards TypeScript's implicit default → list `node_modules` alongside `.claude`.
-- **eslint** — nearly always affected, regardless of tsconfig. Flat config (`eslint.config.mjs`) auto-ignores only `**/node_modules/` and `.git/` → `.claude` needs an explicit `globalIgnores` entry; eslintrc needs `ignorePatterns`. Worse with `parserOptions.project` + `createDefaultProgram: true` — worktree files fall outside the project's program, each gets a slow fallback program.
+- **eslint** — nearly always affected. Flat config (`eslint.config.mjs`) auto-ignores only `**/node_modules/` and `.git/` → `.claude` needs a global ignore: a config object with only `ignores: [".claude/"]` (works on every flat-config version; `globalIgnores()` from `eslint/config` is the same, where available); eslintrc needs `ignorePatterns`. Worse with `parserOptions.project` + `createDefaultProgram: true` — worktree files fall outside the project's program, each gets a slow fallback program.
+
+- **tsconfig** — usually nothing: tsc wildcards (`**/*`, `./**/*.ts`) skip dot-directories, so `include` never reaches `.claude/` unless a pattern names it (e.g. `.claude/**/*.ts`). One does → it pulls in every worktree's sources; offer adding `.claude/worktrees` to `exclude`, keeping existing entries. No `exclude` yet → also list `node_modules`, `bower_components`, `jspm_packages`, and the configured `outDir`; setting `exclude` drops those defaults.

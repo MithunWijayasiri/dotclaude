@@ -52,7 +52,9 @@ Base `https://shieldcn.dev`. Wrap every badge in `<picture>` with dark `<source>
 | Stars | `github/<owner>/<repo>/stars` |
 | Release | `github/<owner>/<repo>/release` |
 | License | `github/<owner>/<repo>/license` |
-| CI | `github/<owner>/<repo>/ci` + `workflow=<file>.yml` param |
+| Last commit | `github/last-commit/<owner>/<repo>` |
+| Contributors | `github/contributors/<owner>/<repo>` |
+| CI | `github/<owner>/<repo>/ci` + `workflow=<workflow-file>` param (real filename, `.yml` or `.yaml`) |
 | Release downloads | `github/downloads/<owner>/<repo>` |
 | npm version | `npm/<pkg>` |
 | npm downloads (weekly / monthly) | `npm/<pkg>/downloads` / `npm/dm/<pkg>` |
@@ -70,7 +72,7 @@ No dark/light wrapping:
 <a href="<link-target>"><img src="https://img.shields.io/<path>" alt="<Label>"></a>
 ```
 
-CI: `github/actions/workflow/status/<owner>/<repo>/<file>.yml` — targets the real workflow file instead of guessing. Other paths → https://shields.io/badges; don't guess one.
+CI: `github/actions/workflow/status/<owner>/<repo>/<workflow-file>` (real filename, `.yml` or `.yaml`) — targets the real workflow file instead of guessing. Other paths → https://shields.io/badges; don't guess one.
 
 ### Never add (both sources)
 
