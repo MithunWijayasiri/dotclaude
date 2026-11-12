@@ -47,11 +47,11 @@ Worker's own grep only checks old names → misses mangled new names (e.g. every
 - Residual filter — print only lines a plain rename doesn't explain. `OLD`/`NEW` = the stage's rename pair; renames removed lines only, so mangled and reversed names still show. `OLD` is a sed regex → escape `.`, `[`, `*` (`a\.b`):
   ```bash
   git diff --cached -M -U0 | sed '/^-/s/OLD/NEW/g' \
-    | awk '/^diff /{h=""; next} /^\+\+\+ /&&h==""{f=substr($0,5); next} /^@@/{h=f" "$2; next}
-        h!=""&&/^[+-]/{k=h"\t"substr($0,2); c[k]+=substr($0,1,1)=="+"?1:-1}
-        END{for(k in c) if(c[k]!=0) print c[k], k}'
+    | awk 'function flush(  i, n) { n = nr > na ? nr : na; for (i = 1; i <= n; i++) if (r[i] != a[i]) print h "\t-" r[i] "\t+" a[i]; nr = na = 0 }
+        /^diff /{flush(); h=""; next} /^\+\+\+ /&&h==""{f=substr($0,5); next} /^@@/{flush(); h=f" "$2; next}
+        h!=""&&/^-/{r[++nr]=substr($0,2)} h!=""&&/^\+/{a[++na]=substr($0,2)} END{flush()}'
   ```
-  Lines cancel only within the same file and hunk. Read every residual line.
+  Pairs each hunk's removed and added lines in order → cross-file swaps and reordered lines show. Read every residual line.
 - Stages with no rename pair (strings, translations, build/fix loops) → read the whole staged diff (`git diff --cached -U0`).
 - Mangle check: grep new name glued to extra letters, e.g. `grep -rnE "[A-Za-z]NEW|NEW[A-Za-z]"`, and odd variants (doubled prefix, wrong case).
 - Check the worker's Uncertain list item by item.
