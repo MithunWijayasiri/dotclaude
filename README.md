@@ -69,6 +69,7 @@ A skill is a procedure for one job. Claude Code loads it on demand. See [`skills
 - **readme-craft**. Scaffold or restyle a README with a centered header, badges from one source, and GitHub markdown patterns. Skips vanity badges.
 - **visualize-it**. Explain a concept, feature, problem, or piece of code as one visual page, built from the real source. The page is a Claude artifact when the Artifact tool is available, otherwise a standalone HTML file in the current folder. Manual: `/visualize-it`.
 - **study-notes**. Turn a syllabus, course PDF, markdown file, or link into study notes: an outline per chapter and learning objective, then notes that stick to the source. Writes to Notion, an Obsidian vault, or plain markdown. Manual: `/study-notes`.
+- **orchestrate**. Run a large multi-file change as staged Sonnet subagent work. Claude plans each stage and reviews its diff before the next one starts. Manual: `/orchestrate`.
 
 ## Install
 

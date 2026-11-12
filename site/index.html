@@ -334,7 +334,8 @@ footer{border-top:1px solid var(--line);margin-top:12px}
    ├─ <a href="#skill-github-issue-creator">github-issue-creator/</a>
    ├─ <a href="#skill-readme-craft">readme-craft/</a>
    ├─ <a href="#skill-visualize-it">visualize-it/</a>
-   └─ <a href="#skill-study-notes">study-notes/</a></div>
+   ├─ <a href="#skill-study-notes">study-notes/</a>
+   └─ <a href="#skill-orchestrate">orchestrate/</a></div>
 
     <ul class="toc" id="toc">
       <li><a href="#overview">Overview</a></li>
@@ -518,6 +519,10 @@ Want me to make the change?</pre>
         <li class="live" id="skill-study-notes">
           <div class="n">study-notes<small>Manual only</small></div>
           <div><p>Turn a syllabus, course PDF, markdown file, or link into study notes. Builds an outline per chapter and learning objective, then fills notes chapter by chapter from the source only, and fact-checks them against it at the end. Writes to Notion, an Obsidian vault, or a plain markdown file. Run it with <code>/study-notes</code>.</p></div>
+        </li>
+        <li class="live" id="skill-orchestrate">
+          <div class="n">orchestrate<small>Manual only</small></div>
+          <div><p>Run a large multi-file change as staged work. Claude surveys the scope and writes a precise brief per stage, Sonnet subagents do the edits and build loops, and Claude reviews each diff itself, never trusting the worker's report. Too small to pay off? It says so and works inline. Run it with <code>/orchestrate</code>.</p></div>
         </li>
       </ul>
       <p class="note">Both <code>handoff-session</code> and <code>offload-task</code> write a markdown file for a session that has none of this context. They differ in what the file holds. <strong>handoff-session</strong> records the session: state, decisions, blockers, next steps, so the work continues. <strong>offload-task</strong> records one unsolved problem and the attempts that already failed, so a fresh session or another agent can try it without repeating them.</p>

@@ -17,6 +17,7 @@ Reusable task workflows. A skill loads on demand when the task matches its descr
 - **readme-craft** — scaffold or restyle a README: centered icon header, badges from one source (shieldcn.dev or shields.io) without vanity or duplicate badges, and GitHub markdown patterns such as admonitions, collapsibles, diagrams, and tables.
 - **visualize-it** — explain a concept, feature, problem, or piece of code as a visual page. Picks diagrams, charts, tables, and interactive or animated sections to fit the topic. The page is a Claude artifact when the Artifact tool is available, otherwise a standalone HTML file in the current folder. Manual: run it with `/visualize-it`.
 - **study-notes** — turn a syllabus, course PDF, markdown file, or link into study notes. Builds an outline per chapter and learning objective, then fills notes chapter by chapter, using only what the source says, and checks them against the source at the end. Writes to Notion, an Obsidian vault, or a plain markdown file. Manual: run it with `/study-notes`.
+- **orchestrate** — run a large multi-file change as staged work: Claude surveys and plans, Sonnet subagents do the edits, and Claude reviews every stage's diff itself before the next one starts. Says so and works inline when the task is too small to pay off. Manual: run it with `/orchestrate`.
 
 ## Deprecated
 
