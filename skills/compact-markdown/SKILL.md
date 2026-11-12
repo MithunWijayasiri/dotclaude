@@ -1,6 +1,6 @@
 ---
 name: compact-markdown
-description: Writing style for markdown files. Strips filler, writes telegraphic and content-only — docs are for AI agents, not prose. Trigger whenever creating or editing ANY .md file (skills, rules, CLAUDE.md, feature specs, design notes, guides, etc.), for the new/edited content you produce. Do NOT trigger for README.md, and do NOT trigger for non-markdown files.
+description: Use when creating or editing any `.md` file — skills, rules, CLAUDE.md, specs, design notes, guides. Handles telegraphic, content-only wording for agent-facing docs. Not for README.md → `readme-craft`, or non-markdown files.
 ---
 
 # Compact Markdown
@@ -9,7 +9,7 @@ Markdown docs here exist for AI agents, not human reading pleasure. Write conten
 
 ## Scope
 
-- Apply to any `.md` being created or edited — **except `README.md`** (skip this skill entirely for README.md).
+- Apply to any `.md` being created or edited — **except `README.md`**.
 - Apply only to **content you write or edit**. Do not rewrite existing surrounding prose you weren't asked to touch.
 - Compress wording; keep markdown valid and navigable.
 - Authoring a `SKILL.md`? Read `references/skill-authoring.md` for skill-specific rules (frontmatter, triggering, what not to compact).
@@ -52,15 +52,11 @@ Judgment overrides compression. **Never compress if it loses important info.** W
 - Reference data (commands, paths, options, values) → lists and tables, one fact per line.
 - Behavioral rules → keep the rule and its reason together in one line or sentence; a bullet that drops the "because" loses the rule's scope.
 - `→` for cause/result, conditions, flows.
-- Lead with the rule, then the why (only if non-obvious), then example.
+- Lead with the rule, then the why, then example.
 
 ## Self-check
 
-Before finishing:
-
-- Remove anything that adds no information.
-- Restore any detail whose removal changes meaning, scope, or conditions.
-- Check that Markdown structure remains valid.
+Before finishing, restore any detail whose removal changes meaning, scope, or conditions.
 
 ## Example
 

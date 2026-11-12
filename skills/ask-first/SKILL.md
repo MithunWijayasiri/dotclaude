@@ -1,6 +1,6 @@
 ---
 name: ask-first
-description: Ask the user clarifying questions before acting, instead of filling gaps with guesses. Use when starting to implement a feature, fix a bug, write or change tests, refactor, or plan any change where intent, scope, expected behavior, values, or done-criteria aren't fully stated. Also use mid-task when a new unknown surfaces. Skip for fully-specified asks, pure questions, and read-only lookups.
+description: Use when starting a feature, bug fix, test change, refactor, or plan where intent, scope, expected behavior, values, or done-criteria aren't fully stated, or when an unknown surfaces mid-task. Handles clarifying questions with recommended answers. Not for fully-specified asks, pure questions, or read-only lookups.
 argument-hint: "[bug|feature|improvement|refactor|test|docs] - what needs doing"
 ---
 
@@ -43,7 +43,9 @@ Check on top of the generic gaps. Ask only what code/logs don't answer.
 
 ## Playback
 
-Before editing, restate in a few lines: goal, scope in/out, approach, done-criteria. Get a yes. Correction → update and replay.
+Asked at least one question → before editing, restate in a few lines: goal, scope in/out, approach, done-criteria. Get a yes. Correction → update and replay.
+
+Nothing asked (fully specified) → skip playback, proceed.
 
 ## Mid-task
 

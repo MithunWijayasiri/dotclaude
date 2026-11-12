@@ -1,11 +1,11 @@
 ---
 name: git-worktree
-description: Use when the user asks to create, enter/switch to, or remove a git worktree on Windows — makes it under `.claude/worktrees/` and provisions a shared node_modules (junction) and local `.env` so it runs without a reinstall. Windows + PowerShell only. Trigger on `/git-worktree`.
+description: Use when the user asks to create, switch to, or remove a git worktree on Windows. Handles worktrees under `.claude/worktrees/` with a shared node_modules junction and copied `.env`. Windows + PowerShell only.
 ---
 
 # Git Worktree
 
-Windows + PowerShell only. Worktrees live at `<repo>/.claude/worktrees/<name>`. Add `.claude/worktrees/` to the repo's `.gitignore` — Claude Code doesn't.
+Windows + PowerShell only. Worktrees live at `<repo>/.claude/worktrees/<name>`.
 
 Scripts: `scripts/wt-create.ps1`, `scripts/wt-remove.ps1` (PowerShell 5.1+). Run as `powershell -NoProfile -File <skill dir>\scripts\<script>.ps1 ...`. Below, `$SKILL` = this skill's directory (e.g. `$HOME\.claude\skills\git-worktree`).
 
@@ -54,7 +54,7 @@ Exit 1 → report the printed error.
 
 `WARN junction (existing)` (exit 0, Switch re-run) → branch's lockfile changed since linking. Report it; any install needs `wt-remove.ps1 -Unlink` first, else `npm ci` writes into main's `node_modules`.
 
-**4. Report** path, branch, base, node_modules mode (junction / real / skipped), files copied, and what Not provisioned leaves out.
+**4. Report** path, branch, base, node_modules mode (junction / real / skipped), files copied, and what Not provisioned leaves out. Then run Per-repo check.
 
 ## Switch
 
@@ -82,7 +82,7 @@ From inside a worktree, `EnterWorktree(path)` only reaches worktrees under the s
 powershell -NoProfile -File "$SKILL\scripts\wt-remove.ps1" -Wt "$WT" -Report
 ```
 
-Lists uncommitted files, ignored files (copied `.env`, build output; `node_modules` excluded, step 3 handles it), and unpushed commits on the worktree's HEAD (capped at 30 each). Wait for explicit confirmation. Any list non-empty → say so plainly; that work dies with the worktree.
+Lists uncommitted files, ignored files (copied `.env`, build output; `node_modules` excluded, step 3 handles it), and unpushed commits on the worktree's HEAD (capped at 30 each). Wait for explicit confirmation. Any list non-empty → say so plainly; that work dies with the worktree. Exit 1 → stop, report the printed error; don't ask to confirm on an incomplete report.
 
 **3. Unlink node_modules** — after confirmation, before any removal command touches the directory:
 
@@ -90,7 +90,7 @@ Lists uncommitted files, ignored files (copied `.env`, build output; `node_modul
 powershell -NoProfile -File "$SKILL\scripts\wt-remove.ps1" -Wt "$WT" -Unlink
 ```
 
-Removes the junction only (non-recursive `DirectoryInfo.Delete()`; target keeps contents). Real directory or none → untouched. Exit codes: 0 ok, 1 error, 3 `node_modules` is a non-junction link (e.g. symlink) → stop, tell user. Script never removes the worktree itself.
+Removes the junction only (non-recursive `DirectoryInfo.Delete()`; target keeps contents). Real directory or none → untouched. Exit codes: 0 ok, 1 error, 3 `node_modules` is a non-junction link (e.g. symlink). 1 or 3 → stop, tell user; no step 4 while a link may still be live. Script never removes the worktree itself.
 
 **4. Remove.** Session created the worktree via EnterWorktree → `ExitWorktree(action: "remove")` (`discard_changes: true` only after user confirmed step 2).
 
@@ -108,10 +108,11 @@ git worktree prune
 
 Only `.env*` copied. Other gitignored local state — saved auth/session state, tokens, caches, build output — absent; project's own setup step regenerates it on first run. Say so in the create report so a slow first run isn't mistaken for failure.
 
-## Per-repo one-time check
+## Per-repo check
 
-Root-level tooling that globs the whole tree compiles/lints every nested worktree copy. First use in a repo → check all three, offer fixes:
+Root-level tooling that globs the whole tree compiles/lints every nested worktree copy. Runs from Create step 4 → check each independently (a `.gitignore` entry doesn't exclude worktrees from eslint), offer a fix for each missing exclusion. Fixes go in `$MAIN`, not cwd `$WT` — edits there change only the worktree's branch, while main keeps linting the nested copies:
 
-- **.gitignore** — needs `.claude/worktrees/`.
-- **tsconfig** — affected only when `include` is unanchored from repo root (`["./**/*.ts"]`). Includes anchored to a source dir (`["src/**/*.ts"]`) never reach `.claude/`; adding `exclude` there is dead config. When it applies, adding `exclude` discards TypeScript's implicit default → list `node_modules` alongside `.claude`.
-- **eslint** — nearly always affected, regardless of tsconfig. Flat config (`eslint.config.mjs`) auto-ignores only `**/node_modules/` and `.git/` → `.claude` needs an explicit `globalIgnores` entry; eslintrc needs `ignorePatterns`. Worse with `parserOptions.project` + `createDefaultProgram: true` — worktree files fall outside the project's program, each gets a slow fallback program.
+- **.gitignore** — needs `.claude/worktrees/`; Claude Code doesn't add it.
+- **eslint** — nearly always affected. Flat config (`eslint.config.mjs`) auto-ignores only `**/node_modules/` and `.git/` → `.claude/worktrees/` needs a global ignore: a config object with only `ignores: [".claude/worktrees/"]` (works on every flat-config version; `globalIgnores()` from `eslint/config` is the same, where available); eslintrc needs it in `ignorePatterns`. Not all of `.claude/` — it drops lint on project files like `.claude/hooks/*.js`. Worse with `parserOptions.project` + `createDefaultProgram: true` — worktree files fall outside the project's program, each gets a slow fallback program.
+
+- **tsconfig** — usually nothing: tsc wildcards (`**/*`, `./**/*.ts`) skip dot-directories, so `include` never reaches `.claude/` unless a pattern names it (e.g. `.claude/**/*.ts`). One does → it pulls in every worktree's sources; offer adding `.claude/worktrees` to `exclude`, keeping existing entries, incl. any inherited via `extends` (a local `exclude` replaces it; rewrite those paths relative to this file). No `exclude` yet → also list `node_modules`, `bower_components`, `jspm_packages`, and the configured `outDir`; setting `exclude` drops those defaults.

@@ -1,6 +1,6 @@
 ---
 name: github-issue-creator
-description: Create or edit GitHub issues from raw notes, error logs, voice dictation or screenshots, following the repo's issue templates and labels. Use when the user wants an issue drafted, created or updated.
+description: Use when the user wants a GitHub issue drafted, created, or updated from raw notes, error logs, voice dictation, or screenshots. Handles repo issue templates, labels, and `gh` creation after approval.
 ---
 
 # GitHub Issue Creator
@@ -11,6 +11,7 @@ Turn messy input into a clean issue, draft in chat, create with `gh` on approval
 
 Resolve from `git remote get-url origin` (repo name can differ from folder name). Never guess `owner/repo`.
 Before any `gh` write: `gh auth status`; active account must match the one project instructions require.
+`gh` missing, not signed in, wrong account, or no `origin` → stop and tell the user before creating or editing. Draft-only request → continue; state which of templates, labels, and title style couldn't be checked.
 
 ## Create flow
 
@@ -23,7 +24,7 @@ Before any `gh` write: `gh auth status`; active account must match the one proje
    - No template → fallback below.
 5. Labels: `gh label list --repo <repo>`. Apply template `labels:` plus existing labels that clearly fit (e.g. `accessibility`). Never create labels. State which were applied.
 6. Title: match style of `gh issue list --repo <repo> --limit 10`.
-7. Show draft (title, labels, body) in chat. Create only after user OK: `gh issue create --repo <repo> --title ... --label ... --body-file -` (heredoc).
+7. Show draft (title, labels, body) in chat. Create only after user OK: `gh issue create --repo <repo> --title ... --label ... --body-file -` (heredoc). Create fails → report the error, keep the draft.
 8. Reply with issue URL.
 
 ## Fallback template (no repo template)
@@ -47,7 +48,8 @@ Issue body may hold images or text the user added after creation. Rewriting from
 2. Edit only the parts requested. Keep everything else verbatim: `<img>`, `![](...)`, `user-attachments` URLs, user's manual edits.
 3. Labels untouched unless asked.
 4. Placeholder `<!-- drag the screenshot here -->` → remove once body has media; else leave.
-5. Show what changed (before/after of edited parts) before `gh issue edit <n> --body-file -`.
+5. Show what changed (before/after of edited parts) before `gh issue edit <n> --body-file -`. Apply only after user OK.
+6. Re-fetch the body right before writing. Changed since the edit was built → rebuild on it, back to step 5.
 
 ## Images
 

@@ -1,6 +1,6 @@
 ---
 name: offload-task
-description: Write one stuck problem into a standalone markdown brief so a fresh session in any coding agent can attack it without inheriting the dead ends. Use when the user says they want to offload a problem, take it to a new chat or another agent, or asks for a prompt/doc explaining a problem they need help with.
+description: Use when the user wants to offload a stuck problem, take it to a new chat or another agent, or get a prompt or doc explaining it. Handles one standalone markdown brief saved to ~/Downloads. Not for whole-session continuation → `handoff-session`.
 argument-hint: "Which problem to offload (optional)"
 ---
 
@@ -12,6 +12,7 @@ Not a session summary. `handoff-session` covers the whole session so work contin
 
 - Arguments given → that is the problem. No arguments → the most recent unresolved problem.
 - Unsure which of several → ask before writing.
+- No unresolved problem → say so; write nothing.
 
 ## Reader
 
@@ -20,6 +21,7 @@ A coding agent with this repo checked out — no prior context, full file access
 - Reference `path/to/file.ts:123`. Do not paste code the reader can open.
 - Inline only what cannot be opened: error output, terminal logs, user observations of the live UI, values from screenshots.
 - Name the project rules that constrain the answer (`.claude/rules/*.md`, `CLAUDE.md`) by path — do not restate them.
+- Reader has no repo access (user says so) → inline the code the brief cites and the rules that apply.
 
 ## Attempts are the payload
 

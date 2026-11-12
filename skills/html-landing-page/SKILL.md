@@ -1,6 +1,6 @@
 ---
 name: html-landing-page
-description: Static landing pages — single/few-file HTML/CSS/JS for project sites, GitHub Pages, product one-pagers. Build, redesign, or review. Layers on frontend-design; not for app UIs, dashboards, or framework SPAs.
+description: Use when building, redesigning, or reviewing a static landing page — project site, GitHub Pages, product one-pager. Handles landing-page specifics layered on `frontend-design`. Not for app UIs, dashboards, or framework SPAs.
 disable-model-invocation: true
 ---
 
@@ -10,9 +10,9 @@ Landing-page layer on top of `frontend-design:frontend-design`.
 
 ## Precedence
 
-- Invoke `frontend-design:frontend-design` via Skill tool first, unless already loaded this session. It owns: grounding, plan → self-check → build → critique passes, AI-default looks, typography, motion budget, copy voice, general quality floor, screenshot critique.
+- Invoke `frontend-design:frontend-design` via Skill tool first, unless already loaded this session. Skill not available → stop and say so. It owns: grounding, plan → self-check → build → critique passes, AI-default looks, typography, motion budget, copy voice, general quality floor, screenshot critique.
 - This file adds only static-landing-page specifics. frontend-design updates far more often than this file → never restate or override its guidance here.
-- Conflict on design taste → frontend-design wins. Conflict on landing-page constraints (checkpoint, copy verification, assets, deploy, Quality floor below) → this file wins.
+- Conflict on design taste → frontend-design wins. Conflict on landing-page constraints (checkpoint, copy verification, assets, paths, Quality floor below) → this file wins.
 - Editing this skill: before adding a rule, check frontend-design doesn't already cover it; delete rules here once it does.
 
 ## Modes
@@ -32,7 +32,7 @@ Runs inside frontend-design's passes; adds these steps.
    - Theme: light-only, dark-only, or follows `prefers-color-scheme`. State it — otherwise it gets decided by accident.
 3. **Checkpoint.** Show plan (palette, type, layout sketch, signature, theme); wait for approval before writing HTML. Skip only if user said to build without review. Plan changes are cheap; built-page changes aren't.
 4. **Build** to the approved plan.
-5. **Render.** Open page in a browser; screenshot at ~375px and ~1280px; check console for errors. Judge screenshots, not source — overflow, spacing, and specificity bugs only show rendered.
+5. **Render.** Open page in a browser; screenshot at ~375px and ~1280px; check console for errors. Judge screenshots, not source — overflow, spacing, and specificity bugs only show rendered. No browser tool → say the page wasn't rendered; ask the user to open it.
 6. **Verify copy.** Check every factual claim against project source. Plausible-but-false → cut.
 
 ## Landing-page tells
