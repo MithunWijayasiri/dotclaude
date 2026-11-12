@@ -53,11 +53,12 @@ Worker's own grep only checks old names → misses mangled new names (e.g. every
     h && /^--- /{f=substr($0,7); next}
     h && /^\+\+\+ / && $2!="/dev/null"{f=substr($0,7); next}
     /^@@/{h=0; k=f " " $2 " " $3; r=a=0; next}
-    !h && /^[+-]/{l=substr($0,2); if(/^-/){gsub(/OLD/,"NEW",l); i=++r} else i=++a; c[k "\t" i "\t" l]+=(/^\+/)?1:-1}
+    !h && /^[+-]/{l=substr($0,2); if(/^-/){s=""; while((p=index(l,"OLD"))>0){s=s substr(l,1,p-1) "NEW"; l=substr(l,p+length("OLD"))} l=s l; i=++r} else i=++a; c[k "\t" i "\t" l]+=(/^\+/)?1:-1}
     END{for(x in c) if(c[x]) print c[x] "\t" x}'
   ```
-  Output: count, file, hunk range, position, line. Read every residual line.
+  Matches `OLD` literally (`.`, `(`, `&` not special). Output: count, file, hunk range, position, line. Read every residual line.
 - Content stages (strings, translations) → read changed value lines only, e.g. `git diff --cached -U0 -- 'locales/*.json' | grep '^[+-] *"'`.
+- Other stages (build/fix loops, no rename pair) → read the whole staged diff (`git diff --cached`).
 - Mangle check: grep new name glued to extra letters, e.g. `grep -rnE "[A-Za-z]NEW|NEW[A-Za-z]"`, and odd variants (doubled prefix, wrong case).
 - Check the worker's Uncertain list item by item.
 - Small fix → edit inline, re-stage the stage's paths, re-read the final staged diff. Larger → `SendMessage` to same agent with the exact problem (keeps its context).

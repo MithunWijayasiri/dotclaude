@@ -5,7 +5,7 @@ description: Use when writing, editing, or restyling a README, or adding or refr
 
 # README craft
 
-Three modes: **new** (scaffold from scratch), **restyle** (upgrade an existing README's presentation), **content edit** (badges untouched, incl. header-only edits like a tagline → edit in place, skip Step 1 and the restyle checklist). Same conventions in all.
+Four modes: **new** (scaffold from scratch), **restyle** (upgrade an existing README's presentation), **content edit** (badges untouched, incl. header-only edits like a tagline → edit in place, skip Step 1 and the restyle checklist), **badge edit** (add or refresh named badges only → Step 1, touch and verify only those, skip the restyle checklist; existing badges from the other source → ask before converting them, never mix). Same conventions in all.
 
 Output is human-facing prose, not compact-markdown style.
 
