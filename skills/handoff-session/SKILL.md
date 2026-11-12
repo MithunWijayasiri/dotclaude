@@ -1,10 +1,16 @@
 ---
 name: handoff-session
-description: Use when the user wants to hand off, continue in a new session, or pass the current work to another agent. Compacts the conversation into a handoff document.
-argument-hint: "What will the next session be used for?"
+description: Use when the user wants to hand off the session, continue in a new one, or pass the current work to another agent. Handles a compact handoff document saved to ~/Downloads. Not for one stuck problem → `offload-task`.
+argument-hint: "Next session's focus (optional)"
 ---
 
-Summarise this conversation for a fresh agent to continue. Save to ~/Downloads/ with a descriptive hyphenated filename prefixed by the project name in square brackets, like [Project]-handoff-TICKETID.md or [Project]-handoff-topic.md. Project = repo name from the `origin` remote URL, else the folder name; cut to 20 characters. If that name already exists, append a timestamp instead of overwriting. If the folder is missing or unwritable, ask for another destination. Report the saved path.
+Summarise this conversation for a fresh agent to continue.
+
+- Save to `~/Downloads/`, descriptive hyphenated filename prefixed by the project name in square brackets: `[Project]-handoff-TICKETID.md` or `[Project]-handoff-topic.md`.
+- Project = repo name from the `origin` remote URL, else the folder name; cut to 20 characters.
+- Name already exists → append a timestamp; never overwrite.
+- Folder missing or unwritable → ask for another destination.
+- Report the saved path.
 
 Link to existing artifacts (PRDs, plans, ADRs, issues, commits, diffs) instead of copying their content.
 
@@ -18,8 +24,11 @@ Keep the doc compact by excluding:
 - Off-topic tangents — side discussions unrelated to the main work
 - Redundant iterations — multiple rounds of the same fix/tweak
 
+In Current State: mark assumptions and unverified claims explicitly; record the latest validation status, including failures and checks not run.
+
 Use this structure:
 
+```markdown
 # Handoff: [Topic]
 
 ## Context
@@ -27,9 +36,6 @@ Use this structure:
 
 ## Current State
 [What's working, what's broken, what's in progress]
-
-- Mark assumptions and unverified claims explicitly.
-- Record the latest validation status, including failures and checks not run.
 
 ## Blockers
 [Anything stopping progress]
@@ -45,6 +51,7 @@ Use this structure:
 
 ## Key Files
 [Relevant file paths]
+```
 
 Redact any sensitive information, such as API keys, passwords, or personally identifiable information.
 

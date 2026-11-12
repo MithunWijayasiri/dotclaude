@@ -1,19 +1,21 @@
 ---
 name: readme-craft
-description: README writing and restyling — scaffold a new README, restyle an existing one, or add/refresh its badges (shieldcn.dev or shields.io), header, admonitions, collapsibles, and GitHub markdown patterns.
+description: Use when writing, editing, or restyling a README, or adding or refreshing its badges. Handles shieldcn.dev or shields.io badges, header, admonitions, collapsibles, and GitHub markdown patterns. Not for other `.md` files → `compact-markdown`.
 ---
 
 # README craft
 
-Two modes: **new** (scaffold from scratch) and **restyle** (upgrade an existing README's presentation). Same conventions either way.
+Three modes: **new** (scaffold from scratch), **restyle** (upgrade an existing README's presentation), **content edit** (no badges or header touched → edit in place, skip Step 1). Same conventions in all.
+
+Output is human-facing prose, not compact-markdown style.
+
+Markdown patterns beyond header/badges (admonitions, collapsibles, kbd, mermaid, diff, tables, footnotes, task lists, captions, back-to-top) → `references/markdown-patterns.md`. Read it before writing README body content.
 
 ## Step 1 — ask badge source
 
 Before writing or touching any badge, ask via AskUserQuestion: **shieldcn.dev** or **shields.io**. Never default, never infer from existing badges, never mix sources in one README. Skip only if the user already named the source in this request.
 
 Chosen source can't render a needed badge → tell user and drop it; don't silently fall back to the other source.
-
-Markdown patterns beyond header/badges (admonitions, collapsibles, kbd, mermaid, diff, tables, footnotes, task lists, captions, back-to-top) → `references/markdown-patterns.md`. Read it before writing README body content.
 
 ## Header pattern
 
@@ -31,7 +33,7 @@ Centered icon above the title, tagline below:
 </p>
 ```
 
-Icon: prefer an existing favicon/app-icon asset (PNG/ICO). GitHub strips inline `<svg>` from rendered READMEs, so even if a `.svg` logo exists, reference it via `<img>` (rendered as a raster preview by GitHub) or use a PNG/ICO sibling if one exists. Look in `docs/assets/`, `public/`, `assets/`, or repo root; ask the user for a path if nothing obvious is found — don't guess a project's icon. Separate dark/light icon assets → themed logo pattern in `references/markdown-patterns.md`.
+Icon: existing favicon/app-icon asset (PNG, ICO, or `.svg` file) via `<img>` — GitHub strips inline `<svg>`. Look in `docs/assets/`, `public/`, `assets/`, or repo root; nothing obvious → ask the user for a path, don't guess a project's icon. Separate dark/light icon assets → themed logo pattern in `references/markdown-patterns.md`.
 
 ## Badges
 
@@ -50,8 +52,7 @@ Base `https://shieldcn.dev`. Wrap every badge in `<picture>` with dark `<source>
 | Stars | `github/<owner>/<repo>/stars` |
 | Release | `github/<owner>/<repo>/release` |
 | License | `github/<owner>/<repo>/license` |
-| Last commit | `github/last-commit/<owner>/<repo>` |
-| Contributors | `github/contributors/<owner>/<repo>` |
+| CI | `github/<owner>/<repo>/ci` |
 | Release downloads | `github/downloads/<owner>/<repo>` |
 | npm version | `npm/<pkg>` |
 | npm downloads (weekly / monthly) | `npm/<pkg>/downloads` / `npm/dm/<pkg>` |
@@ -69,7 +70,7 @@ No dark/light wrapping:
 <a href="<link-target>"><img src="https://img.shields.io/<path>" alt="<Label>"></a>
 ```
 
-CI: `github/actions/workflow/status/<owner>/<repo>/<file>.yml` — targets the real workflow file instead of guessing.
+CI: `github/actions/workflow/status/<owner>/<repo>/<file>.yml` — targets the real workflow file instead of guessing. Other paths → https://shields.io/badges; don't guess one.
 
 ### Never add (both sources)
 
@@ -82,7 +83,7 @@ Metric structurally near-zero for this project (dependents on a leaf app, downlo
 
 ### Verify
 
-Check every metric badge once before shipping — swap `.svg` for `.json` (both sources support it) and confirm the value and link are real. shieldcn `ci` picks a workflow itself → confirm its `link` points at the intended workflow; wrong one → use a static badge or drop it.
+Check every metric badge once before shipping — swap `.svg` for `.json` (both sources support it) and confirm the value and link are real. shieldcn `ci` picks a workflow itself → confirm its `link` points at the intended workflow; wrong one → use a static badge or drop it. Can't fetch → list the unverified badges in the final response.
 
 ### Grouping / ordering
 
@@ -96,6 +97,8 @@ Rows by category, each inside one `<p align="center">`, rows separated by `<br>`
 Empty category → drop the row.
 
 ## New README checklist (scaffold mode)
+
+README already exists → restyle mode; never overwrite.
 
 Ask before writing if any of these are unclear — don't guess a project's identity or scope:
 
@@ -111,7 +114,3 @@ Ask before writing if any of these are unclear — don't guess a project's ident
 3. Check every badge's `<a href>` still points somewhere real; verify metrics per Verify.
 4. Look for prose that should become an admonition, `<details>`, table, or diagram (`references/markdown-patterns.md`).
 5. Confirm the header follows the icon+heading pattern if the project has a natural icon asset.
-
-## Note
-
-This skill file follows compact-markdown style (telegraphic, AI-facing). The README it produces does **not** — write normal human-facing prose there; this file's terseness doesn't carry over to the output.

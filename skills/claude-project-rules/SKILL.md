@@ -1,6 +1,6 @@
 ---
 name: claude-project-rules
-description: Author Claude Code rule files (.claude/rules/*.md). Use when asked to create, add, edit, or review a project or user "rule" — covers frontmatter, lazy-load vs always-on loading, glob scoping, symlinked shared rules, exclusions, and when a rule beats CLAUDE.md or a skill. Invoke before writing any file under .claude/rules/.
+description: Use when creating, editing, or reviewing a Claude Code rule file (`.claude/rules/*.md`, project or user), scoping a standing instruction to a file area, or splitting CLAUDE.md. Handles `paths:` frontmatter, lazy vs always-on loading, glob scoping, symlink sharing, exclusions.
 ---
 
 # Claude Code project rules
@@ -34,27 +34,7 @@ paths:
 
 - Scope to the files the rule actually governs. A rule about the locator engine → `src/locator-engine/**` + the specific files it touches, not `src/**`.
 - Want it always-on → emit NO frontmatter at all (not empty `paths:`).
-
-### Glob gotchas
-
-- Brace budget: a rule's whole `paths:` list shares 1,000 expanded patterns / 4 MiB. Each group multiplies (`{a,b}/{c,d}/*.{ts,tsx}` = 8). Over budget → the pattern is used **unexpanded**, so its literal braces match nothing. Keep brace groups shallow; prefer extra list entries over nested groups.
-- `[` starts a bracket expression. `photos [2024/**` is invalid and matches nothing (other patterns in the rule still work). Escape as `photos \[2024/**`.
-- Symlinked checkouts: matching works through a symlinked path to the project dir.
-
-## Sharing and excluding
-
-- **Symlink to share across projects.** `.claude/rules/` resolves symlinked dirs and files; circular links handled.
-  ```bash
-  ln -s ~/shared-claude-rules .claude/rules/shared
-  ln -s ~/company-standards/security.md .claude/rules/security.md
-  ```
-  A target outside the working dir counts as an external import: nothing loads until external imports are approved for the project, and then only rules **without** `paths:`. Approval is prompted only by an `@path` import in a project memory file, never by a symlink alone — no such import, no prompt, no linked rules. `~/.claude/rules/` avoids all of it.
-- **Exclude noisy inherited rules** with `claudeMdExcludes` (glob vs absolute path) in `.claude/settings.local.json`. Arrays merge across settings layers. For a symlinked rule, a pattern matching *either* the `.claude/rules/` path or the link target excludes it.
-  ```json
-  { "claudeMdExcludes": ["/home/user/monorepo/other-team/.claude/rules/**"] }
-  ```
-- Project rules are skipped when `project` is excluded from `--setting-sources`, lazy ones included.
-- `--add-dir` dirs contribute rules only with `CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1`.
+- Brace groups, a literal `[`, symlinked or shared rules, `claudeMdExcludes`, `--setting-sources`, `--add-dir` → read `references/globs-and-sharing.md` first.
 
 ## Never `@import` a rule into CLAUDE.md
 
@@ -82,7 +62,7 @@ A fact stated in two places drifts: one copy gets updated, the other lies. Befor
 
 ## Content style
 
-- Lead with the rule, then the why only if non-obvious, then example. Telegraphic, present tense, one fact per line.
+- Wording and shape → `compact-markdown` skill. Rule-specific points:
 - Encode invariants and the failure they prevent ("violating this is how the PR shipped bug X") — concrete beats abstract.
 - Tie heuristics to their source of truth. A rule that restates a priority/order list drifts from the code; point at the authoritative table and state the invariant ("scores live in SCORE, lower wins").
 - Examples: write a short generic shape inline (placeholders like `<env A>`, `PROJ-XXXXX`), not a pointer to code ("Ex: `foo.ts` `BAR_CONST`"). Code gets renamed, moved, or deleted; a dangling example leaves the agent with no pattern to follow. Point at a file only when the pattern is too large to inline, and then pick a stable file and also state the rule in words so it survives the file changing.
@@ -98,9 +78,6 @@ A fact stated in two places drifts: one copy gets updated, the other lies. Befor
 
 - [ ] `paths:` present and scoped to the governed files? (omit entirely only if truly always-on)
 - [ ] Globs valid — brace groups shallow, no unescaped `[`.
-- [ ] No `@import` of this rule anywhere in CLAUDE.md.
 - [ ] Content is invariants/constraints, not a duplicate of code that will drift.
 - [ ] One topic, focused. Not a second CLAUDE.md.
-- [ ] Doesn't restate what CLAUDE.md or the code already says.
 - [ ] Examples are inline generic shapes, not links to specific code (unless too large to inline).
-- [ ] Needs hard enforcement, not guidance? → hook, not a rule.
