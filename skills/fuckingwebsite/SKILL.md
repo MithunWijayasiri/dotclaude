@@ -41,7 +41,7 @@ Starting points, not rules — override when the task's aesthetic calls for it. 
 ## 4. Technical & interactive standards
 
 1. Single file: Tailwind CDN (`<script src="https://cdn.tailwindcss.com"></script>`), custom CSS, and vanilla JS all inline in the one `.html`.
-2. State: checklists, flags, notes, or toggles → persist in `localStorage` under a unique, versioned key, wrapped in `try/catch` so private browsing never breaks the script. Save fails → show one inline note that progress won't be saved.
+2. State: checklists, flags, notes, or toggles → persist in `localStorage` under a unique, versioned key, wrapped in `try/catch` so private browsing never breaks the script. Save fails → show one inline note that progress won't be saved. Checklist pages: the copied summary lists every item with its checked state, so progress can be kept by copying.
 3. Micro-utilities:
    - Filters / search: more than 10 items → instant filter pills (e.g. `All`, `Remaining`, `Flagged`, `Done`) or a zero-latency search input.
    - Copy / export: button copies a clean plain-text summary (flagged parts, shopping list, selected commands). Use `navigator.clipboard.writeText`; missing or throws (file://, iframes) → `textarea` + `document.execCommand('copy')` fallback.
