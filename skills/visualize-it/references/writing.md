@@ -12,12 +12,12 @@ Write all page text in ASD-STE100 (Simplified Technical English). Every sentence
 - Steps as commands, one action each, condition first: "If the build fails, read the log."
 - Unverified fact → say so and how to check it. Don't hide it behind "probably".
 - List every item, or say where the full list is. No "etc.".
-- Code, commands, paths, technical names, and quoted log text stay exact. Never reword them.
+- Code, commands, paths, technical names, and quoted log text stay exact; the rules and limits here don't apply to them. Never reword them.
 
 ## Limits
 
 - Sentences: steps ≤20 words, descriptions ≤25 words.
 - Tense: simple past, present, or future. No `-ing` verb forms.
 - Paragraphs: ≤6 sentences; more → list.
-- Steps in active voice. Descriptions may use passive when the actor doesn't matter.
+- Active voice. Descriptions may use passive only when the actor is unknown.
 - Counter-examples shown on purpose → strikethrough or a table row marked `no`, so they read as wrong.

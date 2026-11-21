@@ -41,15 +41,15 @@ Starting points, not rules — override when the task's aesthetic calls for it. 
 ## 4. Technical & interactive standards
 
 1. Single file: Tailwind CDN (`<script src="https://cdn.tailwindcss.com"></script>`), custom CSS, and vanilla JS all inline in the one `.html`.
-2. State: checklists, flags, notes, or toggles → persist in `localStorage` under a unique, versioned key, wrapped in `try/catch` so private browsing never breaks the script.
+2. State: checklists, flags, notes, or toggles → persist in `localStorage` under a unique, versioned key, wrapped in `try/catch` so private browsing never breaks the script. Save fails → show one inline note that progress won't be saved.
 3. Micro-utilities:
    - Filters / search: more than 10 items → instant filter pills (e.g. `All`, `Remaining`, `Flagged`, `Done`) or a zero-latency search input.
    - Copy / export: button copies a clean plain-text summary (flagged parts, shopping list, selected commands). Use `navigator.clipboard.writeText`; missing or throws (file://, iframes) → `textarea` + `document.execCommand('copy')` fallback.
    - Feedback: never `alert()`, `confirm()`, or `prompt()`. Bottom toast for copy confirmations; inline two-step buttons (`Reset` → `Yes, Reset / Cancel`) for destructive actions.
-4. Offline: Tailwind and fonts don't load offline → page renders unstyled but must stay readable and usable. Toggle visibility with the HTML `hidden` attribute or inline `style`, never Tailwind classes alone, so hidden confirm groups, empty states, and toasts stay hidden. Semantic HTML, system font fallbacks.
+4. Offline: Tailwind and fonts don't load offline → page renders unstyled but must stay readable and usable. Toggle visibility with the HTML `hidden` attribute or inline `style`, never Tailwind classes alone, so hidden confirm groups, empty states, and toasts stay hidden. Inline CSS gets `[hidden]{display:none!important}` — online, a Tailwind display class (`flex`, `block`) overrides the attribute. Semantic HTML, system font fallbacks. Facts and steps in static HTML, never rendered by JS, so a script-blocking preview (e.g. a phone file viewer) still shows them; interactive parts need a browser.
 
 ## 5. Pre-output checklist
 
 - [ ] Critical specs/numbers visible in the first mobile viewport without scrolling.
-- [ ] Interactive controls have mobile tap targets (`p-2.5` / `min-h-[44px]`); no horizontal page overflow.
+- [ ] Interactive controls have mobile tap targets (`min-height:44px` in inline CSS, not Tailwind alone, so they hold offline); no horizontal page overflow.
 - [ ] Content complete and tailored to the user's real-world scenario; no placeholder text.

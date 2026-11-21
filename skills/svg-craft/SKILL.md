@@ -1,6 +1,6 @@
 ---
 name: svg-craft
-description: Use when creating, redesigning, or polishing SVG art — scenes, abstract backdrops, illustrations, animated SVG. Handles depth layering, lighting, placement, and smooth seamless CSS motion. Not for charts → `dataviz`; not for icons-only tweaks.
+description: Use when creating, redesigning, or polishing SVG art — scenes, abstract backdrops, illustrations, animated SVG. Handles depth layering, lighting, placement, and smooth seamless CSS motion. Not for charts (→ `dataviz` when installed) or icons-only tweaks.
 ---
 
 # SVG Craft
@@ -13,6 +13,8 @@ Classify from the baseline render, not the file or theme name:
 
 - Scene: depicts a subject — sky, landscape, keyboard, map, objects.
 - Abstract: gradients, glows, shapes, patterns; no subject.
+
+New art → the brief sets the kind; render the first draft as the baseline.
 
 Polish keeps the kind. Abstract never gains subjects (coals, sparks, horizons, objects) — a name like "Ember" is not a brief. Unclear → ask.
 
@@ -57,10 +59,12 @@ Window size = the viewBox aspect; also try narrow/wide sizes when `preserveAspec
 | Flat | one layer, uniform opacity, no light falloff | back→front layers, glow under crisp edges, rim light |
 | Empty | big dead areas | background tiers (faint dust → stars → accents → small hero objects) |
 | Grey / washed out | low-saturation colour (cream/white) at partial opacity over black | warmer/more saturated stops; check what each gradient stop lands on |
-| Wrong colour on a squashed shape | radial gradient measured in round space on a flattened ellipse | `gradientTransform="scale(1 <ry/rx>)"` so stops follow the shape's own radius |
+| Wrong colour on a squashed shape | `userSpaceOnUse` radial gradient stays round on a flattened ellipse | default `objectBoundingBox` already follows the shape; `userSpaceOnUse` → `gradientTransform="translate(<cx> <cy>) scale(1 <ry/rx>) translate(<-cx> <-cy>)"` so stops follow the shape's own radius and the centre stays fixed |
 | Hard edges / "scratches" | thin strokes with no falloff, too long, too opaque | shorter, fainter, round caps, fade by distance |
 
 ## 4. Depth layering — scenes (back → front)
+
+Space scene shown. Other subjects → same tiers, filled with elements that fit the brief.
 
 1. Background fill/gradient.
 2. Far sky: many tiny faint dots, varied opacity; mix tints (mostly warm/neutral white, few cool `#e6ecff`, few warm `#ffdcae`).
@@ -119,7 +123,7 @@ Enforces the depth rule above in code.
 - Desync with negative `animation-delay` (`-rnd*period`), so it starts mid-motion with no visible start.
 - Slow is calm: drifts 40–70s, galaxy spin 260–460s, halo spin 60–150s, twinkle 2.5–6.5s.
 - Base (non-animated) state must look right — reduced motion (`@media (prefers-reduced-motion: reduce){*{animation:none!important}}`) shows it.
-- No cycle under 1/3s (WCAG 2.3.1 flashing).
+- No more than three flashes in any one second (WCAG 2.3.1): no cycle under 1/3s.
 
 ## 8. Gotchas
 
@@ -127,7 +131,7 @@ Enforces the depth rule above in code.
 - `transform-origin`: root-space spin → `transform-origin:<cx>px <cy>px`; inside a translated group → `transform-origin:0 0`.
 - Shorthand per class: `.dx,.dy{animation:dx 50s … }.dy{animation-name:dy}` — a lone `.dy{animation-name:dy}` has no duration.
 - Filter region defaults to bbox ±10% of geometry (stroke excluded) → thin wide shapes (flat arcs) get blur clipped. Give that filter a tall region (`y="-300%" height="700%"`).
-- Masks/gradients with `userSpaceOnUse` resolve in the referencing element's local coords — inside a `translate(...) rotate(...)` group, centre is `0,0`.
+- Masks/gradients with `userSpaceOnUse` resolve in the referencing element's local coords; group transforms apply to geometry and gradient alike → centre on the geometry's local centre (`0,0` only when it's drawn around the origin of a `translate(...) rotate(...)` group).
 - Half-ellipse arcs: front `M rx 0 A rx ry 0 0 1 -rx 0`, back `M -rx 0 A rx ry 0 0 1 rx 0` (y-down, sweep 1 = clockwise).
 - Performance: animated elements under filters re-blur every frame. Small moving things → radial gradients, not blur. Keep blurred animated areas few and slow.
 - Light theme: hide night-sky layers (`display:none` on one wrapping group) rather than recolouring each.
