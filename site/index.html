@@ -335,7 +335,9 @@ footer{border-top:1px solid var(--line);margin-top:12px}
    ├─ <a href="#skill-readme-craft">readme-craft/</a>
    ├─ <a href="#skill-visualize-it">visualize-it/</a>
    ├─ <a href="#skill-study-notes">study-notes/</a>
-   └─ <a href="#skill-orchestrate">orchestrate/</a></div>
+   ├─ <a href="#skill-orchestrate">orchestrate/</a>
+   ├─ <a href="#skill-svg-craft">svg-craft/</a>
+   └─ <a href="#skill-fuckingwebsite">fuckingwebsite/</a></div>
 
     <ul class="toc" id="toc">
       <li><a href="#overview">Overview</a></li>
@@ -523,6 +525,14 @@ Want me to make the change?</pre>
         <li class="live" id="skill-orchestrate">
           <div class="n">orchestrate<small>Manual only</small></div>
           <div><p>Run a large multi-file change as staged work. Claude surveys the scope and writes a precise brief per stage, Sonnet subagents do the edits and build loops, and Claude reviews each diff itself, never trusting the worker's report. Too small to pay off? It says so and works inline. Run it with <code>/orchestrate</code>.</p></div>
+        </li>
+        <li class="live" id="skill-svg-craft">
+          <div class="n">svg-craft</div>
+          <div><p>Create or polish SVG art: scenes, abstract backdrops, illustrations, animated SVG. Renders the SVG in headless Chrome before and after each change, layers depth and light, keeps every element clear of the focal object, and animates with calm, seamless CSS loops. An abstract piece stays abstract.</p></div>
+        </li>
+        <li class="live" id="skill-fuckingwebsite">
+          <div class="n">fuckingwebsite</div>
+          <div><p>Build a cheat sheet, checklist, field guide, quick-reference page, or pocket calculator as one offline HTML file for your phone. Numbers and steps come first, the styling fits where the page is used, and the AI-default look never ships. Facts come from you, your files, or a lookup, never invented. Checklist state saves in <code>localStorage</code>, and the page stays usable when fonts and Tailwind can't load offline.</p></div>
         </li>
       </ul>
       <p class="note">Both <code>handoff-session</code> and <code>offload-task</code> write a markdown file for a session that has none of this context. They differ in what the file holds. <strong>handoff-session</strong> records the session: state, decisions, blockers, next steps, so the work continues. <strong>offload-task</strong> records one unsolved problem and the attempts that already failed, so a fresh session or another agent can try it without repeating them.</p>
