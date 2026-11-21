@@ -29,7 +29,7 @@ Format, layout, and content are your call per subject. One clear idea beats many
 - **Light by default.** Light palette on `:root`. Dark palette only under `:root[data-theme="dark"]` (the viewer's explicit choice); no `prefers-color-scheme` dark block. User's choice — overrides the artifact design guidance's follow-the-system default. Dark palette: neutral charcoal/slate; never purple, violet, or indigo backgrounds or gradients.
 - **Layout by reading mode.** Overview of related parts → one-screen board/grid. Step-by-step explanation → linear doc; 3+ sections → add an outline/nav rail.
 - **Visual by shape of the information** (flow, state, sequence, ER, tree, timeline, chart, table, diff…) → pick from `references/visuals.md`. Diagrams in Mermaid, everything else in plain HTML/CSS — no hand-placed SVG coordinates. Plan, refactor, or PR → one diagram with added/removed/changed markers and a Before/After toggle, not two diagrams.
-- **Text on the page** → follow `references/writing.md` (answer first, each fact once, no filler, no "etc.").
+- **Text on the page** → ASD-STE100 Simplified Technical English, per `references/writing.md` (answer first, short sentences, everyday words, each fact once).
 - **Open decisions** (a choice that changes what happens next) → show each in the section it affects, with your suggested option marked. Ask them in chat after the page is delivered (see Done).
 
 ## Output
