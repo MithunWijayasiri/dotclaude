@@ -101,9 +101,9 @@ Every element obeys the scene's own logic; one wrong element breaks the illusion
 - Palette cohesive: accents come from the scene's palette; a foreign hue needs a reason (e.g. faint cool star tints for contrast against a warm hero).
 - Effects belong to their source: lensing arcs, glare, halos sit around the object causing them, not floating free.
 
-## 6. Placement — nothing overlaps the focal object
+## 6. Placement — far items stay off the focal object
 
-Enforces the depth rule above in code.
+Scenes with a focal object only. Enforces the depth rule above in code: far and mid items (tiers 2–3) stay outside the focal object; foreground drawn in front of it on purpose is exempt.
 
 - Write `clear(x, y, pad)`: false inside the focal object's full extent (glow, halo, any tilted band — transform the point into the band's local frame to test it).
 - Random items → rejection sampling with `pad` = item radius + its drift amplitude; cap tries, `throw` when no spot found.
